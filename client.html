@@ -14,11 +14,27 @@
       Rejoindre la partie <input type="text" name="player"> </input> <button onClick="rejoindrePartie()"> Hello </button>
       <br/>
       Quitter les vivants <button onClick="quitterPartie()"> Bye Bye </button><br/><br/>
-      <table>
-        <td> Joueur 1 : <label id="player0"> </label> </td>
-        <td> Joueur 2 : <label id="player1"> </label> </td>
-        <td> Joueur 3 : <label id="player2"> </label> </td>
-        <td> Joueur 4 : <label id="player3"> </label> </td>
+      <table border=2 cellpadding=200 margin=0>
+        <tr height=0>
+          <td>Joueur 1 : <label id="player0"> </label> </td>
+          <tr height=10><td> <font size="1">Attaque : <label id="attack0"> </font> </label> </td></tr>
+          <tr><td> <font size="1">Défense : <label id="defense0"> </label> </font> </td></tr>
+        </tr>
+        <tr>
+          <td>Joueur 2 : <label id="player1"> </label> </td>
+          <tr><td> <font size="1">Attaque : <label id="attack1"> </label> </font> </td></tr>
+          <tr><td> <font size="1">Défense : <label id="defense1"> </label> </font> </td></tr>
+        </tr>
+        <tr>
+          <td >Joueur 3 : <label id="player2"> </label> </td>
+          <tr><td> <font size="1">Attaque : <label id="attack2"> </label> </font> </td></tr>
+          <tr><td> <font size="1">Défense : <label id="defense2"> </label> </font> </td></tr>
+        </tr>
+        <tr>
+          <td>Joueur 4 : <label id="player3"> </label> </td>
+          <tr><td> <font size="1">Attaque : <label id="attack3"> </label> </font> </td></tr>
+          <tr><td> <font size="1">Défense : <label id="defense3"> </label> </font> </td></tr>
+        <tr>
       </table>
       <br/>
     </div>

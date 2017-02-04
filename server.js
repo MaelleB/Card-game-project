@@ -26,7 +26,11 @@ io.sockets.on('connection', function (socket) {
     playerName = message["playerName"];
     nPlayer = new createPlayer(playerName, basicAttack, basicDefense, 0);
     players.push(nPlayer);
-    io.emit('newPlayer', {"playerNum":nbOfPlayers, "playerName":playerName });
+    io.emit('newPlayer', {"playerNum":nbOfPlayers,
+                          "playerName":playerName,
+                          "playerAttack": nPlayer.attack,
+                          "playerDefense": nPlayer.defense
+                        });
     nbOfPlayers++;
   });
 

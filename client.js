@@ -47,6 +47,8 @@ socket.on("newPlayer", function(data) {
   console.log("Du serveur : nouveau joueur");
   players.push(data["playerName"]);
   document.getElementById("player"+nbOfPlayers).innerHTML = data["playerName"];
+  document.getElementById("attack"+nbOfPlayers).innerHTML = data["playerAttack"];
+  document.getElementById("defense"+nbOfPlayers).innerHTML = data["playerDefense"];
   nbOfPlayers++;
 });
 
