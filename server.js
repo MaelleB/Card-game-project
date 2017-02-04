@@ -5,6 +5,7 @@ var app = require('http').createServer(function(req, res){});
 app.listen(8888);
 var io = require("socket.io").listen(app);
 var cards = [{'num':0}, {'num':1}, {'num':2}, {'num':3}, {'num':4}, {'num':5},];
+var currentPlayer = NULL;
 
 io.sockets.on('connection', function (socket) {
   socket.on('etat', function(message) {
