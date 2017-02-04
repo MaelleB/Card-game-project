@@ -1,5 +1,5 @@
-var nomsJoueurs = [];
-var nbJoueursConnectes = 0;
+var playersNames = [];
+var nbOfPlayers = 0;
 
 var app = require('http').createServer(function(req, res){});
 app.listen(8888);
@@ -8,22 +8,22 @@ var cards = [{'num':0}, {'num':1}, {'num':2}, {'num':3}, {'num':4}, {'num':5},];
 
 io.sockets.on('connection', function (socket) {
   socket.on('etat', function(message) {
-    var etat = {"nbJoueursConnectes":nbJoueursConnectes, "nomsJoueurs":nomsJoueurs};
+    var etat = {"nbOfPlayers":nbOfPlayers, "playersNames":playersNames};
     io.emit('etat', etat);
   });
 
   socket.on('rejoindre',function(message) {
-    nomJoueur = message["nomJoueur"];
-    nomsJoueurs.push(nomJoueur);
-    io.emit('nouveauJoueur', {"numJoueur":nbJoueursConnectes, "nomJoueur":nomJoueur });
-    nbJoueursConnectes++;
+    playerName = message["playerName"];
+    playersNames.push(playerName);
+    io.emit('newPlayer', {"playerNum":nbOfPlayers, "playerName":playerName });
+    nbOfPlayers++;
   });
 
   socket.on('quitter',function(message) {
-    numJoueur = message["numJoueur"];
-    nomsJoueurs.splice(numJoueur, 1);
-    nbJoueursConnectes--;
-    io.emit('ancienJoueur', message);
+    numPlayer = message["numPlayer"];
+    playersNames.splice(numPlayer, 1);
+    nbOfPlayers--;
+    io.emit('offlinePlayer', message);
   });
 
 });

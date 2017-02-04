@@ -1,16 +1,16 @@
 var socket;
-var nbJoueursConnectes = 0;
-var nomsJoueurs = [];
-var joueurLocal = -1;      // indice dans nomsJoueurs
+var nbOfPlayers = 0;
+var playersNames = [];
+var localPlayer = -1;      // indice dans playersNames
 
 function rejoindrePartie() {
-  if (joueurLocal == -1) {
-    nomJoueur = document.getElementsByName('joueur')[0].value;
-    if (nbJoueursConnectes < 4) {
-      if (nomJoueur != "") {
+  if (localPlayer == -1) {
+    playerName = document.getElementsByName('player')[0].value;
+    if (nbOfPlayers < 4) {
+      if (playerName != "") {
         console.log("Envoi de la connexion");
-        socket.emit("rejoindre", { "nomJoueur": nomJoueur });
-        joueurLocal = nbJoueursConnectes;
+        socket.emit("rejoindre", { "playerName": playerName });
+        localPlayer = nbOfPlayers;
       }
     }
     else {
@@ -21,9 +21,9 @@ function rejoindrePartie() {
 
 function quitterPartie() {
   console.log("Dans quitterPartie");
-  if (joueurLocal > -1) {
-    console.log("Suppression du joueur n."+joueurLocal);
-    socket.emit("quitter", { "numJoueur": joueurLocal} );
+  if (localPlayer > -1) {
+    console.log("Suppression du joueur n."+localPlayer);
+    socket.emit("quitter", { "numPlayer": localPlayer} );
   }
 }
 
@@ -35,35 +35,35 @@ socket.on("etat", function(data) {
   for (var m in data) {
     console.log(m+" : "+data[m]);
     window[m] = data[m];  // MAGIQUE
-    for (var i=0; i < nomsJoueurs.length; i++) {
-      console.log("joueur ="+nomsJoueurs[i]);
-      document.getElementById("joueur"+i).innerHTML = nomsJoueurs[i];
+    for (var i=0; i < playersNames.length; i++) {
+      console.log("player ="+playersNames[i]);
+      document.getElementById("player"+i).innerHTML = playersNames[i];
     }
   }
 });
 
-socket.on("nouveauJoueur", function(data) {
+socket.on("newPlayer", function(data) {
   console.log("Du serveur : nouveau joueur");
-  nomsJoueurs.push(data["nomJoueur"]);
-  document.getElementById("joueur"+nbJoueursConnectes).innerHTML = data["nomJoueur"];
-  nbJoueursConnectes++;
+  playersNames.push(data["playerName"]);
+  document.getElementById("player"+nbOfPlayers).innerHTML = data["playerName"];
+  nbOfPlayers++;
 });
 
-socket.on("ancienJoueur", function(data) {
-  var numJoueur = data['numJoueur'];
-  var ancienJoueur = nomsJoueurs[numJoueur];
-  console.log("Du serveur ancienJoueur = "+ancienJoueur+" (joueur n."+numJoueur+")");
-  if (joueurLocal == numJoueur){
-    joueurLocal = -1;
+socket.on("offlinePlayer", function(data) {
+  var numPlayer = data['numPlayer'];
+  var offlinePlayer = playersNames[numPlayer];
+  console.log("Du serveur offlinePlayer = "+offlinePlayer+" (joueur n."+numPlayer+")");
+  if (localPlayer == numPlayer){
+    localPlayer = -1;
   }
-  else if (joueurLocal > 0){
-    joueurLocal--;
+  else if (localPlayer > 0){
+    localPlayer--;
   }
-  console.log("JoueurLocal = "+joueurLocal);
-  nomsJoueurs.splice(numJoueur, 1);
-  nbJoueursConnectes--;
-  for (var i=numJoueur; i < nbJoueursConnectes; i++){
-    document.getElementById("joueur"+i).innerHTML = nomsJoueurs[i];
+  console.log("localPlayer = "+localPlayer);
+  playersNames.splice(numPlayer, 1);
+  nbOfPlayers--;
+  for (var i=numPlayer; i < nbOfPlayers; i++){
+    document.getElementById("player"+i).innerHTML = playersNames[i];
   }
-  document.getElementById("joueur"+i).innerHTML = "";
+  document.getElementById("player"+i).innerHTML = "";
 });
