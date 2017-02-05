@@ -39,6 +39,8 @@ socket.on("etat", function(data) {
     for (var i=0; i < players.length; i++) {
       console.log("player ="+players[i].aliasName);
       document.getElementById("player"+i).innerHTML = players[i].aliasName;
+      document.getElementById("attack"+i).innerHTML = players[i].attack;
+      document.getElementById("defense"+i).innerHTML = players[i].defense;
     }
   }
 });
