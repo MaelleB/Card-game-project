@@ -24,7 +24,13 @@ io.sockets.on('connection', function (socket) {
   socket.on('rejoindre',function(message) {
     console.log("coucou");
     playerName = message["playerName"];
-    nPlayer = new createPlayer(playerName, basicAttack, basicDefense, 0);
+    if(nbOfPlayers == 0){
+      nPlayer = new createPlayer(playerName, basicAttack, basicDefense, 1);
+      io.emit('status', {"playerStatus": nPlayer.status, "playerName": playerName});
+    }
+    else{
+      nPlayer = new createPlayer(playerName, basicAttack, basicDefense, 0);
+    }
     players.push(nPlayer);
     io.emit('newPlayer', {"playerNum":nbOfPlayers,
                           "playerName":playerName,

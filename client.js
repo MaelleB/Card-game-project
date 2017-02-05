@@ -70,3 +70,9 @@ socket.on("offlinePlayer", function(data) {
   }
   document.getElementById("player"+i).innerHTML = "";
 });
+
+socket.on('status', function(data){
+  if(data["playerStatus"] == 1){
+    console.log("Tour du joueur "+data["playerName"]);
+  }
+});
