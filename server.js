@@ -22,7 +22,6 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('rejoindre',function(message) {
-    console.log("coucou");
     playerName = message["playerName"];
     if(nbOfPlayers == 0){
       nPlayer = new createPlayer(playerName, basicAttack, basicDefense, 1);
