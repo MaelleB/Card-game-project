@@ -18,7 +18,6 @@ function createPlayer(alias, att, def, s){
 function cardDraw(){
   var cardNum = Math.floor(Math.random() * 5);
   io.emit('cardDrawn', {"cardNum":cardNum});
-
 }
 
 io.sockets.on('connection', function (socket) {
@@ -41,21 +40,34 @@ io.sockets.on('connection', function (socket) {
                           "playerDefense": nPlayer.defense
                         });
     io.emit('status', {"playerStatus": turnStatus,
-                         "playerName": playerName,
-                         "numPlayer": nbOfPlayers }
+                       "playerName": playerName,
+                       "playerNum": nbOfPlayers }
                       );
    nbOfPlayers++;
   });
 
   socket.on('quitter',function(message) {
-    numPlayer = message["numPlayer"];
-    players.splice(numPlayer, 1);
+    playerNum = message["playerNum"];
+    players.splice(playerNum, 1);
     nbOfPlayers--;
     io.emit('offlinePlayer', message);
   });
 
   socket.on('playerTurn', function(data){
     cardDraw();
+    var num;
+    if(data["playerNum"] == nbOfPlayers-1){
+      num = 0;
+    }
+    else{
+      num = data["playerNum"]+1;
+    }
+    players[data["playerNum"]].status = 0;
+    players[num].status = 1;
+    io.emit('status', {"playerStatus": 1,
+                       "playerName": players[num].aliasName,
+                       "playerNum": num }
+                      );
   });
 
 });

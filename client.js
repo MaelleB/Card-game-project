@@ -24,8 +24,12 @@ function quitterPartie() {
   console.log("Dans quitterPartie");
   if (localPlayer > -1) {
     console.log("Suppression du joueur n."+localPlayer);
-    socket.emit("quitter", { "numPlayer": localPlayer} );
+    socket.emit("quitter", { "playerNum": localPlayer} );
   }
+}
+
+function drawCard(){
+  socket.emit('playerTurn', {"playerNum": localPlayer});
 }
 
 socket = io('http://localhost:8888');
@@ -55,19 +59,19 @@ socket.on("newPlayer", function(data) {
 });
 
 socket.on("offlinePlayer", function(data) {
-  var numPlayer = data['numPlayer'];
-  var offlinePlayer = players[numPlayer];
-  console.log("Du serveur offlinePlayer = "+offlinePlayer+" (joueur n."+numPlayer+")");
-  if (localPlayer == numPlayer){
+  var playerNum = data['playerNum'];
+  var offlinePlayer = players[playerNum];
+  console.log("Du serveur offlinePlayer = "+offlinePlayer+" (joueur n."+playerNum+")");
+  if (localPlayer == playerNum){
     localPlayer = -1;
   }
   else if (localPlayer > 0){
     localPlayer--;
   }
   console.log("localPlayer = "+localPlayer);
-  players.splice(numPlayer, 1);
+  players.splice(playerNum, 1);
   nbOfPlayers--;
-  for (var i=numPlayer; i < nbOfPlayers; i++){
+  for (var i=playerNum; i < nbOfPlayers; i++){
     document.getElementById("player"+i).innerHTML = players[i].aliasName;
   }
   document.getElementById("player"+i).innerHTML = "";
@@ -81,6 +85,9 @@ socket.on('status', function(data){
   console.log("En réception du statut de tour du joueur")
   if(data["playerStatus"] == 1){
     console.log("Tour du joueur "+data["playerName"]);
-    socket.emit('playerTurn', {"playerNum": data["numPlayer"]});
+    $("button[id=draw]").removeAttr('disabled');
+  }
+  else{
+    $("button[id=draw]").attr("disabled", "disabled");
   }
 });
