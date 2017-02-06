@@ -21,12 +21,14 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('rejoindre',function(message) {
-    var turnStatus = 0;
     playerName = message["playerName"];
     if(nbOfPlayers == 0){
-      turnStatus = 1;
+      nPlayer = new createPlayer(playerName, basicAttack, basicDefense, 1);
+      io.emit('status', {"playerStatus": nPlayer.status, "playerName": playerName});
     }
-    nPlayer = new createPlayer(playerName, basicAttack, basicDefense, turnStatus);
+    else{
+      nPlayer = new createPlayer(playerName, basicAttack, basicDefense, 0);
+    }
     players.push(nPlayer);
     io.emit('newPlayer', {"playerNum":nbOfPlayers,
                           "playerName":playerName,
@@ -34,7 +36,6 @@ io.sockets.on('connection', function (socket) {
                           "playerDefense": nPlayer.defense
                         });
     nbOfPlayers++;
-    io.emit('status', {"playerStatus": nPlayer.status, "playerName": playerName});
   });
 
   socket.on('quitter',function(message) {
