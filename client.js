@@ -73,8 +73,14 @@ socket.on("offlinePlayer", function(data) {
   document.getElementById("player"+i).innerHTML = "";
 });
 
+socket.on('cardDrawn', function(data){
+  document.getElementById("card_num").innerHTML = data["cardNum"];
+});
+
 socket.on('status', function(data){
+  console.log("En réception du statut de tour du joueur")
   if(data["playerStatus"] == 1){
     console.log("Tour du joueur "+data["playerName"]);
+    socket.emit('playerTurn', {"playerNum": data["numPlayer"]});
   }
 });
