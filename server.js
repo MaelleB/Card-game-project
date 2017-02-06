@@ -1,6 +1,5 @@
 var players = [];
 var nbOfPlayers = 0;
-var cards = [{'num':0}, {'num':1}, {'num':2}, {'num':3}, {'num':4}, {'num':5},];
 var currentPlayer = null, nPlayer = null;
 var basicAttack = 5, basicDefense = 5;
 

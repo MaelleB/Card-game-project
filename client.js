@@ -3,7 +3,8 @@ var nbOfPlayers = 0;
 var players = [];
 var localPlayer = -1;      // indice dans playersNames
 var nPlayer = null;
-var cards = [{'num':0}, {'num':1}, {'num':2}, {'num':3}, {'num':4}, {'num':5}];
+var cards = [{'num':0}, {'num':1}, {'num':2}, {'num':3}, {'num':4}, {'num':5}, {'num':6}, {'num':7}, {'num':8}, {'num':9}];
+var nbOfCards = 10;
 
 function rejoindrePartie() {
   if (localPlayer == -1) {
@@ -77,5 +78,11 @@ socket.on("offlinePlayer", function(data) {
 socket.on('status', function(data){
   if(data["playerStatus"] == 1){
     console.log("Tour du joueur "+data["playerName"]);
+    var cardNum = Math.floor(Math.random() * 10);
+    while(cardNum >= nbOfCards){
+      cardNum = Math.floor(Math.random() * 10);
+    }
+    console.log("Le joueur "+data["playerName"]+" a tiré la carte "+cards[cardNum].num);
+    cards.splice(cardNum, 1);
   }
 });
