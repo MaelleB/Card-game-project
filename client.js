@@ -3,7 +3,6 @@ var nbOfPlayers = 0;
 var players = [];
 var localPlayer = -1;      // indice dans playersNames
 var nPlayer = null;
-var cards = [{'num':0}, {'num':1}, {'num':2}, {'num':3}, {'num':4}, {'num':5}];
 
 function rejoindrePartie() {
   if (localPlayer == -1) {
