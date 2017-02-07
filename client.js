@@ -85,9 +85,13 @@ socket.on('status', function(data){
   console.log("En réception du statut de tour du joueur")
   if(data["playerStatus"] == 1){
     console.log("Tour du joueur "+data["playerName"]);
-    $("button[id=draw]").removeAttr('disabled');
+    if(data["playerNum"] == localPlayer){
+      $("button[id=draw]").removeAttr('disabled');
+    }
   }
   else{
-    $("button[id=draw]").attr("disabled", "disabled");
+    if(data["playerNum"] == localPlayer){
+      $("button[id=draw]").attr("disabled", "disabled");
+    }
   }
 });

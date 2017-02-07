@@ -68,6 +68,10 @@ io.sockets.on('connection', function (socket) {
                        "playerName": players[num].aliasName,
                        "playerNum": num }
                       );
+    io.emit('status', {"playerStatus": players[data["playerNum"]].status,
+                       "playerName": players[data["playerNum"]].aliasName,
+                       "playerNum": data["playerNum"] }
+                      );
   });
 
 });
