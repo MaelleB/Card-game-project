@@ -8,6 +8,7 @@ var app = require('http').createServer(function(req, res){});
 app.listen(8888);
 var io = require("socket.io").listen(app);
 
+// Player constructor
 function createPlayer(alias, att, def, s){
   this.aliasName = alias;
   this.attack = att;
@@ -15,20 +16,24 @@ function createPlayer(alias, att, def, s){
   this.status = s;
 }
 
+// Draws a random cards and sends cards data to the client
 function cardDraw(){
   var cardNum = Math.floor(Math.random() * 5);
   io.emit('cardDrawn', {"cardNum":cardNum});
 }
 
+// Sends data state to the client
 io.sockets.on('connection', function (socket) {
   socket.on('etat', function(message) {
     var etat = {"nbOfPlayers":nbOfPlayers, "players":players};
     io.emit('etat', etat);
   });
 
+  // Creates a player in the array and sends player's data to the client
   socket.on('rejoindre',function(message) {
     var turnStatus = 0;
     playerName = message["playerName"];
+    // If first player, activates the player's turn
     if(nbOfPlayers == 0){
       turnStatus = 1;
     }
@@ -46,6 +51,7 @@ io.sockets.on('connection', function (socket) {
    nbOfPlayers++;
   });
 
+  // Removes a player from the array
   socket.on('quitter',function(message) {
     playerNum = message["playerNum"];
     players.splice(playerNum, 1);
@@ -53,6 +59,7 @@ io.sockets.on('connection', function (socket) {
     io.emit('offlinePlayer', message);
   });
 
+  // Calls function tp draw card, activates next player's turn
   socket.on('playerTurn', function(data){
     cardDraw();
     var num;

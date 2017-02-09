@@ -1,9 +1,11 @@
 var socket;
 var nbOfPlayers = 0;
 var players = [];
-var localPlayer = -1;      // indice dans playersNames
+var localPlayer = -1;
 var nPlayer = null;
 
+
+// Function called by clicking button to join the game
 function rejoindrePartie() {
   if (localPlayer == -1) {
     playerName = document.getElementsByName('player')[0].value;
@@ -20,6 +22,7 @@ function rejoindrePartie() {
   }
 }
 
+// Function called by clicking button to log out
 function quitterPartie() {
   console.log("Dans quitterPartie");
   if (localPlayer > -1) {
@@ -28,18 +31,20 @@ function quitterPartie() {
   }
 }
 
+// Activates card drawing phase server-side
 function drawCard(){
   socket.emit('playerTurn', {"playerNum": localPlayer});
 }
 
 socket = io('http://localhost:8888');
-socket.emit("etat",{});  // Pour que le serveur renvoie les noms des joueurs déjà connectés
+socket.emit("etat",{});
 
+// Receives state from server and updates data
 socket.on("etat", function(data) {
   console.log("Dans la réception d'état");
   for (var m in data) {
     console.log(m+" : "+data[m]);
-    window[m] = data[m];  // MAGIQUE
+    window[m] = data[m];
     for (var i=0; i < players.length; i++) {
       console.log("player ="+players[i].aliasName);
       document.getElementById("player"+i).innerHTML = players[i].aliasName;
@@ -49,6 +54,8 @@ socket.on("etat", function(data) {
   }
 });
 
+// Adds a player in the game: adds the player's name in the players array
+// Shows the player's name, attack and defense
 socket.on("newPlayer", function(data) {
   console.log("Du serveur : nouveau joueur");
   players.push(data["playerName"]);
@@ -58,6 +65,8 @@ socket.on("newPlayer", function(data) {
   nbOfPlayers++;
 });
 
+// Removes a player from the game: removes the name, attack and defense, and
+// the name from the players array
 socket.on("offlinePlayer", function(data) {
   var playerNum = data['playerNum'];
   var offlinePlayer = players[playerNum];
@@ -77,10 +86,14 @@ socket.on("offlinePlayer", function(data) {
   document.getElementById("player"+i).innerHTML = "";
 });
 
+
+// Shows the card drawn by the active player
 socket.on('cardDrawn', function(data){
   document.getElementById("card_num").innerHTML = data["cardNum"];
 });
 
+// Receives player turn status. If it's the local player's turn, enables the
+// button to draw a card. Else, disables it.
 socket.on('status', function(data){
   console.log("En réception du statut de tour du joueur")
   if(data["playerStatus"] == 1){
