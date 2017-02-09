@@ -83,7 +83,7 @@ socket.on("offlinePlayer", function(data) {
   for (var i=playerNum; i < nbOfPlayers; i++){
     document.getElementById("player"+i).innerHTML = players[i].aliasName;
     document.getElementById("attack"+i).innerHTML = players[i].attack;
-    document.getElementsById("defense"+i).innerHTML = players[i].defense;
+    document.getElementById("defense"+i).innerHTML = players[i].defense;
   }
   document.getElementById("player"+i).innerHTML = "";
   document.getElementById("attack"+i).innerHTML = "";
