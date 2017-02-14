@@ -9,7 +9,7 @@ var nPlayer = null;
 function rejoindrePartie() {
   if (localPlayer == -1) {
     playerName = document.getElementsByName('player')[0].value;
-    if (nbOfPlayers < 4) {
+    if (nbOfPlayers < 5) {
       if (playerName != "") {
         console.log("Envoi de la connexion");
         socket.emit("rejoindre", { "playerName": playerName });
