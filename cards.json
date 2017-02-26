@@ -1,0 +1,36 @@
+{
+  "card1"{
+    "id": "storm",
+    "type": "eventCard",
+    "path": "Images/cards/storm.png",
+    "action": "decreaseDefenseAll(1)"
+  },
+
+  "card2"{
+    "id": "crystal_pool",
+    "type": "eventCard",
+    "path": "",
+    "action": "increaseDefenseAll(2)",
+  }
+
+  "card3"{
+    "id": "soul_eater",
+    "type": "wearable",
+    "path": "",
+    "action": "increaseAttack(6)"
+  }
+
+  "card4"{
+    "id": "iron_shield",
+    "type": "wearable",
+    "path": "",
+    "action": "increaseDefense(5)"
+  }
+
+  "card5"{
+    "id": "lifesaver_potion",
+    "type": "usable",
+    "path": "",
+    "action": "increaseDefenseTemp(4)"
+  }
+}
