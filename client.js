@@ -145,5 +145,6 @@ function drawCard(){
 
 //Shows the active player's drawn card
 socket.on("cardDrawn", function(card_data){
-  document.getElementById("card_num").innerHTML = card_data.cardNum;
+  if (card_data.path);
+    document.getElementById("card_num").innerHTML = '<img src="' + card_data.path + '" width="100" height="100" />';
 });

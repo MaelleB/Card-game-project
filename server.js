@@ -2,7 +2,6 @@ var players = [],
   nbOfPlayers = 0,
   BASIC_ATTACK = 5,
   BASIC_DEFENSE = 5;
-var cards = [{"num":0}, {"num":1}, {"num":2}, {"num":3}, {"num":4}, {"num":5}];
 
 //Setting the server and making it listen at port 8888
 var app = require("http").createServer(function(req, res){});
@@ -74,15 +73,35 @@ io.sockets.on("connection", function (socket) {
 
   //Drawing a random card and sending its data to the client
   function cardDraw(){
-    var cardNum = Math.floor(Math.random() * 5);
-    io.emit("cardDrawn", {"cardNum":cardNum});
+    //setting Mongodb client, and url of the database to interact with
+    var MongoClient = require("mongodb").MongoClient,
+    assert = require("assert"),
+    url = "mongodb://localhost:27017/CardGame";
+
+    /*
+      connecting to the CardGame database
+      getting the Cards collection length
+    */
+    MongoClient.connect(url, function(err, db){
+      assert.equal(null, err);
+
+      db.collection("Cards").find({}).toArray(function(err, result){
+        assert.equal(null, err);
+
+        if (result.length){
+          var cardNum = Math.floor(Math.random() * result.length);
+          var card = result[cardNum];
+          io.emit("cardDrawn", card);
+        }
+      });
+    });
   }
 
   //Calls function to draw card and activates next player's turn
   socket.on("playerTurn", function(player_data){
     cardDraw();
     var num;
-
+    
     if (player_data.playerNum == nbOfPlayers-1)
       num = 0;
     else
