@@ -8,7 +8,7 @@
 	{
 		"id": "crystal_pool",
 		"type": "eventCard",
-		"path": "images/cards/timberwolf.png",
+		"path": "images/cards/crystal_pool.png",
 		"action": "increaseDefenseAll(2)"
 	},
 	{
