@@ -143,8 +143,40 @@ function drawCard(){
   socket.emit("playerTurn", {"playerNum": localPlayer});
 }
 
+function decreaseDefenseAll(value){
+  var player;
+  for (let i=0; i<players.length-1; i++){
+    player = document.getElementById("defense"+i);
+    if (player.innerHTML)
+      player.innerHTML = parseInt(player.innerHTML) - parseInt(value);;
+  }
+  socket.emit("modifyDefenseAll", {"new_defense": value});
+}
+
+function increaseDefenseAll(value){
+  var player;
+  for (let i=0; i<players.length; i++){
+    player = document.getElementById("defense"+i);
+    if (player.innerHTML)
+      player.innerHTML = parseInt(player.innerHTML) + parseInt(value);
+  }
+}
+
+//Function that executes a function whose name is passed as a string parameter
+function executeStringFunction(func_string){
+  var function_name = func_string.split("(")[0];
+  var arguments_string = func_string.split("(")[1];
+  var arguments_array = arguments_string.split(",");
+  var last_element = arguments_array[arguments_array.length-1].split(")")[0];
+  arguments_array.pop();
+  arguments_array.push(last_element.trim());
+  //console.log("function_name: " + function_name);
+  //console.log("function name in the window: " + window[function_name]);
+  window[function_name].apply(this, arguments_array);
+}
+
 //Shows the active player's drawn card
 socket.on("cardDrawn", function(card_data){
-  if (card_data.path);
     document.getElementById("card_num").innerHTML = '<img src="' + card_data.path + '" width="100" height="100" />';
+    executeStringFunction(card_data.action);
 });

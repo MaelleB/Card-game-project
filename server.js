@@ -89,8 +89,8 @@ io.sockets.on("connection", function (socket) {
         assert.equal(null, err);
 
         if (result.length){
-          var cardNum = Math.floor(Math.random() * result.length);
-          var card = result[cardNum];
+          //var cardNum = Math.floor(Math.random() * result.length);
+          var card = result[0];
           io.emit("cardDrawn", card);
         }
       });
@@ -101,7 +101,7 @@ io.sockets.on("connection", function (socket) {
   socket.on("playerTurn", function(player_data){
     cardDraw();
     var num;
-    
+
     if (player_data.playerNum == nbOfPlayers-1)
       num = 0;
     else
@@ -121,6 +121,15 @@ io.sockets.on("connection", function (socket) {
        "playerName": players[player_data.playerNum].aliasName,
        "playerNum": player_data.playerNum
       });
+  });
+
+  //Callback function upon calling decreaseDefenseAll
+  socket.on("modifyDefenseAll", function(defense_data){
+    console.log("we're here");
+    for (var i=0; i<players.length; i++){
+      players[i].defense = defense_data["new_defense"];
+      console.log("player " + (i+1) + ": " + players[i].defense);
+    }
   });
 
 });
