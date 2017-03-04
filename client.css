@@ -1,0 +1,17 @@
+
+#gameWindow{
+  height:650px;
+  width:1050px;
+  margin-left:17%;
+  background-image:url(images/light_bulbs2.jpg);
+  background-size:100% 100%;
+}
+
+  #sidebar{
+    height:647px;
+    margin-left:85%;
+    padding-left:1.5%;
+    padding-right:1.5%;
+    padding-top: 3px;
+    background-color: rgb(250, 240, 197);
+  }
