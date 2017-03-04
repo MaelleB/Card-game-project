@@ -1,3 +1,46 @@
+ul.topnav{
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-image: url(images/background-texture2.png);
+}
+
+ul.topnav li {
+  float: left;
+}
+
+ul.topnav li a {
+  display: inline-block;
+  color: #FFDAB9;
+  text-align: center;
+  padding: 20px 26px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#menu{
+  padding: 0;
+  margin: 0;
+  border-style: solid;
+  border-color: black;
+  border-width:3px;
+}
+
+#general{
+  padding-top: 10px;
+  padding-left : 10px;
+  height: 900px;
+  background-color:rgba(0, 0, 0, 0.4);
+}
+
+body{
+  color: #FFDAB9;
+  background-image: url(images/greenforest.png);
+  background-attachment: fixed;
+  margin: 0;
+  padding:0;
+}
 
 #gameWindow{
   height:650px;
@@ -5,6 +48,10 @@
   margin-left:17%;
   background-image:url(images/light_bulbs2.jpg);
   background-size:100% 100%;
+  border-style: solid;
+  border-color: black;
+  border-radius: 20px;
+  border-width:3px;
 }
 
   #sidebar{
@@ -13,5 +60,17 @@
     padding-left:1.5%;
     padding-right:1.5%;
     padding-top: 3px;
-    background-color: rgb(250, 240, 197);
+    border-style: solid;
+    border-color: black;
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 18px;
+    border-left-width: 2px;
+    border-right-width:0px;
+    border-top-width: 0px;
+    border-bottom-width: 0px;
+    background-image: url(images/background-texture2.png);
+  }
+
+  li{
+    list-style-type: none;
   }

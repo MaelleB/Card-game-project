@@ -11,32 +11,20 @@
     <LINK href="client.css" rel="stylesheet" type="text/css">
   </head>
   <body>
-    <div>
+    <div id="menu">
+      <ul class="topnav" >
+        <li><a href="client.html">Jeu</a></li>
+        <li><a href="rules.html">Règles</a></li>
+        <li><a href="credits.html">Crédits</a></li>
+      </ul>
+    </div>
+    <div id="general">
       Rejoindre la partie <input type="text" name="player"> </input> <button id ="join" onClick="rejoindrePartie()"> Hello </button>
       <br/>
       Quitter les vivants <button onClick="quitterPartie()"> Bye Bye </button><br/><br/>
-    </div>
+
       <div id="gameWindow">
-        <style>
-        #gameWindow{
-          height:650px;
-          width:1050px;
-          margin-left:17%;
-          background-image:url(images/light_bulbs2.jpg);
-          background-size:100% 100%;
-        }
-        </style>
         <aside id="sidebar">
-          <style>
-          #sidebar{
-            height:647px;
-            margin-left:85%;
-            padding-left:1.5%;
-            padding-right:1.5%;
-            padding-top: 3px;
-            background-color: rgb(250, 240, 197);
-          }
-          </style>
           <p>Joueur 1 : <label id="player0"> </label></p>
           <p><font size="1">Attaque : <label id="attack0"> </font> </label> </p>
           <p><font size="1">Défense : <label id="defense0"> </label> </font> </p>
@@ -65,5 +53,6 @@
         <font size="7"><p id="card_num"></p></font>
         <br/>
     </div>
+      </div>
   </body>
 </html>
