@@ -177,6 +177,10 @@ function executeStringFunction(func_string){
 
 //Shows the active player's drawn card
 socket.on("cardDrawn", function(card_data){
-    document.getElementById("card_num").innerHTML = '<img src="' + card_data.path + '" width="100" height="100" />';
+    //document.getElementById("card_num").innerHTML = '<img src="' + card_data.path + '" width="100" height="100" />';
+    d3.select("#gameWindow").append("img")
+                            .attr("src", card_data.path)
+                            .attr("width", 200)
+                            .attr("height", 310);
     executeStringFunction(card_data.action);
 });
