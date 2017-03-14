@@ -90,7 +90,8 @@ io.sockets.on("connection", function (socket) {
 
         if (result.length){
           //var cardNum = Math.floor(Math.random() * result.length);
-          var card = result[0];
+          var card = result[1];
+          console.log("carte tirée: " + card.id);
           io.emit("cardDrawn", card);
         }
       });
@@ -123,12 +124,19 @@ io.sockets.on("connection", function (socket) {
       });
   });
 
-  //Callback function upon calling decreaseDefenseAll
+  //Callback function upon calling decreaseDefenseAll()/increaseDefenseAll() functions
   socket.on("modifyDefenseAll", function(defense_data){
-    console.log("we're here");
     for (var i=0; i<players.length; i++){
-      players[i].defense = defense_data["new_defense"];
-      console.log("player " + (i+1) + ": " + players[i].defense);
+      players[i].defense = defense_data["new_defense"][i];
+      //console.log("player " + (i+1) + " defense: " + players[i].defense);
+    }
+  });
+
+  //Callback function upon calling decreaseAttackAll()/increaseAttackAll() functions
+  socket.on("modifyAttackAll", function(attack_data){
+    for (var i=0; i<players.length; i++){
+      players[i].attack = attack_data["new_attack"][i];
+      console.log("player " + (i+1) + " attack: " + players[i].attack);
     }
   });
 

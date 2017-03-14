@@ -143,23 +143,86 @@ function drawCard(){
   socket.emit("playerTurn", {"playerNum": localPlayer});
 }
 
-function decreaseDefenseAll(value){
-  var player;
-  for (let i=0; i<players.length-1; i++){
-    player = document.getElementById("defense"+i);
-    if (player.innerHTML)
-      player.innerHTML = parseInt(player.innerHTML) - parseInt(value);;
+/*
+  - Increases attack of all players (client-side)
+  - Displays the changes in the html page
+  - Emits the changes to the server to update them on the server-side
+*/
+function increaseAttackAll(value){
+  var player, initialAttackValue, newAttackValue, newAttackValues = [];
+
+  for (let i=0; i<players.length; i++){
+    player = document.getElementById("attack"+i);
+    newAttackValue = initialAttackValue = parseInt(player.innerHTML);
+
+    if (!(isNaN(initialAttackValue)))
+      player.innerHTML = newAttackValue = initialAttackValue + parseInt(value);
+
+    newAttackValues.push(newAttackValue);
   }
-  socket.emit("modifyDefenseAll", {"new_defense": value});
+  socket.emit("modifyAttackAll", {"new_attack": newAttackValues});
 }
 
+/*
+  - Decreases attack of all players (client-side)
+  - Displays the changes in the html page
+  - Emits the changes to the server to update them on the server-side
+*/
+function decreaseAttackAll(value){
+  var player, initialAttackValue, newAttackValue, newAttackValues = [];
+
+  for (let i=0; i<players.length; i++){
+    player = document.getElementById("attack"+i);
+    newAttackValue = initialAttackValue = parseInt(player.innerHTML);
+
+    if (!isNaN(initialAttackValue) && initialAttackValue>0)
+      player.innerHTML = newAttackValue = initialAttackValue - parseInt(value);
+
+    newAttackValues.push(newAttackValue);
+  }
+  socket.emit("modifyAttackAll", {"new_attack": newAttackValues});
+}
+
+/*
+  - Increases defense of all players (client-side)
+  - Displays the changes in the html page
+  - Emits the changes to the server to update them on the server-side
+*/
 function increaseDefenseAll(value){
-  var player;
+  var player, initialDefenseValue, newDefenseValue, newDefenseValues = [];
+
   for (let i=0; i<players.length; i++){
     player = document.getElementById("defense"+i);
-    if (player.innerHTML)
-      player.innerHTML = parseInt(player.innerHTML) + parseInt(value);
+    newDefenseValue = initialDefenseValue = parseInt(player.innerHTML);
+
+    if (!(isNaN(initialDefenseValue)))
+      player.innerHTML = newDefenseValue = initialDefenseValue + parseInt(value);
+
+    newDefenseValues.push(newDefenseValue);
   }
+  socket.emit("modifyDefenseAll", {"new_defense": newDefenseValues});
+}
+
+/*
+  - Decreases defense of all players (client-side)
+  - Displays the changes in the html page
+  - Emits the changes to the server to update them on the server-side
+*/
+function decreaseDefenseAll(value){
+  var player, initialDefenseValue, newDefenseValue, newDefenseValues = [];
+
+  for (let i=0; i<players.length; i++){
+    player = document.getElementById("defense"+i);
+    newDefenseValue = initialDefenseValue = parseInt(player.innerHTML);
+
+    //console.log("decreaseDefenseAll/condition: " + !isNaN(initialDefenseValue));
+
+    if (!isNaN(initialDefenseValue) && initialDefenseValue>0)
+      player.innerHTML = newDefenseValue = initialDefenseValue - parseInt(value);
+
+    newDefenseValues.push(newDefenseValue);
+  }
+  socket.emit("modifyDefenseAll", {"new_defense": newDefenseValues});
 }
 
 //Function that executes a function whose name is passed as a string parameter
@@ -170,8 +233,6 @@ function executeStringFunction(func_string){
   var last_element = arguments_array[arguments_array.length-1].split(")")[0];
   arguments_array.pop();
   arguments_array.push(last_element.trim());
-  //console.log("function_name: " + function_name);
-  //console.log("function name in the window: " + window[function_name]);
   window[function_name].apply(this, arguments_array);
 }
 
