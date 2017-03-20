@@ -45,7 +45,7 @@ body{
 #gameWindow{
   height:650px;
   width:1050px;
-  margin-left:17%;
+  margin: auto;
   background-image:url(images/light_bulbs2.jpg);
   background-size:100% 100%;
   border-style: solid;
