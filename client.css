@@ -56,7 +56,7 @@ body{
 
 #svgWin{
   position: relative;
-  z-index:2;
+  float:left;
 }
 
   #sidebar{
