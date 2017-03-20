@@ -4,6 +4,7 @@ var socket,
   localPlayer = -1,
   MAX_PLAYERS_NB = 5;
 
+
 //Client connects to the server and sends state data
 socket = io("http://localhost:8888");
 socket.emit("etat", {});
@@ -239,9 +240,18 @@ function executeStringFunction(func_string){
 //Shows the active player's drawn card
 socket.on("cardDrawn", function(card_data){
     //document.getElementById("card_num").innerHTML = '<img src="' + card_data.path + '" width="100" height="100" />';
-    d3.select("#gameWindow").append("img")
-                            .attr("src", card_data.path)
-                            .attr("width", 200)
-                            .attr("height", 310);
+    var canvas = d3.select("#svgWin")
+                .append("svg")
+                .attr("width", 500)
+                .attr("height", 500);
+
+    canvas.append("svg:image")
+          .attr('x', 50)
+          .attr('y', 50)
+          .attr('width', '200')
+          .attr('height', '310')
+          .attr('xlink:href', card_data.path );
+
+
     executeStringFunction(card_data.action);
 });

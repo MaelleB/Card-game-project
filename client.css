@@ -54,6 +54,11 @@ body{
   border-width:3px;
 }
 
+#svgWin{
+  position: relative;
+  z-index:2;
+}
+
   #sidebar{
     height:647px;
     margin-left:85%;
