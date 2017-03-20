@@ -242,12 +242,12 @@ socket.on("cardDrawn", function(card_data){
     //document.getElementById("card_num").innerHTML = '<img src="' + card_data.path + '" width="100" height="100" />';
     var canvas = d3.select("#svgWin")
                 .append("svg")
-                .attr("width", 500)
-                .attr("height", 500);
+                .attr("width", 900)
+                .attr("height", 650);
 
     canvas.append("svg:image")
-          .attr('x', 50)
-          .attr('y', 50)
+          .attr('x', 390)
+          .attr('y', 170)
           .attr('width', '200')
           .attr('height', '310')
           .attr('xlink:href', card_data.path );
