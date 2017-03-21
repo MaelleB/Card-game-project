@@ -12,21 +12,33 @@
 		"action": "increaseDefenseAll(2)"
 	},
 	{
-		"id": "soul_eater",
+		"id": "bone_crusher",
 		"type": "wearable",
-		"path": "",
-		"action": "increaseAttack(6)"
+		"path": "images/cards/bonecrusher.png",
+		"action": "increaseAttack(5)"
 	},
 	{
-		"id": "iron_shield",
+		"id": "flaming_crusader",
 		"type": "wearable",
-		"path": "",
-		"action": "increaseDefense(5)"
+		"path": "images/cards/flaming_crusader.png",
+		"action": "increaseAttack(10)"
 	},
 	{
-		"id": "lifesaver_potion",
+		"id": "defense_potion1",
 		"type": "usable",
-		"path": "",
+		"path": "images/cards/defense_potion1.png",
 		"action": "increaseDefenseTemp(4)"
+	},
+	{
+		"id": "defense_potion2",
+		"type": "usable",
+		"path": "images/cards/defense_potion2.png",
+		"action": "increaseDefenseTemp(3)"
+	},
+	{
+		"id": "defense_potion3",
+		"type": "usable",
+		"path": "images/cards/defense_potion3.png",
+		"action": "increaseDefenseTemp(2)"
 	}
 ]
