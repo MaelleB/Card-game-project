@@ -1,8 +1,6 @@
 var socket,
-  nbOfPlayers = 0,
-  players = [],
-  localPlayer = -1,
-  MAX_PLAYERS_NB = 5;
+  nbOfPlayers = 0, players = [], localPlayer = -1,
+  MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and the array of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
 
 //Client connects to the server and sends state data
@@ -46,6 +44,7 @@ function rejoindrePartie() {
         localPlayer = nbOfPlayers;
 
         $("button[id=join]").attr("disabled", "disabled");
+        $("button[id=quit]").removeAttr("disabled");
         $("input[name=player]").attr("disabled", "disabled");
         $("input[name=player]").val("");
 
@@ -104,6 +103,8 @@ function quitterPartie() {
 
     $("button[id=join]").removeAttr("disabled");
     $("input[name=player]").removeAttr("disabled");
+    $("button[id=quit]").attr("disabled", "disabled");
+    $("button[id=draw]").attr("disabled", "disabled");
 
     socket.emit("quitter", {"playerNum": localPlayer});
   }
@@ -133,7 +134,7 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
     document.getElementById("attack"+i).innerHTML = offlinePlayer_data.players[i].attack;
     document.getElementById("defense"+i).innerHTML = offlinePlayer_data.players[i].defense;
   }
-  document.getElementById("player"+i).innerHTML = "";
+  document.getElementById("player"+i).innerHTML = "Joueur " + parseInt(nbOfPlayers + 1) + " : ";
   document.getElementById("attack"+i).innerHTML = "";
   document.getElementById("defense"+i).innerHTML = "";
 });
@@ -251,7 +252,6 @@ socket.on("cardDrawn", function(card_data){
           .attr('width', '200')
           .attr('height', '310')
           .attr('xlink:href', card_data.path );
-
 
     executeStringFunction(card_data.action);
 });

@@ -1,7 +1,5 @@
-var players = [],
-  nbOfPlayers = 0,
-  BASIC_ATTACK = 5,
-  BASIC_DEFENSE = 5;
+var players = [], nbOfPlayers = 0,
+  BASIC_ATTACK = 5, BASIC_DEFENSE = 5;
 
 //Setting the server and making it listen at port 8888
 var app = require("http").createServer(function(req, res){});
@@ -18,11 +16,12 @@ io.sockets.on("connection", function (socket) {
   });
 
   //Player object constructor
-  function Player(alias, att, def, s){
+  function Player(alias, att, def, s, h){
     this.aliasName = alias;
     this.attack = att;
     this.defense = def;
     this.status = s;
+    this.hand = h;
   }
 
   /*
@@ -38,7 +37,7 @@ io.sockets.on("connection", function (socket) {
     if(!nbOfPlayers)
       turnStatus = 1;
 
-    var nPlayer = new Player(playerName, BASIC_ATTACK, BASIC_DEFENSE, turnStatus);
+    var nPlayer = new Player(playerName, BASIC_ATTACK, BASIC_DEFENSE, turnStatus, []);
     players.push(nPlayer);
     io.emit("newPlayer",
       {

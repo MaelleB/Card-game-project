@@ -21,28 +21,28 @@
     <div id="general">
       Rejoindre la partie <input type="text" name="player"> </input> <button id ="join" onClick="rejoindrePartie()"> Hello </button>
       <br/>
-      Quitter les vivants <button onClick="quitterPartie()"> Bye Bye </button><br/><br/>
+      Quitter les vivants <button id="quit" onClick="quitterPartie()" disabled> Bye Bye </button><br/><br/>
 
       <div id="gameWindow">
         <div id="svgWin"></div>
         <aside id="sidebar">
-          <p>Joueur 1 : <label id="player0"> </label></p>
+          <p id="player0">Joueur 1 : </p>
           <p><font size="1">Attaque : <label id="attack0"> </font> </label> </p>
           <p><font size="1">Défense : <label id="defense0"> </label> </font> </p>
 
-          <p>Joueur 2 : <label id="player1"> </label> </p>
+          <p id="player1">Joueur 2 : </p>
           <p><font size="1">Attaque : <label id="attack1"> </label> </font> </p>
           <p><font size="1">Défense : <label id="defense1"> </label> </font> </p>
 
-          <p>Joueur 3 : <label id="player2"> </label> </p>
+          <p id="player2">Joueur 3 : </p>
           <p><font size="1">Attaque : <label id="attack2"> </label> </font> </p>
           <p><font size="1">Défense : <label id="defense2"> </label> </font> </p>
 
-          <p>Joueur 4 : <label id="player3"> </label> </td>
+          <p id="player3">Joueur 4 : </p>
           <p> <font size="1">Attaque : <label id="attack3"> </label> </font> </p>
           <p> <font size="1">Défense : <label id="defense3"> </label> </font> </p>
 
-          <p>Joueur 5 : <label id="player4"> </label></p>
+          <p id="player4">Joueur 5 : </p>
           <p><font size="1">Attaque : <label id="attack4"> </font> </label> </p>
           <p><font size="1">Défense : <label id="defense4"> </label> </font> </p>
 
@@ -53,7 +53,7 @@
         <p>Carte tirée : </p>
         <font size="7"><p id="card_num"></p></font>
         <br/>
-    </div>
+        </div>
       </div>
   </body>
 </html>
