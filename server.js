@@ -88,8 +88,9 @@ io.sockets.on("connection", function (socket) {
         assert.equal(null, err);
 
         if (result.length){
-          //var cardNum = Math.floor(Math.random() * result.length);
-          var card = result[1];
+          var random_value = Math.floor(Math.random() * result.length),
+            card = result[random_value];
+          //var card = result[1];
           console.log("carte tirée: " + card.id);
           io.emit("cardDrawn", card);
         }

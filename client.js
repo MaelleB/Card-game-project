@@ -1,5 +1,6 @@
 var socket,
-  nbOfPlayers = 0, players = [], localPlayer = -1,
+  nbOfPlayers = 0, players = [],
+  localPlayer = {"playerNum": -1},
   MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and the array of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
 //Client connects to the server and sends state data
@@ -57,14 +58,14 @@ socket.on("etat", function(state_data) {
 
 //Joining the game by clicking on a button
 function rejoindrePartie() {
-  if (localPlayer == -1) {
-    playerName = document.getElementsByName("player")[0].value;
+  if (localPlayer.playerNum == -1) {
+    var playerName = document.getElementsByName("player")[0].value;
     console.log("players: " + players);
 
     if (nbOfPlayers < MAX_PLAYERS_NB) {
       if (playerName != "" && !players.includes(playerName)) {
         console.log("Envoi de la connexion");
-        localPlayer = nbOfPlayers;
+        localPlayer.playerNum = nbOfPlayers;
 
         $("button[id=join]").attr("disabled", "disabled");
         $("button[id=quit]").removeAttr("disabled");
@@ -90,6 +91,9 @@ socket.on("newPlayer", function(player_data) {
   console.log("Du serveur : nouveau joueur");
 
   players.push(player_data.playerName);
+  localPlayer.aliasName = player_data.playerName;
+  localPlayer.attack = player_data.playerAttack;
+  localPlayer.defense = player_data.playerDefense;
   document.getElementById("player"+nbOfPlayers).innerHTML = player_data.playerName;
   document.getElementById("attack"+nbOfPlayers).innerHTML = player_data.playerAttack;
   document.getElementById("defense"+nbOfPlayers).innerHTML = player_data.playerDefense;
@@ -105,16 +109,17 @@ socket.on("newPlayer", function(player_data) {
 */
 socket.on("status", function(status_data){
   console.log("En réception du statut de tour du joueur")
+  localPlayer.status = status_data.playerStatus;
 
   if(status_data.playerStatus == 1){
     console.log("Tour du joueur " + status_data.playerName);
 
-    if(status_data.playerNum == localPlayer)
+    if(status_data.playerNum == localPlayer.playerNum)
       d3.select('#cardsPile')
         .on('click', drawCard);
   }
   else{
-    if(status_data.playerNum == localPlayer)
+    if(status_data.playerNum == localPlayer.playerNum)
       d3.select('#cardsPile')
         .on('click', null);
   }
@@ -124,15 +129,15 @@ socket.on("status", function(status_data){
 function quitterPartie() {
   console.log("Dans quitterPartie");
 
-  if (localPlayer > -1) {
-    console.log("Suppression du joueur n." + localPlayer);
+  if (localPlayer.playerNum > -1) {
+    console.log("Suppression du joueur n." + localPlayer.playerNum);
 
     $("button[id=join]").removeAttr("disabled");
     $("input[name=player]").removeAttr("disabled");
     $("button[id=quit]").attr("disabled", "disabled");
     $("button[id=draw]").attr("disabled", "disabled");
 
-    socket.emit("quitter", {"playerNum": localPlayer});
+    socket.emit("quitter", {"playerNum": localPlayer.playerNum});
   }
 }
 
@@ -147,10 +152,12 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
 
   console.log("Du serveur offlinePlayer = " + offlinePlayer + " (joueur n." + playerNum + ")");
 
-  if (localPlayer == playerNum)
-    localPlayer = -1;
-  else if (localPlayer > 0)
-    localPlayer--;
+  if (localPlayer.playerNum == playerNum)
+    localPlayer = {"playerNum": -1};
+  else if (localPlayer.playerNum > 0){
+    let temp = localPlayer.playerNum;
+    localPlayer = {"playerNum": temp-1};
+  }
 
   players.splice(playerNum, 1);
   nbOfPlayers--;
@@ -168,7 +175,7 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
 
 //Activates the server-side card drawing phase
 function drawCard(){
-  socket.emit("playerTurn", {"playerNum": localPlayer});
+  socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 }
 
 /*
@@ -267,6 +274,11 @@ function executeStringFunction(func_string){
 //Shows the active player's drawn card
 socket.on("cardDrawn", function(card_data){
     d3.select("#drawnCard").attr('xlink:href', card_data.path );
-
-    executeStringFunction(card_data.action);
+    if (card_data.type == "event")
+      executeStringFunction(card_data.action);
+    else {
+      var take_button = document.getElementById("take"),
+        discard_button = document.getElementById("discard"),
+        exchange_button = document.getElementById("exchange");
+    }
 });
