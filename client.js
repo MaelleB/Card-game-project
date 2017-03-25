@@ -2,10 +2,25 @@ var socket,
   nbOfPlayers = 0, players = [], localPlayer = -1,
   MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and the array of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
-
 //Client connects to the server and sends state data
 socket = io("http://localhost:8888");
 socket.emit("etat", {});
+
+window.onload = function(){
+  var svg = d3.select('#svgWin')
+              .append('svg')
+              .attr('width', 900)
+              .attr('height', 650),
+
+      drawn_card = svg.append('svg:image')
+                .attr('id', 'drawnCard')
+                .attr('x', 390)
+                .attr('y', 170)
+                .attr('width', '200')
+                .attr('height', '310');
+
+
+}
 
 //Client receives state data from server and updates client-side data
 socket.on("etat", function(state_data) {
@@ -240,18 +255,7 @@ function executeStringFunction(func_string){
 
 //Shows the active player's drawn card
 socket.on("cardDrawn", function(card_data){
-    //document.getElementById("card_num").innerHTML = '<img src="' + card_data.path + '" width="100" height="100" />';
-    var canvas = d3.select("#svgWin")
-                .append("svg")
-                .attr("width", 900)
-                .attr("height", 650);
-
-    canvas.append("svg:image")
-          .attr('x', 390)
-          .attr('y', 170)
-          .attr('width', '200')
-          .attr('height', '310')
-          .attr('xlink:href', card_data.path );
+    d3.select("#drawnCard").attr('xlink:href', card_data.path );
 
     executeStringFunction(card_data.action);
 });
