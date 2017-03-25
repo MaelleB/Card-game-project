@@ -19,6 +19,14 @@ window.onload = function(){
                 .attr('width', '200')
                 .attr('height', '310');
 
+  svg.append('svg:image')
+     .attr('id', 'cardsPile')
+     .attr('x', 10)
+     .attr('y', 300)
+     .attr('width', 150)
+     .attr('height', 232)
+     .attr('xlink:href', 'images/cardback.png')
+     .on('click', null);
 
 }
 
@@ -91,7 +99,8 @@ socket.on("newPlayer", function(player_data) {
 
 /*
   Receiving the player's turn status:
-  - If it's the local player's turn, enables the button to draw a card
+  - If it's the local player's turn, enables the onClick event on the pile to
+  draw a card
   - Else, disables it
 */
 socket.on("status", function(status_data){
@@ -101,11 +110,13 @@ socket.on("status", function(status_data){
     console.log("Tour du joueur " + status_data.playerName);
 
     if(status_data.playerNum == localPlayer)
-      $("button[id=draw]").removeAttr("disabled");
+      d3.select('#cardsPile')
+        .on('click', drawCard);
   }
   else{
     if(status_data.playerNum == localPlayer)
-      $("button[id=draw]").attr("disabled", "disabled");
+      d3.select('#cardsPile')
+        .on('click', null);
   }
 });
 
