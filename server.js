@@ -71,7 +71,7 @@ io.sockets.on("connection", function (socket) {
   });
 
   //Drawing a random card and sending its data to the client
-  function drawCard(){
+  function drawCardServer(){
     //setting Mongodb client, and url of the database to interact with
     var MongoClient = require("mongodb").MongoClient,
     assert = require("assert"),
@@ -100,7 +100,7 @@ io.sockets.on("connection", function (socket) {
 
   //Calls function to draw card
   socket.on("drawCard", function(){
-    drawCard();
+    drawCardServer();
   });
 
   //Calls function to draw card and activates next player's turn
