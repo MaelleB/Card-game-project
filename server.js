@@ -71,7 +71,7 @@ io.sockets.on("connection", function (socket) {
   });
 
   //Drawing a random card and sending its data to the client
-  function cardDraw(){
+  function drawCard(){
     //setting Mongodb client, and url of the database to interact with
     var MongoClient = require("mongodb").MongoClient,
     assert = require("assert"),
@@ -92,15 +92,19 @@ io.sockets.on("connection", function (socket) {
             card = result[random_value];
           //var card = result[1];
           console.log("carte tirée: " + card.id);
-          io.emit("cardDrawn", card);
+          io.emit("drawnCard", card);
         }
       });
     });
   }
 
+  //Calls function to draw card
+  socket.on("drawCard", function(){
+    drawCard();
+  });
+
   //Calls function to draw card and activates next player's turn
   socket.on("playerTurn", function(player_data){
-    cardDraw();
     var num;
 
     if (player_data.playerNum == nbOfPlayers-1)

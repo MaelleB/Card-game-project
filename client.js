@@ -71,6 +71,7 @@ function rejoindrePartie() {
         $("button[id=quit]").removeAttr("disabled");
         $("input[name=player]").attr("disabled", "disabled");
         $("input[name=player]").val("");
+        $("button[id=hand]").removeAttr("disabled");
 
         socket.emit("rejoindre", {"playerName": playerName});
       }
@@ -94,6 +95,13 @@ socket.on("newPlayer", function(player_data) {
   localPlayer.aliasName = player_data.playerName;
   localPlayer.attack = player_data.playerAttack;
   localPlayer.defense = player_data.playerDefense;
+
+  /*
+    the first element in the hand array is the array of equippable Cards which is initially empty
+    the hand array is never empty, it is initialised with an empty array of equippable cards and hence has an initial
+    length of 1
+  */
+  localPlayer.hand = [[]];
   document.getElementById("player"+nbOfPlayers).innerHTML = player_data.playerName;
   document.getElementById("attack"+nbOfPlayers).innerHTML = player_data.playerAttack;
   document.getElementById("defense"+nbOfPlayers).innerHTML = player_data.playerDefense;
@@ -172,10 +180,31 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
   document.getElementById("defense"+i).innerHTML = "";
 });
 
-
-//Activates the server-side card drawing phase
+//Activates the server-side card drawing phase when the card stack is clicked
 function drawCard(){
-  socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+  socket.emit("drawCard");
+}
+
+/*
+- Adds the card to the hand when the take button is clicked
+- Discards the card from the game board
+- Activates the next player's turn
+*/
+function takeCard(card){
+  if (localPlayer.hand.length<MAX_HAND_CARDS){
+    localPlayer.hand.push(card);
+    console.log("the localplayer's hand's length is now: " + localPlayer.hand.length);
+    d3.select("#drawnCard").attr('xlink:href', ""); //discarding the card from the game board once it is taken
+    /*
+      ToDo:
+      adding the card to the hand of the corresponding player on the server-side
+    */
+    document.getElementById("take").style.visibility = "hidden";
+    $("button[id=take]").attr("disabled", "disabled");
+    //Emits the signal to activate the next player's turn
+    socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+  }
+  else console.log("Vous avez déjà atteint le maximum de cartes possible dans votre main");
 }
 
 /*
@@ -272,13 +301,20 @@ function executeStringFunction(func_string){
 }
 
 //Shows the active player's drawn card
-socket.on("cardDrawn", function(card_data){
-    d3.select("#drawnCard").attr('xlink:href', card_data.path );
+socket.on("drawnCard", function(card_data){
+    d3.select("#drawnCard").attr('xlink:href', card_data.path);
+
     if (card_data.type == "event")
-      executeStringFunction(card_data.action);
+      executeStringFunction(card_data.action); //we directly execute the action if the card is an event
     else {
-      var take_button = document.getElementById("take"),
-        discard_button = document.getElementById("discard"),
-        exchange_button = document.getElementById("exchange");
+      var take_button = document.getElementById("take");
+
+        take_button.addEventListener("click", function(){
+          takeCard(card_data);
+        });
+
+      if (localPlayer.hand.length < MAX_HAND_CARDS)
+        take_button.style.visibility = "visible";
+        $(take_button).removeAttr("disabled");
     }
 });
