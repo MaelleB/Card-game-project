@@ -4,48 +4,48 @@
 		"type": "event",
 		"category": "",
 		"path": "images/cards/storm.png",
-		"action": "modify(1, 1, 0, -1)"
+		"action": "modifyAll(0, -1)"
 	},
 	{
 		"id": "crystal_pool",
 		"type": "event",
 		"category": "",
 		"path": "images/cards/crystal_pool.png",
-		"action": "modify(1, 1, 0, 2)"
+		"action": "modifyAll(1, 2)"
 	},
 	{
 		"id": "bone_crusher",
 		"type": "wearable",
 		"category": "weapon",
 		"path": "images/cards/bonecrusher.png",
-		"action": "modify(0, 0, 0, 5)"
+		"action": "modify(1, 5)"
 	},
 	{
 		"id": "flaming_crusader",
 		"type": "wearable",
 		"category": "weapon",
 		"path": "images/cards/flaming_crusader.png",
-		"action": "modify(0, 0, 0, 10)"
+		"action": "modify(1, 10)"
 	},
 	{
 		"id": "strong_potion",
 		"type": "usable",
 		"category": "potion",
 		"path": "images/cards/defense_potion1.png",
-		"action": "modify(1, 0, 1, 4)"
+		"action": "modify(0, 4)"
 	},
 	{
 		"id": "normal_potion",
 		"type": "usable",
 		"category": "potion",
 		"path": "images/cards/defense_potion2.png",
-		"action": "modify(1, 0, 1, 3)"
+		"action": "modify(0, 3)"
 	},
 	{
 		"id": "light_potion",
 		"type": "usable",
 		"category": "potion",
 		"path": "images/cards/defense_potion3.png",
-		"action": "modify(1, 0, 1, 2)"
+		"action": "modify(0, 2)"
 	}
 ]

@@ -124,20 +124,39 @@ io.sockets.on("connection", function (socket) {
       });
   });
 
-  //Callback function upon calling decreaseDefenseAll()/increaseDefenseAll() functions
-  socket.on("modifyDefenseAll", function(defense_data){
-    for (var i=0; i<players.length; i++){
-      players[i].defense = defense_data["new_defense"][i];
-      //console.log("player " + (i+1) + " defense: " + players[i].defense);
+
+
+  //Callback function upon calling modifyAll
+  socket.on("modifyAll", function(new_data){
+    var target;
+    target= new_data['targetStat'];
+    if(target==0){
+      for (var i=0; i<players.length; i++){
+        players[i].defense  = new_data['new_Values'][i];
+        console.log("player " + (i+1) +"defense"+ players[i].defense);
+      }
+    }
+    else{
+      for (var i=0; i<players.length; i++){
+        players[i].attack = new_data["new_Values"][i];
+        console.log("player " + (i+1) +"attack"+ players[i].attack);
+      }
     }
   });
+  //Callback function upon calling modify
+  socket.on("modify", function(new_data){
+      var target,num;
+      target= new_data["targetStat"];
+      num=parseInt(new_data.playerNum);
+      if(target==0){
+        players[num].defense=new_data["newValue"];
+        console.log("player " + num + " defense: " + players[num].defense);
 
-  //Callback function upon calling decreaseAttackAll()/increaseAttackAll() functions
-  socket.on("modifyAttackAll", function(attack_data){
-    for (var i=0; i<players.length; i++){
-      players[i].attack = attack_data["new_attack"][i];
-      console.log("player " + (i+1) + " attack: " + players[i].attack);
-    }
+      }
+      else {
+        players[num].attack = new_data["newValue"];
+        console.log("player " + num + " attack: " + players[num].attack);
+      }
+
   });
-
 });

@@ -1,7 +1,7 @@
 var socket,
   nbOfPlayers = 0, players = [],
   localPlayer = {"playerNum": -1},
-  MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and the array of equipped cards which can contain at most MAX_EQUIPPED_CARDS
+  MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and th of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
 //Client connects to the server and sends state data
 socket = io("http://localhost:8888");
@@ -178,86 +178,30 @@ function drawCard(){
   socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 }
 
-/*
-  - Increases attack of all players (client-side)
-  - Displays the changes in the html page
-  - Emits the changes to the server to update them on the server-side
-*/
-function increaseAttackAll(value){
-  var player, initialAttackValue, newAttackValue, newAttackValues = [];
-
-  for (let i=0; i<players.length; i++){
-    player = document.getElementById("attack"+i);
-    newAttackValue = initialAttackValue = parseInt(player.innerHTML);
-
-    if (!(isNaN(initialAttackValue)))
-      player.innerHTML = newAttackValue = initialAttackValue + parseInt(value);
-
-    newAttackValues.push(newAttackValue);
-  }
-  socket.emit("modifyAttackAll", {"new_attack": newAttackValues});
+function modify(stat,value){
+  console.log(localPlayer.playerNum);
+  var target, newValue,lol;
+  lol=(stat==0) ? 'defense'+localPlayer.playerNum :'attack'+localPlayer.playerNum;
+  target= document.getElementById(lol);
+  newValue=parseInt(target.innerHTML)+parseInt(value);
+  // checking if it becomes negative
+  if(newValue<0) newValue=0;
+  target.innerHTML=newValue;
+    socket.emit("modify",
+    {"targetStat":stat, "newValue": newValue, "playerNum":localPlayer.playerNum}
+  );
 }
-
-/*
-  - Decreases attack of all players (client-side)
-  - Displays the changes in the html page
-  - Emits the changes to the server to update them on the server-side
-*/
-function decreaseAttackAll(value){
-  var player, initialAttackValue, newAttackValue, newAttackValues = [];
-
+function modifyAll(stat,value){
+  var  newValue,targetValue,newValues=[];
+  targetValue= (stat==0) ? 'defense': 'attack';
   for (let i=0; i<players.length; i++){
-    player = document.getElementById("attack"+i);
-    newAttackValue = initialAttackValue = parseInt(player.innerHTML);
-
-    if (!isNaN(initialAttackValue) && initialAttackValue>0)
-      player.innerHTML = newAttackValue = initialAttackValue - parseInt(value);
-
-    newAttackValues.push(newAttackValue);
+    target = document.getElementById(targetValue+i);
+    newValue=parseInt(target.innerHTML)+parseInt(value);
+    if (newValue<0) newValue=0;
+    target.innerHTML=newValue;
+    newValues.push(newValue);
   }
-  socket.emit("modifyAttackAll", {"new_attack": newAttackValues});
-}
-
-/*
-  - Increases defense of all players (client-side)
-  - Displays the changes in the html page
-  - Emits the changes to the server to update them on the server-side
-*/
-function increaseDefenseAll(value){
-  var player, initialDefenseValue, newDefenseValue, newDefenseValues = [];
-
-  for (let i=0; i<players.length; i++){
-    player = document.getElementById("defense"+i);
-    newDefenseValue = initialDefenseValue = parseInt(player.innerHTML);
-
-    if (!(isNaN(initialDefenseValue)))
-      player.innerHTML = newDefenseValue = initialDefenseValue + parseInt(value);
-
-    newDefenseValues.push(newDefenseValue);
-  }
-  socket.emit("modifyDefenseAll", {"new_defense": newDefenseValues});
-}
-
-/*
-  - Decreases defense of all players (client-side)
-  - Displays the changes in the html page
-  - Emits the changes to the server to update them on the server-side
-*/
-function decreaseDefenseAll(value){
-  var player, initialDefenseValue, newDefenseValue, newDefenseValues = [];
-
-  for (let i=0; i<players.length; i++){
-    player = document.getElementById("defense"+i);
-    newDefenseValue = initialDefenseValue = parseInt(player.innerHTML);
-
-    //console.log("decreaseDefenseAll/condition: " + !isNaN(initialDefenseValue));
-
-    if (!isNaN(initialDefenseValue) && initialDefenseValue>0)
-      player.innerHTML = newDefenseValue = initialDefenseValue - parseInt(value);
-
-    newDefenseValues.push(newDefenseValue);
-  }
-  socket.emit("modifyDefenseAll", {"new_defense": newDefenseValues});
+  socket.emit("modifyAll", {"targetStat":stat, "new_Values": newValues});
 }
 
 //Function that executes a function whose name is passed as a string parameter
