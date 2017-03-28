@@ -71,6 +71,7 @@ function rejoindrePartie() {
         $("button[id=quit]").removeAttr("disabled");
         $("input[name=player]").attr("disabled", "disabled");
         $("input[name=player]").val("");
+        $("button[id=hand]").removeAttr("disabled");
 
         socket.emit("rejoindre", {"playerName": playerName});
       }
@@ -94,6 +95,13 @@ socket.on("newPlayer", function(player_data) {
   localPlayer.aliasName = player_data.playerName;
   localPlayer.attack = player_data.playerAttack;
   localPlayer.defense = player_data.playerDefense;
+
+  /*
+    the first element in the hand array is the array of equippable Cards which is initially empty
+    the hand array is never empty, it is initialised with an empty array of equippable cards and hence has an initial
+    length of 1
+  */
+  localPlayer.hand = [[]];
   document.getElementById("player"+nbOfPlayers).innerHTML = player_data.playerName;
   document.getElementById("attack"+nbOfPlayers).innerHTML = player_data.playerAttack;
   document.getElementById("defense"+nbOfPlayers).innerHTML = player_data.playerDefense;
@@ -116,7 +124,7 @@ socket.on("status", function(status_data){
 
     if(status_data.playerNum == localPlayer.playerNum)
       d3.select('#cardsPile')
-        .on('click', drawCard);
+        .on('click', drawCardClient);
   }
   else{
     if(status_data.playerNum == localPlayer.playerNum)
@@ -172,9 +180,45 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
   document.getElementById("defense"+i).innerHTML = "";
 });
 
+//Activates the server-side card drawing phase when the card stack is clicked
+function drawCardClient(){
+  socket.emit("drawCard");
+}
 
-//Activates the server-side card drawing phase
-function drawCard(){
+/*
+- Adds the card to the hand when the take button is clicked
+- Discards the card from the game board
+- Activates the next player's turn
+*/
+function takeCard(card){
+    localPlayer.hand.push(card);
+    console.log("the local player's hand has " + parseInt(localPlayer.hand.length-1) + " cards, which are:\n");
+    for (let i=1; i<localPlayer.hand.length; i++)
+      console.log("card " + i + ": " + localPlayer.hand[i].id + "\n");
+    d3.select("#drawnCard").attr('xlink:href', ""); //discarding the card from the game board once it is taken
+    /*
+      ToDo:
+      adding the card to the hand of the corresponding player on the server-side
+    */
+    document.getElementById("take").style.visibility = "hidden";
+    $("button[id=take]").attr("disabled", "disabled");
+
+    document.getElementById("discard").style.visibility = "hidden";
+    $("button[id=discard]").attr("disabled", "disabled");
+    //Emits the signal to activate the next player's turn
+    socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+}
+
+//Discards the card from the board when the discard button is clicked and activates the next player's turn
+function discardCard(card){
+  d3.select("#drawnCard").attr('xlink:href', "");
+
+  document.getElementById("take").style.visibility = "hidden";
+  $("button[id=take]").attr("disabled", "disabled");
+
+  document.getElementById("discard").style.visibility = "hidden";
+  $("button[id=discard]").attr("disabled", "disabled");
+  //Emits the signal to activate the next player's turn
   socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 }
 
@@ -216,13 +260,29 @@ function executeStringFunction(func_string){
 }
 
 //Shows the active player's drawn card
-socket.on("cardDrawn", function(card_data){
-    d3.select("#drawnCard").attr('xlink:href', card_data.path );
-    if (card_data.type == "event")
-      executeStringFunction(card_data.action);
+socket.on("drawnCard", function(card){
+    d3.select("#drawnCard").attr('xlink:href', card.path);
+
+    if (card.type == "event")
+      executeStringFunction(card.action); //we directly execute the action if the card is an event
     else {
-      var take_button = document.getElementById("take"),
-        discard_button = document.getElementById("discard"),
-        exchange_button = document.getElementById("exchange");
+        var discard_button = document.getElementById("discard");
+        discard_button.style.visibility = "visible";
+        $(discard_button).removeAttr("disabled");
+
+        discard_button.addEventListener("click", function(){
+          discardCard(card);
+        });
+
+      if (localPlayer.hand.length<MAX_HAND_CARDS){
+        var take_button = document.getElementById("take");
+
+        take_button.addEventListener("click", function(){
+          takeCard(card);
+        });
+
+        take_button.style.visibility = "visible";
+        $(take_button).removeAttr("disabled");
+      }
     }
 });
