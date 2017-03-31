@@ -29,6 +29,16 @@ window.onload = function(){
      .attr('xlink:href', 'images/cardback.png')
      .on('click', null);
 
+  for(let i=1; i<=5; i++){
+    svg.append('svg:image')
+       .attr('id','hand'+i)
+       .attr('height', 150)
+       .attr('width', 100)
+       .attr('x', 300)
+       .attr('y', 490)
+       .attr('xlink:href', '');
+  }
+
 }
 
 //Client receives state data from server and updates client-side data
@@ -116,8 +126,9 @@ socket.on("newPlayer", function(player_data) {
   - Else, disables it
 */
 socket.on("status", function(status_data){
-  console.log("En réception du statut de tour du joueur")
+  console.log("En réception du statut de tour du joueur");
   localPlayer.status = status_data.playerStatus;
+  showHand();
 
   if(status_data.playerStatus == 1){
     console.log("Tour du joueur " + status_data.playerName);
@@ -183,6 +194,21 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
 //Activates the server-side card drawing phase when the card stack is clicked
 function drawCardClient(){
   socket.emit("drawCard");
+}
+
+//Shows the active player's hand
+function showHand(){
+  if(localPlayer.hand.length > 0){
+    var currentCard;
+    if(localPlayer.hand.length){
+      for(let i=1; i<localPlayer.hand.length; i++){
+        currentCard = localPlayer.hand[i];
+        d3.select('#hand'+i)
+          .attr('xlink:href', currentCard.path)
+          .attr('x', i*100);
+      }
+    }
+  }
 }
 
 /*
