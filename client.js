@@ -226,6 +226,7 @@ function takeCard(card){
       ToDo:
       adding the card to the hand of the corresponding player on the server-side
     */
+
     document.getElementById("take").style.visibility = "hidden";
     $("button[id=take]").attr("disabled", "disabled");
 
@@ -345,8 +346,16 @@ function executeStringFunction(func_string){
 socket.on("drawnCard", function(card){
     d3.select("#drawnCard").attr('xlink:href', card.path);
 
-    if (card.type == "event")
+    //Disables card drawing on click on the pile
+    d3.select('#cardsPile')
+      .on('click', null);
+
+    if (card.type == "event"){
       executeStringFunction(card.action); //we directly execute the action if the card is an event
+      // TODO : pass turn to next player
+      // Should add the "pass turn" button
+      // socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+    }
     else {
         var discard_button = document.getElementById("discard");
         discard_button.style.visibility = "visible";

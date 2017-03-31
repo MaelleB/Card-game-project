@@ -38,6 +38,8 @@ body{
   color: #FFDAB9;
   background-image: url(images/greenforest.png);
   background-attachment: fixed;
+  background-repeat: no-repeat;
+  background-size: cover;
   margin: 0;
   padding:0;
 }
@@ -59,23 +61,29 @@ body{
   float:left;
 }
 
-  #sidebar{
-    height:647px;
-    margin-left:85%;
-    padding-left:1.5%;
-    padding-right:1.5%;
-    padding-top: 3px;
-    border-style: solid;
-    border-color: black;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 18px;
-    border-left-width: 2px;
-    border-right-width:0px;
-    border-top-width: 0px;
-    border-bottom-width: 0px;
-    background-image: url(images/background-texture2.png);
-  }
+#sidebar{
+  height:647px;
+  margin-left:85%;
+  padding-left:1.5%;
+  padding-right:1.5%;
+  padding-top: 3px;
+  border-style: solid;
+  border-color: black;
+  border-top-right-radius: 20px;
+  border-bottom-right-radius: 18px;
+  border-left-width: 2px;
+  border-right-width:0px;
+  border-top-width: 0px;
+  border-bottom-width: 0px;
+  background-image: url(images/background-texture2.png);
+}
 
-  li{
-    list-style-type: none;
-  }
+ul{
+  padding: 0;
+}
+
+li, h2, h1{
+  list-style-type: none;
+  margin:auto;
+  text-align: center;
+}
