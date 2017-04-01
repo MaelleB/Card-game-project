@@ -29,6 +29,16 @@ window.onload = function(){
      .attr('xlink:href', 'images/cardback.png')
      .on('click', null);
 
+  for(let i=1; i<=5; i++){
+    svg.append('svg:image')
+       .attr('id','hand'+i)
+       .attr('height', 150)
+       .attr('width', 100)
+       .attr('x', 300)
+       .attr('y', 490)
+       .attr('xlink:href', '');
+  }
+
 }
 
 //Client receives state data from server and updates client-side data
@@ -116,8 +126,9 @@ socket.on("newPlayer", function(player_data) {
   - Else, disables it
 */
 socket.on("status", function(status_data){
-  console.log("En réception du statut de tour du joueur")
+  console.log("En réception du statut de tour du joueur");
   localPlayer.status = status_data.playerStatus;
+  showHand();
 
   if(status_data.playerStatus == 1){
     console.log("Tour du joueur " + status_data.playerName);
@@ -185,6 +196,21 @@ function drawCardClient(){
   socket.emit("drawCard");
 }
 
+//Shows the active player's hand
+function showHand(){
+  if(localPlayer.hand.length > 0){
+    var currentCard;
+    if(localPlayer.hand.length){
+      for(let i=1; i<localPlayer.hand.length; i++){
+        currentCard = localPlayer.hand[i];
+        d3.select('#hand'+i)
+          .attr('xlink:href', currentCard.path)
+          .attr('x', i*100);
+      }
+    }
+  }
+}
+
 /*
 - Adds the card to the hand when the take button is clicked
 - Discards the card from the game board
@@ -200,6 +226,7 @@ function takeCard(card){
       ToDo:
       adding the card to the hand of the corresponding player on the server-side
     */
+
     document.getElementById("take").style.visibility = "hidden";
     $("button[id=take]").attr("disabled", "disabled");
 
@@ -263,8 +290,16 @@ function executeStringFunction(func_string){
 socket.on("drawnCard", function(card){
     d3.select("#drawnCard").attr('xlink:href', card.path);
 
-    if (card.type == "event")
+    //Disables card drawing on click on the pile
+    d3.select('#cardsPile')
+      .on('click', null);
+
+    if (card.type == "event"){
       executeStringFunction(card.action); //we directly execute the action if the card is an event
+      // TODO : pass turn to next player
+      // Should add the "pass turn" button
+      // socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+    }
     else {
         var discard_button = document.getElementById("discard");
         discard_button.style.visibility = "visible";
