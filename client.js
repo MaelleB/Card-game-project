@@ -11,14 +11,16 @@ window.onload = function(){
   var svg = d3.select('#svgWin')
               .append('svg')
               .attr('width', 900)
-              .attr('height', 650),
+              .attr('height', 650);
 
-      drawn_card = svg.append('svg:image')
-                .attr('id', 'drawnCard')
-                .attr('x', 390)
-                .attr('y', 170)
-                .attr('width', '200')
-                .attr('height', '310');
+  createMapHexagons(20, 5, 6);
+
+  var drawn_card = svg.append('svg:image')
+                      .attr('id', 'drawnCard')
+                      .attr('x', 390)
+                      .attr('y', 170)
+                      .attr('width', '200')
+                      .attr('height', '310');
 
   svg.append('svg:image')
      .attr('id', 'cardsPile')
@@ -38,6 +40,7 @@ window.onload = function(){
        .attr('y', 490)
        .attr('xlink:href', '');
   }
+
 
 }
 
@@ -321,3 +324,55 @@ socket.on("drawnCard", function(card){
       }
     }
 });
+
+// Creates a hexagon
+function createHexagon(radius){
+  var pts = new Array();
+  var angle, x, y;
+  for(let i=0; i<6; i++){
+    angle = i*Math.PI/3;
+    x = Math.sin(angle)*radius;
+    y = -Math.cos(angle)*radius;
+    pts.push([Math.round(x*100)/100, Math.round(y*100)/100]);
+  }
+  return pts;
+}
+
+// Creates the hexagons composing the map
+function createMapHexagons(radius, lines, columns){
+  dist = radius - (Math.sin(Math.PI/3)*radius);
+  d3.select('svg').append('svg')
+                      .attr('id', 'svgMap')
+                      .attr('width', (columns+1)*2*radius)
+                      .attr('height', lines*2*radius)
+                      .attr('x', 10)
+                      .attr('y', 10);
+  var hexagon = createHexagon(radius), d, x, y;
+  for(let l=0; l<lines; l++){
+    for(let c=0; c<columns; c++){
+      d = "";
+      for(h in hexagon){
+        if(l%2){
+          x = hexagon[h][0]+(radius-dist)*(2+2*c);
+        }
+        else{
+          x = hexagon[h][0]+(radius-dist)*(1+2*c);
+        }
+        y = dist*2+hexagon[h][1]+(radius-dist*2)*(1+2*l);
+        if(h == 0){
+          d += "M"+x+","+y+" L";
+        }
+        else{
+          d += x+","+y+" ";
+        }
+      }
+      d += "Z";
+      d3.select('#svgMap').append('path')
+                          .attr('d', d)
+                          .attr('stroke', 'black')
+                          .attr('fill', 'green')
+                          .attr('id', l+':'+c);
+    }
+  }
+
+}
