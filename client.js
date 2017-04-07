@@ -1,6 +1,7 @@
 var socket,
   nbOfPlayers = 0, players = [],
   localPlayer = {"playerNum": -1},
+  map,
   MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and th of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
 //Client connects to the server and sends state data
@@ -8,6 +9,8 @@ socket = io("http://localhost:8888");
 socket.emit("etat", {});
 
 window.onload = function(){
+  socket.emit("loadMap");
+
   var svg = d3.select('#svgWin')
               .append('svg')
               .attr('width', 900)
@@ -40,9 +43,12 @@ window.onload = function(){
        .attr('y', 490)
        .attr('xlink:href', '');
   }
-
-
 }
+
+//Client receives map data from server and stores it in the map variable
+socket.on("mapLoaded", function(map_data){
+  map = map_data;
+});
 
 //Client receives state data from server and updates client-side data
 socket.on("etat", function(state_data) {

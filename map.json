@@ -1,0 +1,42 @@
+[
+  [
+    {"environment" : "plain"},
+    {"environment" : "river"},
+    {"environment" : "forest"},
+    {"environment" : "river"},
+    {"environment" : "plain"},
+    {"environment" : "plain"},
+  ],
+  [
+    {"environment" : "forest"},
+    {"environment" : "forest"},
+    {"environment" : "river"},
+    {"environment" : "plain"},
+    {"environment" : "forest"},
+    {"environment" : "river"}
+  ],
+  [
+    {"environment" : "river"},
+    {"environment" : "river"},
+    {"environment" : "forest"},
+    {"environment" : "plain"},
+    {"environment" : "river"},
+    {"environment" : "plain"}
+  ],
+  [
+    {"environment" : "forest"},
+    {"environment" : "plain"},
+    {"environment" : "plain"},
+    {"environment" : "forest"},
+    {"environment" : "river"},
+    {"environment" : "forest"}
+  ],
+  [
+    {"environment" : "plain"},
+    {"environment" : "forest"},
+    {"environment" : "forest"},
+    {"environment" : "river"},
+    {"environment" : "forest"},
+    {"environment" : "encounter"}
+  ]
+]

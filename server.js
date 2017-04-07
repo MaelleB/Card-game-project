@@ -1,5 +1,6 @@
 var players = [], nbOfPlayers = 0,
-  BASIC_ATTACK = 5, BASIC_DEFENSE = 5;
+  BASIC_ATTACK = 5, BASIC_DEFENSE = 5,
+  map;
 
 //Setting the server and making it listen at port 8888
 var app = require("http").createServer(function(req, res){});
@@ -9,6 +10,30 @@ app.listen(8888);
 var io = require("socket.io").listen(app);
 
 io.sockets.on("connection", function (socket) {
+
+  //Loading the map from database
+  socket.on("loadMap", function(){
+
+    //setting Mongodb client, and url of the database to interact with
+    var MongoClient = require("mongodb").MongoClient,
+    assert = require("assert"),
+    url = "mongodb://localhost:27017/CardGame";
+
+    //connecting to the CardGame database
+    MongoClient.connect(url, function(err, db){
+      assert.equal(null, err);
+      //getting the Map collection length
+      db.collection("Map").find({}).toArray(function(err, result){
+        assert.equal(null, err);
+
+        if (result.length){
+          map = result;
+        }
+      });
+    });
+    socket.emit("mapLoaded", map);
+  });
+
   //Sending server-side state data to client upon connection
   socket.on("etat", function() {
     var state_data = {"nbOfPlayers": nbOfPlayers, "players": players};
