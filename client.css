@@ -1,9 +1,30 @@
+@font-face {
+  font-family: "black chancery";
+  src: url('fonts/BlackChancery.ttf');
+}
+
+@font-face {
+  font-family: "unzialish";
+  src: url('fonts/UnZialish.ttf');
+}
+
+@font-face {
+  font-family: "jarrow";
+  src: url('fonts/Jarrow.ttf');
+}
+
+h1, h2{
+  font-family: "unzialish";
+  text-align: center;
+}
+
 ul.topnav{
   list-style-type: none;
+  font-family: "unzialish";
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-image: url(images/background-texture2.png);
+  background-image: url(images/wood2.png);
 }
 
 ul.topnav li {
@@ -16,7 +37,7 @@ ul.topnav li a {
   text-align: center;
   padding: 20px 26px;
   text-decoration: none;
-  font-size: 17px;
+  font-size: 22px;
 }
 
 #menu{
@@ -24,19 +45,19 @@ ul.topnav li a {
   margin: 0;
   border-style: solid;
   border-color: black;
-  border-width:3px;
+  border-width:1px;
 }
 
 #general{
   padding-top: 10px;
   padding-left : 10px;
   height: 900px;
-  background-color:rgba(0, 0, 0, 0.4);
+  background-color:rgba(0, 0, 0, 0.2);
 }
 
 body{
   color: #FFDAB9;
-  background-image: url(images/greenforest.png);
+  background-image: url(images/green_background.png);
   background-attachment: fixed;
   background-repeat: no-repeat;
   background-size: cover;
@@ -53,7 +74,7 @@ body{
   border-style: solid;
   border-color: black;
   border-radius: 20px;
-  border-width:3px;
+  border-width:1px;
 }
 
 #svgWin{
@@ -71,19 +92,25 @@ body{
   border-color: black;
   border-top-right-radius: 20px;
   border-bottom-right-radius: 18px;
-  border-left-width: 2px;
+  border-left-width: 1px;
   border-right-width:0px;
   border-top-width: 0px;
   border-bottom-width: 0px;
-  background-image: url(images/background-texture2.png);
+  background-image: url(images/wood.png);
+  font-family: "jarrow";
+  font-size:20px;
+  line-height: 1;
 }
 
 ul{
   padding: 0;
 }
 
-li, h2, h1{
+
+#rules, #credits1, #credits2{
   list-style-type: none;
   margin:auto;
   text-align: center;
+  font-family: "black chancery";
+  font-size: 22px;
 }
