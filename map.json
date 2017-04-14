@@ -1,132 +1,126 @@
 [
-  [
-    {
-      "id" : "0:0",
-      "environment" : "plain"
-    },
-    {
-      "id" : "0:1",
-      "environment" : "river"
-    },
-    {
-      "id" : "0:2",
-      "environment" : "forest"
-    },
-    {
-      "id" : "0:3",
-      "environment" : "river"
-    },
-    {
-      "id" : "0:4",
-      "environment" : "plain"
-    },
-    {
-      "id" : "0:5",
-      "environment" : "plain"
-    }
-  ],
-  [
-    {
-      "id" : "1:0",
-      "environment" : "forest"
-    },
-    {
-      "id" : "1:1",
-      "environment" : "forest"
-    },
-    {
-      "id" : "1:2",
-      "environment" : "river"
-    },
-    {
-      "id" : "1:3",
-      "environment" : "plain"
-    },
-    {
-      "id" : "1:4",
-      "environment" : "forest"
-    },
-    {
-      "id" : "1:5",
-      "environment" : "river"
-    }
-  ],
-  [
-    {
-      "id" : "2:0",
-      "environment" : "river"
-    },
-    {
-      "id" : "2:1",
-      "environment" : "river"
-    },
-    {
-      "id" : "2:2",
-      "environment" : "forest"
-    },
-    {
-      "id" : "2:3",
-      "environment" : "plain"
-    },
-    {
-      "id" : "2:4",
-      "environment" : "river"
-    },
-    {
-      "id" : "2:5",
-      "environment" : "plain"
-    }
-  ],
-  [
-    {
-      "id" : "3:0",
-      "environment" : "forest"
-    },
-    {
-      "id" : "3:1",
-      "environment" : "plain"
-    },
-    {
-      "id" : "3:2",
-      "environment" : "plain"
-    },
-    {
-      "id" : "3:3",
-      "environment" : "forest"
-    },
-    {
-      "id" : "3:4",
-      "environment" : "river"
-    },
-    {
-      "id" : "3:5",
-      "environment" : "forest"
-    }
-  ],
-  [
-    {
-      "id" : "4:0",
-      "environment" : "plain"
-    },
-    {
-      "id" : "4:1",
-      "environment" : "forest"
-    },
-    {
-      "id" : "4:2",
-      "environment" : "forest"
-    },
-    {
-      "id" : "4:3",
-      "environment" : "river"
-    },
-    {
-      "id" : "4:4",
-      "environment" : "forest"
-    },
-    {
-      "id" : "4:5",
-      "environment" : "encounter"
-    }
-  ]
+  {
+    "id" : "0:0",
+    "environment" : "plain"
+  },
+  {
+    "id" : "0:1",
+    "environment" : "river"
+  },
+  {
+    "id" : "0:2",
+    "environment" : "forest"
+  },
+  {
+    "id" : "0:3",
+    "environment" : "river"
+  },
+  {
+    "id" : "0:4",
+    "environment" : "plain"
+  },
+  {
+    "id" : "0:5",
+    "environment" : "plain"
+  },
+
+  {
+    "id" : "1:0",
+    "environment" : "forest"
+  },
+  {
+    "id" : "1:1",
+    "environment" : "forest"
+  },
+  {
+    "id" : "1:2",
+    "environment" : "river"
+  },
+  {
+    "id" : "1:3",
+    "environment" : "plain"
+  },
+  {
+    "id" : "1:4",
+    "environment" : "forest"
+  },
+  {
+    "id" : "1:5",
+    "environment" : "river"
+  },
+
+  {
+    "id" : "2:0",
+    "environment" : "river"
+  },
+  {
+    "id" : "2:1",
+    "environment" : "river"
+  },
+  {
+    "id" : "2:2",
+    "environment" : "forest"
+  },
+  {
+    "id" : "2:3",
+    "environment" : "plain"
+  },
+  {
+    "id" : "2:4",
+    "environment" : "river"
+  },
+  {
+    "id" : "2:5",
+    "environment" : "plain"
+  },
+
+  {
+    "id" : "3:0",
+    "environment" : "forest"
+  },
+  {
+    "id" : "3:1",
+    "environment" : "plain"
+  },
+  {
+    "id" : "3:2",
+    "environment" : "plain"
+  },
+  {
+    "id" : "3:3",
+    "environment" : "forest"
+  },
+  {
+    "id" : "3:4",
+    "environment" : "river"
+  },
+  {
+    "id" : "3:5",
+    "environment" : "forest"
+  },
+
+  {
+    "id" : "4:0",
+    "environment" : "plain"
+  },
+  {
+    "id" : "4:1",
+    "environment" : "forest"
+  },
+  {
+    "id" : "4:2",
+    "environment" : "forest"
+  },
+  {
+    "id" : "4:3",
+    "environment" : "river"
+  },
+  {
+    "id" : "4:4",
+    "environment" : "forest"
+  },
+  {
+    "id" : "4:5",
+    "environment" : "encounter"
+  }
 ]

@@ -1,6 +1,6 @@
 var players = [], nbOfPlayers = 0,
   BASIC_ATTACK = 5, BASIC_DEFENSE = 5,
-  map;
+  mapAux, map;
 
 //Setting the server and making it listen at port 8888
 var app = require("http").createServer(function(req, res){});
@@ -23,15 +23,28 @@ io.sockets.on("connection", function (socket) {
     MongoClient.connect(url, function(err, db){
       assert.equal(null, err);
       //getting the Map collection length
-      db.collection("Map").find({}).toArray(function(err, result){
+      db.collection("MapTiles").find({}).toArray(function(err, result){
         assert.equal(null, err);
 
         if (result.length){
-          map = result;
+          mapAux = result;
+          map = new Array();
+          var i, index = -1;
+          for(i=0; i<mapAux.length; i++){
+            if(mapAux[i].id.charAt(0) > index){
+              map[(mapAux[i].id).charAt(0)] = new Array();
+              index = mapAux[i].id.charAt(0);
+            }
+            map[(mapAux[i].id).charAt(0)][(mapAux[i].id).charAt(2)] = mapAux[i];
+          }
+          io.emit("mapLoaded", map);
         }
       });
     });
-    socket.emit("mapLoaded", map);
+  });
+
+  socket.on("drawMap", function(){
+    io.emit("drawMap", 20, 5, 6);
   });
 
   //Sending server-side state data to client upon connection

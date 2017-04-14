@@ -16,7 +16,7 @@ window.onload = function(){
               .attr('width', 900)
               .attr('height', 650);
 
-  createMapHexagons(20, 5, 6);
+  //createMapHexagons(20, 5, 6);
 
   var drawn_card = svg.append('svg:image')
                       .attr('id', 'drawnCard')
@@ -47,7 +47,10 @@ window.onload = function(){
 
 //Client receives map data from server and stores it in the map variable
 socket.on("mapLoaded", function(map_data){
+  console.log("Map loaded");
   map = map_data;
+  console.log(map);
+  socket.emit("drawMap");
 });
 
 //Client receives state data from server and updates client-side data
@@ -345,7 +348,8 @@ function createHexagon(radius){
 }
 
 // Creates the hexagons composing the map
-function createMapHexagons(radius, lines, columns){
+//function createMapHexagons(radius, lines, columns){
+socket.on("drawMap", function(radius, lines, columns){
   dist = radius - (Math.sin(Math.PI/3)*radius);
   d3.select('svg').append('svg')
                       .attr('id', 'svgMap')
@@ -373,12 +377,35 @@ function createMapHexagons(radius, lines, columns){
         }
       }
       d += "Z";
-      d3.select('#svgMap').append('path')
-                          .attr('d', d)
-                          .attr('stroke', 'black')
-                          .attr('fill', 'green')
-                          .attr('id', l+':'+c);
-    }
-  }
 
-}
+      if(map[l][c].environment == "river"){
+        d3.select('#svgMap').append('path')
+                            .attr('d', d)
+                            .attr('stroke', 'black')
+                            .attr('fill', 'rgba(50, 188, 203, 0.5)')
+                            .attr('id', l+':'+c);
+      }
+      if(map[l][c].environment == "plain"){
+        d3.select('#svgMap').append('path')
+                            .attr('d', d)
+                            .attr('stroke', 'black')
+                            .attr('fill', 'rgba(6, 169, 11, 0.5)')
+                            .attr('id', l+':'+c);
+     }
+     if(map[l][c].environment == "forest"){
+       d3.select('#svgMap').append('path')
+                           .attr('d', d)
+                           .attr('stroke', 'black')
+                           .attr('fill', 'rgba(77, 209, 63, 0.5)')
+                           .attr('id', l+':'+c);
+     }
+     if(map[l][c].environment == "encounter"){
+       d3.select('#svgMap').append('path')
+                           .attr('d', d)
+                           .attr('stroke', 'black')
+                           .attr('fill', 'rgba(181, 3, 3, 0.5)')
+                           .attr('id', l+':'+c);
+    }
+   }
+  }
+});
