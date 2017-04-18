@@ -2,7 +2,7 @@ var socket,
   nbOfPlayers = 0, players = [],
   localPlayer = {"playerNum": -1},
   map,
-  MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and th of equipped cards which can contain at most MAX_EQUIPPED_CARDS
+  MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and the array of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
 //Client connects to the server and sends state data
 socket = io("http://localhost:8888");
@@ -53,6 +53,88 @@ socket.on("mapLoaded", function(map_data){
   socket.emit("drawMap");
 });
 
+//Creates a hexagon
+function createHexagon(radius){
+  var pts = new Array();
+  var angle, x, y;
+  for(let i=0; i<6; i++){
+    angle = i*Math.PI/3;
+    x = Math.sin(angle)*radius;
+    y = -Math.cos(angle)*radius;
+    pts.push([Math.round(x*100)/100, Math.round(y*100)/100]);
+  }
+  return pts;
+}
+
+// Creates the hexagons composing the map
+//function createMapHexagons(radius, lines, columns){
+socket.on("drawMap", function(radius, lines, columns){
+  var dist = radius - (Math.sin(Math.PI/3)*radius),
+      positionX = 17, positionY = 20;
+  d3.select('svg').append('svg')
+                      .attr('id', 'svgMap')
+                      .attr('width', (columns+1)*2*radius)
+                      .attr('height', lines*2*radius)
+                      .attr('x', 10)
+                      .attr('y', 10);
+  var hexagon = createHexagon(radius), d, x, y;
+  for(let l=0; l<lines; l++){
+    for(let c=0; c<columns; c++){
+      d = "";
+      for(h in hexagon){
+        if(l%2){
+          x = hexagon[h][0]+(radius-dist)*(2+2*c);
+        }
+        else{
+          x = hexagon[h][0]+(radius-dist)*(1+2*c);
+        }
+        y = dist*2+hexagon[h][1]+(radius-dist*2)*(1+2*l);
+        if(h == 0){
+          d += "M"+x+","+y+" L";
+        }
+        else{
+          d += x+","+y+" ";
+        }
+      }
+      d += "Z";
+
+      if(map[l][c].environment == "river"){
+        d3.select('#svgMap').append('path')
+                            .attr('d', d)
+                            .attr('stroke', 'black')
+                            .attr('fill', 'rgba(50, 188, 203, 0.5)')
+                            .attr('id', l+':'+c);
+      }
+      if(map[l][c].environment == "plain"){
+        d3.select('#svgMap').append('path')
+                            .attr('d', d)
+                            .attr('stroke', 'black')
+                            .attr('fill', 'rgba(6, 169, 11, 0.5)')
+                            .attr('id', l+':'+c);
+     }
+     if(map[l][c].environment == "forest"){
+       d3.select('#svgMap').append('path')
+                           .attr('d', d)
+                           .attr('stroke', 'black')
+                           .attr('fill', 'rgba(77, 209, 63, 0.5)')
+                           .attr('id', l+':'+c);
+     }
+     if(map[l][c].environment == "encounter"){
+       d3.select('#svgMap').append('path')
+                           .attr('d', d)
+                           .attr('stroke', 'black')
+                           .attr('fill', 'rgba(181, 3, 3, 0.5)')
+                           .attr('id', l+':'+c);
+    }
+    d3.select('#svgMap').append('circle')
+                        .attr('cx', positionX)
+                        .attr('cy', positionY)
+                        .attr('r', 7)
+                        .attr('fill', 'rgb(53, 0, 0)');
+   }
+  }
+});
+
 //Client receives state data from server and updates client-side data
 socket.on("etat", function(state_data) {
   console.log("Dans la réception d'état");
@@ -78,6 +160,18 @@ socket.on("etat", function(state_data) {
   }
 });
 
+function checkPseudo(name, array){
+	var regex = new RegExp(name, "i"),
+		length = array.length,
+		i = 0;
+	while (i < length){
+		if (regex.test(array[i])) return true;
+		i++;
+	}
+	
+	return false;
+}
+
 //Joining the game by clicking on a button
 function rejoindrePartie() {
   if (localPlayer.playerNum == -1) {
@@ -85,15 +179,15 @@ function rejoindrePartie() {
     console.log("players: " + players);
 
     if (nbOfPlayers < MAX_PLAYERS_NB) {
-      if (playerName != "" && !players.includes(playerName)) {
+      if (playerName != "" && !checkPseudo(playerName, players)) {
         console.log("Envoi de la connexion");
         localPlayer.playerNum = nbOfPlayers;
 
-        $("button[id=join]").attr("disabled", "disabled");
-        $("button[id=quit]").removeAttr("disabled");
+        $("#join").attr("disabled", "disabled");
+        $("#quit").removeAttr("disabled");
         $("input[name=player]").attr("disabled", "disabled");
         $("input[name=player]").val("");
-        $("button[id=hand]").removeAttr("disabled");
+        $("#hand").removeAttr("disabled");
 
         socket.emit("rejoindre", {"playerName": playerName});
       }
@@ -173,10 +267,10 @@ function quitterPartie() {
   if (localPlayer.playerNum > -1) {
     console.log("Suppression du joueur n." + localPlayer.playerNum);
 
-    $("button[id=join]").removeAttr("disabled");
+    $("#join").removeAttr("disabled");
     $("input[name=player]").removeAttr("disabled");
-    $("button[id=quit]").attr("disabled", "disabled");
-    $("button[id=draw]").attr("disabled", "disabled");
+    $("#quit").attr("disabled", "disabled");
+    $("#draw").attr("disabled", "disabled");
 
     socket.emit("quitter", {"playerNum": localPlayer.playerNum});
   }
@@ -340,86 +434,4 @@ socket.on("drawnCard", function(card){
     }
 
 
-});
-
-// Creates a hexagon
-function createHexagon(radius){
-  var pts = new Array();
-  var angle, x, y;
-  for(let i=0; i<6; i++){
-    angle = i*Math.PI/3;
-    x = Math.sin(angle)*radius;
-    y = -Math.cos(angle)*radius;
-    pts.push([Math.round(x*100)/100, Math.round(y*100)/100]);
-  }
-  return pts;
-}
-
-// Creates the hexagons composing the map
-//function createMapHexagons(radius, lines, columns){
-socket.on("drawMap", function(radius, lines, columns){
-  var dist = radius - (Math.sin(Math.PI/3)*radius),
-      positionX = 17, positionY = 20;
-  d3.select('svg').append('svg')
-                      .attr('id', 'svgMap')
-                      .attr('width', (columns+1)*2*radius)
-                      .attr('height', lines*2*radius)
-                      .attr('x', 10)
-                      .attr('y', 10);
-  var hexagon = createHexagon(radius), d, x, y;
-  for(let l=0; l<lines; l++){
-    for(let c=0; c<columns; c++){
-      d = "";
-      for(h in hexagon){
-        if(l%2){
-          x = hexagon[h][0]+(radius-dist)*(2+2*c);
-        }
-        else{
-          x = hexagon[h][0]+(radius-dist)*(1+2*c);
-        }
-        y = dist*2+hexagon[h][1]+(radius-dist*2)*(1+2*l);
-        if(h == 0){
-          d += "M"+x+","+y+" L";
-        }
-        else{
-          d += x+","+y+" ";
-        }
-      }
-      d += "Z";
-
-      if(map[l][c].environment == "river"){
-        d3.select('#svgMap').append('path')
-                            .attr('d', d)
-                            .attr('stroke', 'black')
-                            .attr('fill', 'rgba(50, 188, 203, 0.5)')
-                            .attr('id', l+':'+c);
-      }
-      if(map[l][c].environment == "plain"){
-        d3.select('#svgMap').append('path')
-                            .attr('d', d)
-                            .attr('stroke', 'black')
-                            .attr('fill', 'rgba(6, 169, 11, 0.5)')
-                            .attr('id', l+':'+c);
-     }
-     if(map[l][c].environment == "forest"){
-       d3.select('#svgMap').append('path')
-                           .attr('d', d)
-                           .attr('stroke', 'black')
-                           .attr('fill', 'rgba(77, 209, 63, 0.5)')
-                           .attr('id', l+':'+c);
-     }
-     if(map[l][c].environment == "encounter"){
-       d3.select('#svgMap').append('path')
-                           .attr('d', d)
-                           .attr('stroke', 'black')
-                           .attr('fill', 'rgba(181, 3, 3, 0.5)')
-                           .attr('id', l+':'+c);
-    }
-    d3.select('#svgMap').append('circle')
-                        .attr('cx', positionX)
-                        .attr('cy', positionY)
-                        .attr('r', 7)
-                        .attr('fill', 'rgb(53, 0, 0)');
-   }
-  }
 });

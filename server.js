@@ -48,7 +48,7 @@ io.sockets.on("connection", function (socket) {
   });
 
   //Sending server-side state data to client upon connection
-  socket.on("etat", function() {
+  socket.on("etat", function(player_data) {
     var state_data = {"nbOfPlayers": nbOfPlayers, "players": players};
     io.emit("etat", state_data);
   });
@@ -75,7 +75,7 @@ io.sockets.on("connection", function (socket) {
     if(!nbOfPlayers)
       turnStatus = 1;
 
-    var nPlayer = new Player(playerName, BASIC_ATTACK, BASIC_DEFENSE, turnStatus, []);
+    var nPlayer = new Player(playerName, BASIC_ATTACK, BASIC_DEFENSE, turnStatus, [[]]);
     players.push(nPlayer);
     io.emit("newPlayer",
       {
