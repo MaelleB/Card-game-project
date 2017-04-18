@@ -47,5 +47,26 @@
 		"category": "potion",
 		"path": "images/cards/defense_potion3.png",
 		"action": "modify(0, 2)"
+	},
+	{
+		"id": "plank",
+		"type": "usable",
+		"category": "movement",
+		"path": "images/cards/plank.png",
+		"action": "changeTile('river')"
+	},
+	{
+		"id": "compass",
+		"type": "usable",
+		"category": "movement",
+		"path": "images/cards/compass.png",
+		"action": "changeTile('forest')"
+	},
+	{
+		"id": "tp_crystal",
+		"type": "usable",
+		"category": "movement",
+		"path": "images/cards/tp_crystal.png",
+		"action": "changeTile('plain')"
 	}
 ]
