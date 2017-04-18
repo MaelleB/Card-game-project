@@ -303,14 +303,14 @@ socket.on("showCard",function(card){
 
 });
 socket.on("discardCardAllClients",function(card){
-    d3.select("#drawnCard").attr('xlink:href', "")
+    d3.select("#drawnCard").attr('xlink:href', "");
 });
 //Shows the active player's drawn card
 socket.on("drawnCard", function(card){
   console.log("appel a drawCard");
     if (card.type == "event"){
-      executeStringFunction(card.action);
 
+      executeStringFunction(card.action);
       socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 
     }
