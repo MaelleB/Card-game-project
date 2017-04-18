@@ -139,11 +139,21 @@ socket.on("status", function(status_data){
     if(status_data.playerNum == localPlayer.playerNum)
       d3.select('#cardsPile')
         .on('click', drawCardClient);
+
+
   }
   else{
-    if(status_data.playerNum == localPlayer.playerNum)
+    if(status_data.playerNum == localPlayer.playerNum) {
+      document.getElementById("take").style.visibility = "hidden";
+      $("#take").attr("disabled", "disabled");
+
+      document.getElementById("discard").style.visibility = "hidden";
+      $("#discard").attr("disabled", "disabled");
+
       d3.select('#cardsPile')
         .on('click', null);
+    }
+
   }
 });
 
@@ -220,34 +230,25 @@ function showHand(){
 - Activates the next player's turn
 */
 function takeCard(card){
+  console.log(localPlayer.hand)
+   console.log("appel a take");
     localPlayer.hand.push(card);
     console.log("the local player's hand has " + parseInt(localPlayer.hand.length-1) + " cards, which are:\n");
     for (let i=1; i<localPlayer.hand.length; i++)
       console.log("card " + i + ": " + localPlayer.hand[i].id + "\n");
-    d3.select("#drawnCard").attr('xlink:href', ""); //discarding the card from the game board once it is taken
-    /*
-      ToDo:
-      adding the card to the hand of the corresponding player on the server-side
-    */
 
-    document.getElementById("take").style.visibility = "hidden";
-    $("button[id=take]").attr("disabled", "disabled");
+    socket.emit("cardTaken", { card: card,
+      playerNum: localPlayer.playerNum
+    }
+  );
 
-    document.getElementById("discard").style.visibility = "hidden";
-    $("button[id=discard]").attr("disabled", "disabled");
     //Emits the signal to activate the next player's turn
     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 }
 
 //Discards the card from the board when the discard button is clicked and activates the next player's turn
-function discardCard(card){
-  d3.select("#drawnCard").attr('xlink:href', "");
-
-  document.getElementById("take").style.visibility = "hidden";
-  $("button[id=take]").attr("disabled", "disabled");
-
-  document.getElementById("discard").style.visibility = "hidden";
-  $("button[id=discard]").attr("disabled", "disabled");
+function discardCard(){
+  socket.emit("cardDiscarded",{});
   //Emits the signal to activate the next player's turn
   socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 }
@@ -288,34 +289,39 @@ function executeStringFunction(func_string){
   arguments_array.push(last_element.trim());
   window[function_name].apply(this, arguments_array);
 }
+socket.on("showCard",function(card){
+  d3.select("#drawnCard").attr('xlink:href', card.path);
 
+});
+socket.on("discardCardAllClients",function(card){
+    d3.select("#drawnCard").attr('xlink:href', "")
+});
 //Shows the active player's drawn card
 socket.on("drawnCard", function(card){
-    d3.select("#drawnCard").attr('xlink:href', card.path);
-
-    //Disables card drawing on click on the pile
-    d3.select('#cardsPile')
-      .on('click', null);
-
+  console.log("appel a drawCard");
     if (card.type == "event"){
-      executeStringFunction(card.action); //we directly execute the action if the card is an event
-      // TODO : pass turn to next player
-      // Should add the "pass turn" button
-      // socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+      executeStringFunction(card.action);
+
+      socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+
     }
+
+
     else {
+      d3.select('#cardsPile')
+      .on('click', null);
         var discard_button = document.getElementById("discard");
         discard_button.style.visibility = "visible";
         $(discard_button).removeAttr("disabled");
 
-        discard_button.addEventListener("click", function(){
-          discardCard(card);
+        $(discard_button).off("click").on("click",function(){
+          discardCard();
         });
 
       if (localPlayer.hand.length<MAX_HAND_CARDS){
-        var take_button = document.getElementById("take");
 
-        take_button.addEventListener("click", function(){
+        var take_button = document.getElementById("take");
+        $(take_button).off("click").on("click",function(){
           takeCard(card);
         });
 
@@ -323,6 +329,8 @@ socket.on("drawnCard", function(card){
         $(take_button).removeAttr("disabled");
       }
     }
+
+
 });
 
 // Creates a hexagon

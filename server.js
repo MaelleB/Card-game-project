@@ -92,7 +92,8 @@ io.sockets.on("connection", function (socket) {
             card = result[random_value];
           //var card = result[1];
           console.log("carte tirée: " + card.id);
-          io.emit("drawnCard", card);
+          socket.emit("drawnCard", card);
+          io.emit("showCard",card);
         }
       });
     });
@@ -101,6 +102,17 @@ io.sockets.on("connection", function (socket) {
   //Calls function to draw card
   socket.on("drawCard", function(){
     drawCardServer();
+  });
+
+  socket.on("cardTaken", function(card_data){
+   console.log("length of hand before: " + players[card_data.playerNum].hand.length);
+   players[card_data.playerNum].hand.push(card_data.card);
+   console.log("length of hand after: " + players[card_data.playerNum].hand.length);
+   io.emit("discardCardAllClients", {});
+  });
+
+  socket.on("cardDiscarded",function(){
+    io.emit("discardCardAllClients", {});
   });
 
   //Calls function to draw card and activates next player's turn
