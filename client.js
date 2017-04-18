@@ -350,7 +350,8 @@ function createHexagon(radius){
 // Creates the hexagons composing the map
 //function createMapHexagons(radius, lines, columns){
 socket.on("drawMap", function(radius, lines, columns){
-  dist = radius - (Math.sin(Math.PI/3)*radius);
+  var dist = radius - (Math.sin(Math.PI/3)*radius),
+      positionX = 17, positionY = 20;
   d3.select('svg').append('svg')
                       .attr('id', 'svgMap')
                       .attr('width', (columns+1)*2*radius)
@@ -406,6 +407,11 @@ socket.on("drawMap", function(radius, lines, columns){
                            .attr('fill', 'rgba(181, 3, 3, 0.5)')
                            .attr('id', l+':'+c);
     }
+    d3.select('#svgMap').append('circle')
+                        .attr('cx', positionX)
+                        .attr('cy', positionY)
+                        .attr('r', 7)
+                        .attr('fill', 'rgb(53, 0, 0)');
    }
   }
 });
