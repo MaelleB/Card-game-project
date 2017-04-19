@@ -232,7 +232,7 @@ function rejoindrePartie() {
         $("input[name=player]").attr("disabled", "disabled");
         $("input[name=player]").val("");
         $("#hand").removeAttr("disabled");
-		
+
 		document.title = playerName + " - " + document.title;
 
         socket.emit("rejoindre", {"playerName": playerName});
@@ -385,7 +385,7 @@ function initCardActions(card, index){
 function showHand(){
 	for(let i=1; i<=MAX_HAND_CARDS-1; i++)
 		d3.select('#hand'+i).attr('xlink:href', '');
-	
+
 	if(localPlayer.hand.length){
 		var currentCard;
 		for(let i=1; i<localPlayer.hand.length; i++){
@@ -452,7 +452,7 @@ function modifyAll(stat,value){
     target = document.getElementById(targetValue+i);
     newValue=parseInt(target.innerHTML)+parseInt(value);
     if (newValue<0) newValue=0;
-    target.innerHTML=newValue;
+    // target.innerHTML=newValue;
     newValues.push(newValue);
   }
   socket.emit("modifyAll", {"targetStat":stat, "new_Values": newValues});
@@ -479,8 +479,12 @@ socket.on("discardCardAllClients",function(card){
 socket.on("drawnCard", function(card){
   console.log("appel a drawCard");
     if (card.type == "event"){
-
       executeStringFunction(card.action);
+      document.getElementById("take").style.visibility = "hidden";
+      $("#take").attr("disabled", "disabled");
+
+      document.getElementById("discard").style.visibility = "hidden";
+      $("#discard").attr("disabled", "disabled");
       socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 
     }

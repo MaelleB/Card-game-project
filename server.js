@@ -201,6 +201,8 @@ io.sockets.on("connection", function (socket) {
         console.log("player " + (i+1) +"attack"+ players[i].attack);
       }
     }
+    io.emit("etat", {"nbOfPlayers": nbOfPlayers, "players": players});
+
   });
   //Callback function upon calling modify
   socket.on("modify", function(new_data){
