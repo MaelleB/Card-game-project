@@ -1,7 +1,7 @@
 var socket,
   nbOfPlayers = 0, players = [],
   localPlayer = {"playerNum": -1},
-  map,
+  map,currentTile, currentPosX, currentPosY,
   MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and the array of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
 //Client connects to the server and sends state data
@@ -48,6 +48,11 @@ socket.on("mapLoaded", function(map_data){
   console.log("Map loaded");
   map = map_data;
   console.log(map);
+  currentTile = map[0][0];
+  currentPosX = 0;
+  currentPosY = 0;
+  document.getElementById("gameWindow")
+          .style.backgroundImage = "url("+currentTile.background+")";
   socket.emit("drawMap");
 });
 
@@ -133,6 +138,47 @@ socket.on("drawMap", function(radius, lines, columns){
   }
 });
 
+//Changes the current tile if its environment is the right one
+function changeTile(env){
+  if(currentTile.environment == env){
+    if(currentPosY > 0){
+      toDirection("up");
+    }
+    if(currentPosX < 5){
+      toDirection("right");
+    }
+    if(currentPosY < 4){
+      toDirection("down");
+    }
+  }
+  else{
+    console.log("Wrong environment - card cannot be used for this one");
+  }
+}
+
+function toDirection(direction){
+  var button = document.getElementById(direction).style.visibility = "visible",
+      newX = currentPosX, newY = currentPosY;
+  $(button).removeAttr("disabled");
+  $(button).on("click", function(){
+    if(direction == "up"){
+      newY--;
+    }
+    else if(direction == "right"){
+      newX++;
+    }
+    else{
+      newY++;
+    }
+    currentTile = map[newY][newX];
+    currentPosX = newX;
+    currentPosY = newY;
+    document.getElementById("gameWindow").style.backgroundImage = "url("+currentTile.background+")";
+    button.style.visibility = "hidden";
+    $(button).attr("disabled");
+  });
+}
+
 //Client receives state data from server and updates client-side data
 socket.on("etat", function(state_data) {
   console.log("Dans la réception d'état");
@@ -166,7 +212,7 @@ function checkPseudo(name, array){
 		if (regex.test(array[i])) return true;
 		i++;
 	}
-	
+
 	return false;
 }
 
