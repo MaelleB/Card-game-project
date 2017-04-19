@@ -143,9 +143,7 @@ io.sockets.on("connection", function (socket) {
   });
 
   socket.on("cardTaken", function(card_data){
-   console.log("length of hand before: " + players[card_data.playerNum].hand.length);
    players[card_data.playerNum].hand.push(card_data.card);
-   console.log("length of hand after: " + players[card_data.playerNum].hand.length);
    io.emit("discardCardAllClients", {});
   });
 

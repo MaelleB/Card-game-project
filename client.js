@@ -32,7 +32,7 @@ window.onload = function(){
      .attr('xlink:href', 'images/cardback.png')
      .on('click', null);
 
-  for(let i=1; i<=MAX_HAND_CARDS-1; i++){
+  for(let i=1; i<MAX_HAND_CARDS; i++){
     svg.append('svg:image')
        .attr('id','hand'+i)
        .attr('height', 150)
@@ -181,27 +181,22 @@ function toDirection(direction){
 
 //Client receives state data from server and updates client-side data
 socket.on("etat", function(state_data) {
-  console.log("Dans la réception d'état");
-
-  for (let d in state_data) {
-    console.log(d + " : " + state_data[d]);
-
-    if (d == "players"){
-      var pl = state_data[d];
-      if (pl.length){
-        for (let i=0; i<pl.length; i++){
-          console.log("player = " + pl[i].aliasName);
-          players.push(pl[i].aliasName);
-          document.getElementById("player"+i).innerHTML = pl[i].aliasName;
-          document.getElementById("attack"+i).innerHTML = pl[i].attack;
-          document.getElementById("defense"+i).innerHTML = pl[i].defense;
-        }
-      }
-    }
-    else{
-      window[d] = state_data[d];
-    }
-  }
+	for (let d in state_data) {
+		if (d == "players"){
+			var pl = state_data[d];
+			if (pl.length){
+				for (let i=0; i<pl.length; i++){
+					if (!players.includes(pl[i].aliasName))
+						players.push(pl[i].aliasName);
+					document.getElementById("player"+i).innerHTML = pl[i].aliasName;
+					document.getElementById("attack"+i).innerHTML = pl[i].attack;
+					document.getElementById("defense"+i).innerHTML = pl[i].defense;
+				}
+			}
+		}
+		else
+			window[d] = state_data[d];
+	}
 });
 
 function checkPseudo(name, array){
@@ -224,7 +219,6 @@ function rejoindrePartie() {
 
     if (nbOfPlayers < MAX_PLAYERS_NB) {
       if (playerName != "" && !checkPseudo(playerName, players)) {
-        console.log("Envoi de la connexion");
         localPlayer.playerNum = nbOfPlayers;
 
         $("#join").attr("disabled", "disabled");
@@ -251,7 +245,7 @@ function rejoindrePartie() {
   - Shows the player's name, attack and defense in the html page
 */
 socket.on("newPlayer", function(player_data) {
-  console.log("Du serveur : nouveau joueur");
+  console.log(player_data.playerName + " a rejoigné le jeu");
 
   players.push(player_data.playerName);
   localPlayer.aliasName = player_data.playerName;
@@ -278,7 +272,6 @@ socket.on("newPlayer", function(player_data) {
   - Else, disables it
 */
 socket.on("status", function(status_data){
-  console.log("En réception du statut de tour du joueur");
   localPlayer.status = status_data.playerStatus;
   showHand();
 
@@ -367,39 +360,58 @@ function useCard(){
 	showHand();
 }
 
+function tossCard(){
+	socket.emit("modifyCard", {playerNum: localPlayer.playerNum, card: this});
+	var indexCard = localPlayer.hand.indexOf(this);
+	localPlayer.hand.splice(indexCard, 1);
+	showHand();
+}
+
 function initCardActions(card, index){
-	var use_button = document.getElementById("use");
+	console.log("inside the initCardActions function");
+	console.log("index: " + index);
+	console.log("card type: " + card.type);
+	var use_button = document.getElementById("use"),
+		toss_button = document.getElementById("toss");
+	$("#toss").removeAttr("disabled");
+	$("#toss").off("click").on("click", function(){
+		card.toss();
+	});
+	card.toss = tossCard;
 	if (card.type == "usable"){
 		card.use = useCard;
-		$("#hand"+index).on("focus", function(){
-			use_button.style.visibility = "visible";
-			$("#use").removeAttr("disabled");
-			$("#use").off("click").on("click", function(){
-				card.use();
-			});
+		$("#use").removeAttr("disabled");
+		$("#use").off("click").on("click", function(){
+			card.use();
 		});
 	}
+	
+	$("#hand"+index).off("focus").on("focus", function(){
+		console.log("inside the focus event");
+		if (card.type == "usable")
+			use_button.style.visibility = "visible";
+		toss_button.style.visibility = "visible";
+	});
+	console.log("=================");
 }
 
 //Shows the active player's hand
 function showHand(){
-	for(let i=1; i<=MAX_HAND_CARDS-1; i++)
+	for(let i=1; i<MAX_HAND_CARDS; i++)
 		d3.select('#hand'+i).attr('xlink:href', '');
-
-	if(localPlayer.hand.length){
-		var currentCard;
-		for(let i=1; i<localPlayer.hand.length; i++){
-			currentCard = localPlayer.hand[i];
-			d3.select('#hand'+i)
-			.attr('xlink:href', currentCard.path)
-			.attr('x', i*100);
-			initCardActions(currentCard, i);
-			//handling focus event of current card
-			/*$("#hand"+i).off("blur").on("blur", function(){
-				use_button.style.visibility = "hidden";
-				$("#use").attr("disabled", "disabled");
-			});*/
-		}
+	
+	var currentCard;
+	for(let i=1; i<localPlayer.hand.length; i++){
+		currentCard = localPlayer.hand[i];
+		d3.select('#hand'+i)
+		.attr('xlink:href', currentCard.path)
+		.attr('x', i*100);
+		initCardActions(currentCard, i);
+		//handling focus event of current card
+		/*$("#hand"+i).off("blur").on("blur", function(){
+			use_button.style.visibility = "hidden";
+			$("#use").attr("disabled", "disabled");
+		});*/
 	}
 }
 
@@ -409,16 +421,8 @@ function showHand(){
 - Activates the next player's turn
 */
 function takeCard(card){
-  console.log(localPlayer.hand)
     localPlayer.hand.push(card);
-    console.log("the local player's hand has " + parseInt(localPlayer.hand.length-1) + " cards, which are:\n");
-    for (let i=1; i<localPlayer.hand.length; i++)
-      console.log("card " + i + ": " + localPlayer.hand[i].id + "\n");
-
-    socket.emit("cardTaken", { card: card,
-      playerNum: localPlayer.playerNum
-    }
-  );
+    socket.emit("cardTaken", {card: card, playerNum: localPlayer.playerNum});
 
     //Emits the signal to activate the next player's turn
     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
@@ -426,7 +430,7 @@ function takeCard(card){
 
 //Discards the card from the board when the discard button is clicked and activates the next player's turn
 function discardCard(){
-  socket.emit("cardDiscarded",{});
+  socket.emit("cardDiscarded");
   //Emits the signal to activate the next player's turn
   socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 }
@@ -446,13 +450,12 @@ function modify(stat,value){
 }
 
 function modifyAll(stat,value){
-  var newValue, targetValue, newValues=[];
+  var newValue, targetValue, target, newValues=[];
   targetValue = (stat==0) ? 'defense': 'attack';
   for (let i=0; i<players.length; i++){
     target = document.getElementById(targetValue+i);
     newValue=parseInt(target.innerHTML)+parseInt(value);
     if (newValue<0) newValue=0;
-    // target.innerHTML=newValue;
     newValues.push(newValue);
   }
   socket.emit("modifyAll", {"targetStat":stat, "new_Values": newValues});
@@ -477,7 +480,6 @@ socket.on("discardCardAllClients",function(card){
 });
 //Shows the active player's drawn card
 socket.on("drawnCard", function(card){
-  console.log("appel a drawCard");
     if (card.type == "event"){
       executeStringFunction(card.action);
       document.getElementById("take").style.visibility = "hidden";
