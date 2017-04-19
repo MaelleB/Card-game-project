@@ -6,7 +6,7 @@ var socket,
 
 //Client connects to the server and sends state data
 socket = io("http://localhost:8888");
-socket.emit("etat", {});
+socket.emit("etat");
 
 window.onload = function(){
   socket.emit("loadMap");
@@ -15,8 +15,6 @@ window.onload = function(){
               .append('svg')
               .attr('width', 900)
               .attr('height', 650);
-
-  //createMapHexagons(20, 5, 6);
 
   var drawn_card = svg.append('svg:image')
                       .attr('id', 'drawnCard')
@@ -34,7 +32,7 @@ window.onload = function(){
      .attr('xlink:href', 'images/cardback.png')
      .on('click', null);
 
-  for(let i=1; i<=5; i++){
+  for(let i=1; i<=MAX_HAND_CARDS-1; i++){
     svg.append('svg:image')
        .attr('id','hand'+i)
        .attr('height', 150)
@@ -188,6 +186,8 @@ function rejoindrePartie() {
         $("input[name=player]").attr("disabled", "disabled");
         $("input[name=player]").val("");
         $("#hand").removeAttr("disabled");
+		
+		document.title = playerName + " - " + document.title;
 
         socket.emit("rejoindre", {"playerName": playerName});
       }
@@ -309,22 +309,52 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
 
 //Activates the server-side card drawing phase when the card stack is clicked
 function drawCardClient(){
-  socket.emit("drawCard");
+	socket.emit("drawCard");
+}
+
+function useCard(){
+	executeStringFunction(this.action);
+	console.log("playerNum : " + localPlayer.playerNum);
+	socket.emit("modifyCard", {playerNum: localPlayer.playerNum, card: this});
+	var indexCard = localPlayer.hand.indexOf(this);
+	localPlayer.hand.splice(indexCard, 1);
+	showHand();
+}
+
+function initCardActions(card, index){
+	var use_button = document.getElementById("use");
+	if (card.type == "usable"){
+		card.use = useCard;
+		$("#hand"+index).on("focus", function(){
+			use_button.style.visibility = "visible";
+			$("#use").removeAttr("disabled");
+			$("#use").off("click").on("click", function(){
+				card.use();
+			});
+		});
+	}
 }
 
 //Shows the active player's hand
 function showHand(){
-  if(localPlayer.hand.length > 0){
-    var currentCard;
-    if(localPlayer.hand.length){
-      for(let i=1; i<localPlayer.hand.length; i++){
-        currentCard = localPlayer.hand[i];
-        d3.select('#hand'+i)
-          .attr('xlink:href', currentCard.path)
-          .attr('x', i*100);
-      }
-    }
-  }
+	for(let i=1; i<=MAX_HAND_CARDS-1; i++)
+		d3.select('#hand'+i).attr('xlink:href', '');
+	
+	if(localPlayer.hand.length){
+		var currentCard;
+		for(let i=1; i<localPlayer.hand.length; i++){
+			currentCard = localPlayer.hand[i];
+			d3.select('#hand'+i)
+			.attr('xlink:href', currentCard.path)
+			.attr('x', i*100);
+			initCardActions(currentCard, i);
+			//handling focus event of current card
+			/*$("#hand"+i).off("blur").on("blur", function(){
+				use_button.style.visibility = "hidden";
+				$("#use").attr("disabled", "disabled");
+			});*/
+		}
+	}
 }
 
 /*
@@ -334,7 +364,6 @@ function showHand(){
 */
 function takeCard(card){
   console.log(localPlayer.hand)
-   console.log("appel a take");
     localPlayer.hand.push(card);
     console.log("the local player's hand has " + parseInt(localPlayer.hand.length-1) + " cards, which are:\n");
     for (let i=1; i<localPlayer.hand.length; i++)
@@ -358,7 +387,7 @@ function discardCard(){
 
 function modify(stat,value){
   console.log(localPlayer.playerNum);
-  var target, newValue,lol;
+  var target, newValue, lol;
   lol=(stat==0) ? 'defense'+localPlayer.playerNum :'attack'+localPlayer.playerNum;
   target= document.getElementById(lol);
   newValue=parseInt(target.innerHTML)+parseInt(value);
@@ -369,9 +398,10 @@ function modify(stat,value){
     {"targetStat":stat, "newValue": newValue, "playerNum":localPlayer.playerNum}
   );
 }
+
 function modifyAll(stat,value){
-  var  newValue,targetValue,newValues=[];
-  targetValue= (stat==0) ? 'defense': 'attack';
+  var newValue, targetValue, newValues=[];
+  targetValue = (stat==0) ? 'defense': 'attack';
   for (let i=0; i<players.length; i++){
     target = document.getElementById(targetValue+i);
     newValue=parseInt(target.innerHTML)+parseInt(value);
@@ -408,8 +438,6 @@ socket.on("drawnCard", function(card){
       socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
 
     }
-
-
     else {
       d3.select('#cardsPile')
       .on('click', null);

@@ -48,7 +48,7 @@ io.sockets.on("connection", function (socket) {
   });
 
   //Sending server-side state data to client upon connection
-  socket.on("etat", function(player_data) {
+  socket.on("etat", function() {
     var state_data = {"nbOfPlayers": nbOfPlayers, "players": players};
     io.emit("etat", state_data);
   });
@@ -178,7 +178,12 @@ io.sockets.on("connection", function (socket) {
       });
   });
 
-
+	//Callback function upon calling modifyCard
+	socket.on("modifyCard", function(card_data){
+		var indexPlayer = card_data.playerNum,
+			indexCard = players[indexPlayer].hand.indexOf(card_data.card);
+		players[indexPlayer].hand.splice(indexCard, 1);
+	});
 
   //Callback function upon calling modifyAll
   socket.on("modifyAll", function(new_data){
@@ -211,6 +216,6 @@ io.sockets.on("connection", function (socket) {
         players[num].attack = new_data["newValue"];
         console.log("player " + num + " attack: " + players[num].attack);
       }
-
+	  io.emit("etat", {"nbOfPlayers": nbOfPlayers, "players": players});
   });
 });

@@ -10,7 +10,7 @@
 		"id": "crystal_pool",
 		"type": "event",
 		"category": "",
-		"path": "images/cards/crystal_pool.png",
+		"path": "images/cards/crystalpool.png",
 		"action": "modifyAll(1, 2)"
 	},
 	{
