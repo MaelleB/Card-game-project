@@ -1,7 +1,7 @@
 var socket,
   nbOfPlayers = 0, players = [],
   localPlayer = {"playerNum": -1},
-  map,
+  map,currentTile,
   MAX_PLAYERS_NB = 5, MAX_EQUIPPED_CARDS = 4, MAX_HAND_CARDS = 6; //5 cards and the array of equipped cards which can contain at most MAX_EQUIPPED_CARDS
 
 //Client connects to the server and sends state data
@@ -50,6 +50,9 @@ socket.on("mapLoaded", function(map_data){
   console.log("Map loaded");
   map = map_data;
   console.log(map);
+  currentTile = map[0][0];
+  document.getElementById("gameWindow")
+          .style.backgroundImage = "url("+currentTile.background+")";
   socket.emit("drawMap");
 });
 
@@ -168,7 +171,7 @@ function checkPseudo(name, array){
 		if (regex.test(array[i])) return true;
 		i++;
 	}
-	
+
 	return false;
 }
 
