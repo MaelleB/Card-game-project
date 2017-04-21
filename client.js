@@ -32,6 +32,21 @@ window.onload = function(){
      .attr('xlink:href', 'images/cardback.png')
      .on('click', null);
 
+  d3.selection.prototype.moveToFront = function() {
+    return this.each(function(){
+      this.parentNode.appendChild(this);
+    });
+  }
+
+  d3.selection.prototype.moveToBack = function() {
+    return this.each(function() {
+      var firstChild = this.parentNode.firstChild;
+      if (firstChild) {
+        this.parentNode.insertBefore(this, firstChild);
+      }
+    });
+  }
+
   for(let i=1; i<MAX_HAND_CARDS; i++){
     svg.append('svg:image')
        .attr('id','hand'+i)
@@ -39,7 +54,21 @@ window.onload = function(){
        .attr('width', 100)
        .attr('x', 300)
        .attr('y', 490)
-       .attr('xlink:href', '');
+       .attr('xlink:href', '')
+       .on('mouseover', function(){
+         d3.select(this)
+           .attr('height', 250)
+           .attr('width', 166)
+           .attr('y', 410)
+           .moveToFront();
+       })
+       .on('mouseout', function(){
+         d3.select(this)
+           .attr('height', 150)
+           .attr('width', 100)
+           .attr('y', 490)
+           .moveToBack();
+       });
   }
 }
 
