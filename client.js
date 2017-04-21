@@ -385,7 +385,7 @@ function initCardActions(card, index){
 			card.use();
 		});
 	}
-	
+
 	$("#hand"+index).off("focus").on("focus", function(){
 		console.log("inside the focus event");
 		if (card.type == "usable")
@@ -399,13 +399,13 @@ function initCardActions(card, index){
 function showHand(){
 	for(let i=1; i<MAX_HAND_CARDS; i++)
 		d3.select('#hand'+i).attr('xlink:href', '');
-	
+
 	var currentCard;
 	for(let i=1; i<localPlayer.hand.length; i++){
 		currentCard = localPlayer.hand[i];
 		d3.select('#hand'+i)
 		.attr('xlink:href', currentCard.path)
-		.attr('x', i*100);
+    .attr('x', i*(900/(2*localPlayer.hand.length))+200);
 		initCardActions(currentCard, i);
 		//handling focus event of current card
 		/*$("#hand"+i).off("blur").on("blur", function(){
