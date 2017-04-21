@@ -434,7 +434,7 @@ function showHand(){
 		currentCard = localPlayer.hand[i];
 		d3.select('#hand'+i)
 		.attr('xlink:href', currentCard.path)
-    .attr('x', i*(900/(2*localPlayer.hand.length))+200);
+    .attr('x', i*(900/(2*localPlayer.hand.length)+30)+160);
 		initCardActions(currentCard, i);
 		//handling focus event of current card
 		/*$("#hand"+i).off("blur").on("blur", function(){
