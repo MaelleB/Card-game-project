@@ -141,14 +141,14 @@ socket.on("drawMap", function(radius, lines, columns){
         d3.select('#svgMap').append('path')
                             .attr('d', d)
                             .attr('stroke', 'black')
-                            .attr('fill', 'rgba(6, 169, 11, 0.5)')
+                            .attr('fill', 'rgba(77, 209, 63, 0.5)')
                             .attr('id', l+':'+c);
      }
      if(map[l][c].environment == "forest"){
        d3.select('#svgMap').append('path')
                            .attr('d', d)
                            .attr('stroke', 'black')
-                           .attr('fill', 'rgba(77, 209, 63, 0.5)')
+                           .attr('fill', 'rgba(6, 169, 11, 0.5)')
                            .attr('id', l+':'+c);
      }
      if(map[l][c].environment == "encounter"){
@@ -186,8 +186,9 @@ function changeTile(env){
 }
 
 function toDirection(direction){
-  var button = document.getElementById(direction).style.visibility = "visible",
+  var button = document.getElementById(direction),
       newX = currentPosX, newY = currentPosY;
+  button.style.visibility = "visible";
   $(button).removeAttr("disabled");
   $(button).on("click", function(){
     if(direction == "up"){
@@ -205,7 +206,16 @@ function toDirection(direction){
     document.getElementById("gameWindow").style.backgroundImage = "url("+currentTile.background+")";
     button.style.visibility = "hidden";
     $(button).attr("disabled");
+    disablesDirection("up");
+    disablesDirection("down");
+    disablesDirection("right");
   });
+}
+
+function disablesDirection(direction){
+  var button = document.getElementById(direction)
+  button.style.visibility = "hidden";
+  $(button).attr("disabled");
 }
 
 //Client receives state data from server and updates client-side data
