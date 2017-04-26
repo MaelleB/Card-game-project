@@ -37,14 +37,14 @@ io.sockets.on("connection", function (socket) {
             }
             map[(mapAux[i].id).charAt(0)][(mapAux[i].id).charAt(2)] = mapAux[i];
           }
-          io.emit("mapLoaded", map);
+          socket.emit("mapLoaded", map);
         }
       });
     });
   });
 
   socket.on("drawMap", function(){
-    io.emit("drawMap", 20, 5, 6);
+    socket.emit("drawMap", 20, 5, 6);
   });
 
   //Sending server-side state data to client upon connection

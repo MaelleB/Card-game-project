@@ -219,7 +219,7 @@ function toDirection(direction){
   button.style.visibility = "visible";
   $(button).removeAttr("disabled");
   $(button).on("click", function(){
-    socket.emit("changeTile", direction)
+    socket.emit("changeTile", direction);
     button.style.visibility = "hidden";
     $(button).attr("disabled");
     disablesDirection("up");
