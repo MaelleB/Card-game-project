@@ -376,7 +376,7 @@ socket.on("status", function(status_data){
 //Quitting the game by clicking on a button
 function quitterPartie() {
   console.log("Dans quitterPartie");
-
+  endCount();
   if (localPlayer.playerNum > -1) {
     console.log("Suppression du joueur n." + localPlayer.playerNum);
 
@@ -497,10 +497,10 @@ function showHand(){
 function takeCard(card){
     localPlayer.hand.push(card);
     socket.emit("cardTaken", {card: card, playerNum: localPlayer.playerNum});
+    endCount();
 
     //Emits the signal to activate the next player's turn
     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
-    endCount();
 
 }
 
