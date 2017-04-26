@@ -62,6 +62,8 @@ io.sockets.on("connection", function (socket) {
     this.hand = h;
   }
 
+
+
   /*
   Creating a new player:
     - Adding the player to the players array
@@ -77,6 +79,7 @@ io.sockets.on("connection", function (socket) {
 
     var nPlayer = new Player(playerName, BASIC_ATTACK, BASIC_DEFENSE, turnStatus, [[]]);
     players.push(nPlayer);
+
     io.emit("newPlayer",
       {
         "playerNum": nbOfPlayers,
@@ -85,11 +88,13 @@ io.sockets.on("connection", function (socket) {
         "playerDefense": nPlayer.defense
       });
 
+      console.log("appel de status chez rejoindre");
     io.emit("status",
       {"playerStatus": turnStatus,
         "playerNum": nbOfPlayers,
        "playerName": playerName
       });
+
 
    nbOfPlayers++;
   });
@@ -153,6 +158,7 @@ io.sockets.on("connection", function (socket) {
 
   //Calls function to draw card and activates next player's turn
   socket.on("playerTurn", function(player_data){
+    console.log("passage de tour");
     var num;
 
     if (player_data.playerNum == nbOfPlayers-1)

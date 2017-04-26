@@ -1,4 +1,4 @@
-var socket,
+var socket,timeCount,
   nbOfPlayers = 0, players = [],
   localPlayer = {"playerNum": -1},
   map,currentTile, currentPosX, currentPosY,
@@ -274,7 +274,7 @@ function rejoindrePartie() {
   - Shows the player's name, attack and defense in the html page
 */
 socket.on("newPlayer", function(player_data) {
-  console.log(player_data.playerName + " a rejoigné le jeu");
+  console.log(player_data.playerName + " a rejoint le jeu");
 
   players.push(player_data.playerName);
   localPlayer.aliasName = player_data.playerName;
@@ -294,6 +294,18 @@ socket.on("newPlayer", function(player_data) {
   nbOfPlayers++;
 });
 
+function beginCount(){
+   timeCount= setTimeout(function(){
+     console.log("passage automatique");
+     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+     endCount();
+   },15000);
+}
+
+function endCount(){
+  clearTimeout(timeCount);
+}
+
 /*
   Receiving the player's turn status:
   - If it's the local player's turn, enables the onClick event on the pile to
@@ -304,12 +316,18 @@ socket.on("status", function(status_data){
   localPlayer.status = status_data.playerStatus;
   showHand();
 
-  if(status_data.playerStatus == 1){
-    console.log("Tour du joueur " + status_data.playerName);
+    if(status_data.playerStatus == 1){
+      console.log("Tour du joueur " + status_data.playerName);
+      // For testing purposes it's actually 15 secondes
+      console.log(status_data.playerName+" a 2 minutes pour jouer");
 
-    if(status_data.playerNum == localPlayer.playerNum)
-      d3.select('#cardsPile')
-        .on('click', drawCardClient);
+
+      if(status_data.playerNum == localPlayer.playerNum){
+        d3.select('#cardsPile')
+          .on('click', drawCardClient);
+        beginCount();
+      }
+
 
 
   }
@@ -327,6 +345,7 @@ socket.on("status", function(status_data){
 
   }
 });
+
 
 //Quitting the game by clicking on a button
 function quitterPartie() {
@@ -397,8 +416,8 @@ function tossCard(){
 }
 
 function initCardActions(card, index){
-	console.log("inside the initCardActions function");
-	console.log("index: " + index);
+	/*console.log("inside the initCardActions function");
+	console.log("index: " + index);*/
 	console.log("card type: " + card.type);
 	var use_button = document.getElementById("use"),
 		toss_button = document.getElementById("toss");
@@ -421,7 +440,7 @@ function initCardActions(card, index){
 			use_button.style.visibility = "visible";
 		toss_button.style.visibility = "visible";
 	});
-	console.log("=================");
+	//console.log("=================");
 }
 
 //Shows the active player's hand
@@ -455,6 +474,8 @@ function takeCard(card){
 
     //Emits the signal to activate the next player's turn
     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+    endCount();
+
 }
 
 //Discards the card from the board when the discard button is clicked and activates the next player's turn
@@ -462,6 +483,7 @@ function discardCard(){
   socket.emit("cardDiscarded");
   //Emits the signal to activate the next player's turn
   socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+  endCount();
 }
 
 function modify(stat,value){
@@ -517,6 +539,7 @@ socket.on("drawnCard", function(card){
       document.getElementById("discard").style.visibility = "hidden";
       $("#discard").attr("disabled", "disabled");
       socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+      endCount();
 
     }
     else {
