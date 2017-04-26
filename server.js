@@ -224,4 +224,8 @@ io.sockets.on("connection", function (socket) {
       }
 	  io.emit("etat", {"nbOfPlayers": nbOfPlayers, "players": players});
   });
+
+  socket.on("changeTile", function(direction){
+    io.emit("changeMapTile", direction);
+  });
 });

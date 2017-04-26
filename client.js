@@ -101,8 +101,9 @@ function createHexagon(radius){
 // Creates the hexagons composing the map
 //function createMapHexagons(radius, lines, columns){
 socket.on("drawMap", function(radius, lines, columns){
+  console.log("Dans drawMap");
   var dist = radius - (Math.sin(Math.PI/3)*radius),
-      positionX = 17, positionY = 20;
+      positionX = 18, positionY = 20;
   d3.select('svg').append('svg')
                       .attr('id', 'svgMap')
                       .attr('width', (columns+1)*2*radius)
@@ -141,14 +142,14 @@ socket.on("drawMap", function(radius, lines, columns){
         d3.select('#svgMap').append('path')
                             .attr('d', d)
                             .attr('stroke', 'black')
-                            .attr('fill', 'rgba(6, 169, 11, 0.5)')
+                            .attr('fill', 'rgba(77, 209, 63, 0.5)')
                             .attr('id', l+':'+c);
      }
      if(map[l][c].environment == "forest"){
        d3.select('#svgMap').append('path')
                            .attr('d', d)
                            .attr('stroke', 'black')
-                           .attr('fill', 'rgba(77, 209, 63, 0.5)')
+                           .attr('fill', 'rgba(6, 169, 11, 0.5)')
                            .attr('id', l+':'+c);
      }
      if(map[l][c].environment == "encounter"){
@@ -158,13 +159,14 @@ socket.on("drawMap", function(radius, lines, columns){
                            .attr('fill', 'rgba(181, 3, 3, 0.5)')
                            .attr('id', l+':'+c);
     }
-    d3.select('#svgMap').append('circle')
-                        .attr('cx', positionX)
-                        .attr('cy', positionY)
-                        .attr('r', 7)
-                        .attr('fill', 'rgb(53, 0, 0)');
-   }
   }
+}
+  d3.select('#svgMap').append('circle')
+                  .attr('id', 'positionMarker')
+                  .attr('cx', positionX)
+                  .attr('cy', positionY)
+                  .attr('r', 7)
+                  .attr('fill', 'rgb(53, 0, 0)');
 });
 
 //Changes the current tile if its environment is the right one
@@ -185,27 +187,51 @@ function changeTile(env){
   }
 }
 
+socket.on("changeMapTile", function(direction) {
+  var newX = currentPosX, newY = currentPosY;
+  if(direction == "up"){
+    newY--;
+    d3.select("#positionMarker").node().cx.baseVal.value += 17;
+    d3.select("#positionMarker").node().cy.baseVal.value -= 30;
+  }
+  else if(direction == "right"){
+    newX++;
+    d3.select("#positionMarker").node().cx.baseVal.value += 34;
+  }
+  else{
+    newY++;
+    d3.select("#positionMarker").node().cx.baseVal.value += 17;
+    d3.select("#positionMarker").node().cy.baseVal.value += 30;
+  }
+  currentTile = map[newY][newX];
+  currentPosX = newX;
+  currentPosY = newY;
+  document.getElementById("gameWindow").style.backgroundImage = "url("+currentTile.background+")";
+  if(localPlayer.status != 1){
+    disablesDirection("up");
+    disablesDirection("down");
+    disablesDirection("right");
+  }
+})
+
 function toDirection(direction){
-  var button = document.getElementById(direction).style.visibility = "visible",
-      newX = currentPosX, newY = currentPosY;
+  var button = document.getElementById(direction);
+  button.style.visibility = "visible";
   $(button).removeAttr("disabled");
   $(button).on("click", function(){
-    if(direction == "up"){
-      newY--;
-    }
-    else if(direction == "right"){
-      newX++;
-    }
-    else{
-      newY++;
-    }
-    currentTile = map[newY][newX];
-    currentPosX = newX;
-    currentPosY = newY;
-    document.getElementById("gameWindow").style.backgroundImage = "url("+currentTile.background+")";
+    socket.emit("changeTile", direction)
     button.style.visibility = "hidden";
     $(button).attr("disabled");
+    disablesDirection("up");
+    disablesDirection("down");
+    disablesDirection("right");
   });
+}
+
+function disablesDirection(direction){
+  var button = document.getElementById(direction)
+  button.style.visibility = "hidden";
+  $(button).attr("disabled");
 }
 
 //Client receives state data from server and updates client-side data

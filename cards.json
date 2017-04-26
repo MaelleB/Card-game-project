@@ -53,20 +53,20 @@
 		"type": "usable",
 		"category": "movement",
 		"path": "images/cards/plank.png",
-		"action": "changeTile('river')"
+		"action": "changeTile(river)"
 	},
 	{
 		"id": "compass",
 		"type": "usable",
 		"category": "movement",
 		"path": "images/cards/compass.png",
-		"action": "changeTile('forest')"
+		"action": "changeTile(forest)"
 	},
 	{
 		"id": "tp_crystal",
 		"type": "usable",
 		"category": "movement",
 		"path": "images/cards/tp_crystal.png",
-		"action": "changeTile('plain')"
+		"action": "changeTile(plain)"
 	}
 ]
