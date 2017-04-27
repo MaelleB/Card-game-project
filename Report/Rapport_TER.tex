@@ -89,12 +89,13 @@
     
     \section{Maquette graphique}
     
-    Afin de visualiser le rendu de notre jeu et avoir une référence lors du code de l'affichage, nous avons réalisé une maquette graphique de notre programme (voir figure 2.1). Les illustrations n'étant pas encore réalisées à cette étape, nous avons utilisé d'autres dessins d'une artiste collaborant avec nous. Le but de cette maquette n'étant pas de définir l'aspect final mais l'emplacement des objets, elle est minimaliste et le rendu final du jeu devait être plus esthétique.\\[1.5cm]
+    Afin de visualiser le rendu de notre jeu et avoir une référence lors du code de l'affichage, nous avons réalisé une maquette graphique de notre programme (voir figure \ref{fig:maquette}). Les illustrations n'étant pas encore réalisées à cette étape, nous avons utilisé d'autres dessins d'une artiste collaborant avec nous. Le but de cette maquette n'étant pas de définir l'aspect final mais l'emplacement des objets, elle est minimaliste et le rendu final du jeu devait être plus esthétique.\\[1.5cm]
     
     \begin{figure}[h!]
     	\centering
 	    \includegraphics[scale=2.8]{mock-up.png}
 	    \caption{Maquette graphique du jeu.}
+	    \label{fig:maquette}
     \end{figure}
 
     
@@ -112,7 +113,35 @@
         
         \subsection{Réalisation des images}
         
+        Afin d'obtenir un rendu esthétique pour le jeu, nous avons créé des illustrations avec l'aide des illustrateurs avec lesquels nous avons collaboré. Ceux-ci se sont chargés de faire les fonds pour les environnements plaine et rivière, ainsi que les deux épées présentes sur les cartes du jeu. 
+        
+        \begin{figure}[h!]
+	       	\centering
+           	\includegraphics[scale=0.4]{cards.png}
+           	\caption{Exemple de cartes crées ainsi que le fond du site.}
+           	\label{fig:cartes}
+        \end{figure}
+        
+        Nous nous sommes chargés de réaliser, à l'aide d'un logiciel de dessin assisté, les autres illustrations pour les cartes, les éléments de décoration des cartes (gemme indiquant le type, symboles d'attaque et de défense, effets visuels. Voir figure \ref{fig:cartes}), le fond pour l'environnement "forêt", le dos de carte pour la pile, ainsi que les autres éléments décoratifs du site (texture de bois, fond).
+        
+        Chaque illustration nous a demandé plusieurs heures de travail, et il était prévu que nos collaborateurs réalisent la majeure partie des graphismes. Cependant, par manque de temps de leur part, nous avons dû investir plus de temps que prévu dans cette partie du projet. 
+        
+        
         \subsection{Affichage graphique en JavaScript}
+        
+        Pour afficher les différents éléments du jeu (cartes de jeu, pile, carte de la zone) nous avons utilisé la bibliothèque D3. Celle-ci permet de manipuler des éléments SVG (Scalable Vector Graphics, format d'images vectorielles). 
+        
+        Nous avons créé une zone SVG recouvrant toute la partie du site dédiée au jeu, de la manière suivante :
+        
+        \begin{verbatim}
+        var svg = d3.select('#svgWin')
+                    .append('svg')
+                    .attr('width', 900)
+                    .attr('height', 650);
+        \end{verbatim}
+        
+        Ici, 'svgWin' désigne la balise html <div> ayant pour attribut "id = 'svgWin' ". La fonction append('svg') permet de créer un élément SVG fils de "svgWin". Nous lui attribuons ensuite une largeur et une hauteur correspondant à la taille de la zone dédiée au jeu. Nous avons procédé de la même manière pour les images, avec des objets de type "svg:image", en y ajoutant les attributs "x" et "y" pour la position dans la zone SVG. 
+        
     
 \chapter{Manuel d'utilisation}
 
