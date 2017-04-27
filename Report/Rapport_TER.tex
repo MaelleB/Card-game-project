@@ -46,11 +46,7 @@
 			
 			\vfill
 				
-			\includegraphics[scale=0.3]{logo-fds.jpg}~
-			%\includegraphics[scale=1]{logo-figure.jpg}~
-				
-				
-				%The Wayfarers of Nutivik
+			\includegraphics[scale=0.3]{logo-fds.jpg}~	
 				
 		\end{center}
 	\end{titlepage}
@@ -63,8 +59,23 @@
     \section*{Présentation du jeu}
     \addcontentsline{toc}{section}{Présentation du jeu}
     
+    Les Voyageurs de Kaeraly est un jeu de cartes coopératif en ligne. Le but des joueurs est de tuer le Loup Alpha. Pour cela, il leur faudra traverser différentes zones (forêt, rivière, plaine) à l'aide d'objets trouvés aléatoirement lors de leur voyage, équiper de l'armure ou des armes, et utiliser des potions afin d'améliorer leurs statistiques d'attaque et de défense. 
+    
+    
+    Inspiré des jeux de rôle sur table ainsi que des jeux de société tels que le Munchkin, nous avons eu l'idée de créer ce jeu en collaboration avec des illustrateurs venant de Suisse, de Roumanie et des Pays Bas, afin de partager l'expérience d'un jeu de société à distance, tout en ayant l'opportunité de s'améliorer dans nos domaines respectifs (graphisme et développement informatique). Ce projet faisant appel à de nombreuses technologies informatiques, nous avons décidé d'en faire notre projet universitaire de deuxième année de licence.
+    
     \section*{Cahier des charges}
     \addcontentsline{toc}{section}{Cahier des charges}
+    
+    Afin de réaliser ce projet, nous devions utiliser le langage JavaScript (langage de programmation Web), avec notamment la bibliothèque D3 pour le graphisme, ainsi que Node.js (plateforme logicielle et événementielle légère en JavaScript, permettant de mettre des réseaux en place) et les WebSockets (technologie permettant la communication interactive entre un navigateur (client) et un serveur) pour l'architecture client-serveur. 
+    
+    
+    Il nous fallait également mettre en place un système de tour par tour afin que les joueurs ne puissent interagir avec les cartes que lorsque leur tour est activé. Le jeu étant multijoueurs, il nous fallait également intégrer le passage automatique du tour si un joueur s'absente pendant trop longtemps. 
+    
+    
+    Afin de rendre le jeu le plus dynamique et ergonomique possible, nous devions mettre en place l'interaction avec les cartes optimale : pouvoir cliquer directement sur la pile pour tirer une carte, pouvoir sélectionner dans la main la carte que l'on souhaite utiliser, etc. 
+    
+    Enfin, nous avions besoin de créer et gérer une base de données afin de stocker toutes les cartes du jeu.
     
 \chapter{Organisation du projet}
 
