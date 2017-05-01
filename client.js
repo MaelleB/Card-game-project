@@ -626,29 +626,26 @@ function tossCard(){
 
 //initialises card at index in hand with functions (use, toss, etc..)
 function initCardActions(card, index){
-	var use_button = document.getElementById("use"),
-    toss_button = document.getElementById("toss");
-
-  $("#toss").removeAttr("disabled");
-	$("#toss").off("click").on("click", function(){
-		card.toss();
-	});
-
-	card.toss = tossCard;
+  card.toss = tossCard;
 
   if (card.type == "usable"){
 		card.use = useCard;
-		$("#use").removeAttr("disabled");
-
-    $("#use").off("click").on("click", function(){
-			card.use();
-		});
 	}
 
-	$("#hand"+index).off("focus").on("focus", function(){
-		console.log("inside the focus event");
-		if (card.type == "usable")
-			use_button.style.visibility = "visible";
-		toss_button.style.visibility = "visible";
+	$("#hand"+index).off("focus").on("focus", function(e){
+    $(e.currentTarget).off("keydown").on("keydown", function(ev){
+      switch(ev.keyCode){
+        case 117: // "u" key
+        case 85: // "U" key
+          if (card.type == "usable")
+            card.use();
+          break;
+
+        case 116: // "t" key
+        case 84: // "T" key
+          card.toss();
+        default: return;
+      }
+    });
 	});
 }
