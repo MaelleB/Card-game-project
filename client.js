@@ -497,10 +497,12 @@ function showHand(){
 	var currentCard;
 	for(let i=0; i<localPlayer.hand.length; i++){
     currentCard = localPlayer.hand[i];
-		d3.select('#hand'+i)
-		  .attr('xlink:href', currentCard.path)
-      .attr('x', i*(900/(2*localPlayer.hand.length)+30)+160);
-		initCardActions(currentCard, i);
+    if (!currentCard.isEquipped){
+      d3.select('#hand'+i)
+  		  .attr('xlink:href', currentCard.path)
+        .attr('x', i*(900/(2*localPlayer.hand.length)+30)+160);
+  		initCardActions(currentCard, i);
+    }
 		//handling focus event of current card
 		/*$("#hand"+i).off("blur").on("blur", function(){
 			use_button.style.visibility = "hidden";
@@ -525,6 +527,7 @@ socket.on("discardCardAllClients",function(card){
 - activates the next player's turn
 */
 function takeCard(card){
+  card.isEquipped = false;
   localPlayer.hand.push(card);
   socket.emit("cardTaken", {card: card, playerNum: localPlayer.playerNum});
   endCount();
@@ -558,8 +561,6 @@ function executeStringFunction(func_string){
 
 //modifies statistics of localPlayer
 function modify(stat, value){
-  console.log(localPlayer.playerNum);
-
   var target, newValue, statString;
   statString = (stat==0)? 'defense'+localPlayer.playerNum : 'attack'+localPlayer.playerNum;
   target = document.getElementById(statString);
@@ -595,55 +596,69 @@ function modifyAll(stat, value){
   });
 }
 
-//uses card (of type usable); = card.use()
-function useCard(){
-	executeStringFunction(this.action);
-	console.log("playerNum : " + localPlayer.playerNum);
-
+//uses card (of type usable)
+function useCard(card){
+	executeStringFunction(card.action);
   socket.emit("modifyCard",
   {
     playerNum: localPlayer.playerNum,
-    card: this
+    card: card,
+    functionName: "use"
   });
 
-	var indexCard = localPlayer.hand.indexOf(this);
+	var indexCard = localPlayer.hand.indexOf(card);
 	localPlayer.hand.splice(indexCard, 1);
 	showHand();
 }
 
-//tosses card; = card.toss()
-function tossCard(){
-	socket.emit("modifyCard",
+//tosses card (of any type)
+function tossCard(card){
+  socket.emit("modifyCard",
   {
     playerNum: localPlayer.playerNum,
-    card: this
+    card: card,
+    functionName: "toss"
   });
 
-	var indexCard = localPlayer.hand.indexOf(this);
+	var indexCard = localPlayer.hand.indexOf(card);
 	localPlayer.hand.splice(indexCard, 1);
 	showHand();
+}
+
+//equips card (of type wearable)
+function equipCard(card){
+  executeStringFunction(card.action);
+  socket.emit("modifyCard",
+  {
+    playerNum: localPlayer.playerNum,
+    card: card,
+    functionName: "equip"
+  });
+  card.isEquipped = true;
+  showHand();
 }
 
 //initialises card at index in hand with functions (use, toss, etc..)
 function initCardActions(card, index){
-  card.toss = tossCard;
-
-  if (card.type == "usable"){
-		card.use = useCard;
-	}
 
 	$("#hand"+index).off("focus").on("focus", function(e){
-    $(e.currentTarget).off("keydown").on("keydown", function(ev){
+    $(e.currentTarget).off("keypress").on("keypress", function(ev){
       switch(ev.keyCode){
         case 117: // "u" key
         case 85: // "U" key
           if (card.type == "usable")
-            card.use();
+            useCard(card);
           break;
 
         case 116: // "t" key
         case 84: // "T" key
-          card.toss();
+          tossCard(card);
+          break;
+
+        case 101: // "e" key
+          if (card.type == "wearable")
+            equipCard(card);
+          break;
         default: return;
       }
     });

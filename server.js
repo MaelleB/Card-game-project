@@ -210,11 +210,25 @@ io.sockets.on("connection", function (socket) {
     io.emit("discardCardAllClients");
   });
 
-	//modifies card upon use/toss functions (client-side) firing
+
+  //returns the index of a card in a hand
+  function indexCard(hand, card){
+    for (var i=0; i<hand.length; i++)
+      if (JSON.stringify(hand[i]) == JSON.stringify(card))
+        return i;
+    return -1;
+  }
+
+  //modifies card upon use/toss functions (client-side) firing
 	socket.on("modifyCard", function(card_data){
 		var indexPlayer = card_data.playerNum,
-			indexCard = players[indexPlayer].hand.indexOf(card_data.card);
-		players[indexPlayer].hand.splice(indexCard, 1);
+      hand = players[indexPlayer].hand;
+			indexC = indexCard(hand, card_data.card);
+
+    if (card_data.functionName == "use" || card_data.functionName == "toss")
+      players[indexPlayer].hand.splice(indexC, 1);
+    else
+      players[indexPlayer].hand[indexC].isEquipped = true;
 	});
 
   //modifies statistics of concerned player
@@ -247,7 +261,7 @@ io.sockets.on("connection", function (socket) {
     if(target==0){
       for (var i=0; i<players.length; i++){
         players[i].defense  = new_data['new_Values'][i];
-        console.log("player " + (i+1) +"defense"+ players[i].defense);
+        console.log("player " + (i+1) + " defense " + players[i].defense);
       }
     }
     else{
