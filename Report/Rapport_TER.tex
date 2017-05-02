@@ -103,6 +103,11 @@
 	Avant de commencer la phase de programmation, nous avons modélisé nos objets et préparé une maquette visuelle de notre programme. Nous avons également choisi les technologies nécessaires et pertinentes pour notre projet.
 
     \section{Modélisation des objets}
+		Le jeu se déroulant dans le cadre d'une interaction continue entre les joueurs d'une part, et entre chaque joueur et l'ensemble des cartes tirées depuis la pile et éventuellement stockées dans sa main d'une autre part, nous avons choisi de définir un objet (au sens du JavaScript) bien spécifique pour chacun de ses deux entités (joueur et carte).
+
+		En effet, un joueur est identifié par un unique pseudo/alias (une chaîne de caractères), et par un numéro initialisé à -1 quand le joueur n'est pas connecté au jeu, prenant plus tard une valeur entre 0 et 4 une fois connecté au jeu selon son emplacement dans la liste des joueurs participants. Par ailleurs, un joueur possède aussi les propriétés descriptives suivantes: les statistiques de défense et d'attaque (des nombres), le statut indiquant l'état de son tour (0 pour non-active et 1 pour active), l'ensemble des cartes dans sa main (un tableau de cartes), et le nombre des cartes équipées.
+
+		D'autre part, une carte est identifiée par un code fantastique, et possède les propriétés descriptives suivantes: un type (une chaîne de caractères indiquant si la carte est utilisable, équippable, reflétant un événement, ou un monstre), une catégorie (une chaîne de caractères, éventuellement vide si les cartes ne sont ni utilisables ni équipables, indiquant la nature de la carte dans le cas contraire, une potion ou une armure par exemple), un chemin (une chaîne de caractères correspondant au chemin de l'image de la carte), une action (une chaîne de caractère indiquant l'effet de la carte sous forme d'une fonction ayant un nom et éventuellement des paramètres), et un drapeau booléen indiquant si la carte est équipée ou pas.
 
     \section{Maquette graphique}
 
