@@ -7,6 +7,14 @@
 \usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
+\usepackage{tikz-er2}
+
+\usetikzlibrary{positioning}
+\usetikzlibrary{shadows}
+\tikzstyle{every entity} = [top color=white, bottom color=blue!30,
+														draw=blue!50!black!100, drop shadow]
+\tikzstyle{every attribute} = [top color=white, bottom color=yellow!20,
+															draw=yellow, node distance=1cm, drop shadow]
 
 \setlength{\parindent}{0.8cm}
 \setlength{\parskip}{1ex plus 0.5ex minus 0.2ex}
@@ -126,6 +134,36 @@
     \section{Choix des technologies}
 
     \section{Base de données}
+		Pour stocker les cartes, ainsi que les différentes données cartographiques du jeu, nous nous sommes servis de la notation JSON, un concept fondamental dans le cadre du JavaScript et un moyen ultra efficace pour la manipulation, le transfert, et le stockage des données.
+
+		Outre l'objet modélisant les cartes du jeux, la notation JSON adoptée pour les hexagones cartographiques consiste d'un identifiant dénotant les coordonnées de l'hexagone (une chaîne de caractères), un environnement indiquant le type du plan dans lequel se déroule le jeu tel qu'une rivière par exemple (une chaîne de caractères), et un chemin indiquant l'emplacement de l'image du fond correspondant au environnement (une chaîne de caractères).
+
+		Pour manipuler, transférer et stocker les données nous avons utilisé le SGBD (Système de Gestion de Bases de Données) offert par MongoDB qui s'avère bien pratique dans le cadre d'une architecture de développement purement basée sur JavaScript telle que la nôtre. En effet, NodeJS offre un module contenant une multitude de fonctionnalités permettant d'interagir aisément avec les bases de données gérées par MongoDB, ce qui facilite énormément la connexion à la base données et la manipulation des données qui y sont stockées.
+
+		MongoDB permet la création de plusieurs bases de données regroupant chacune les données sous forme de \textit{collections} (concept approximatif équivalent à la notion de \textit{tables} dans le cadre d'un modèle de base de données relationnel), contenant chacune des \textit{documents} désignant les objets JSON reflétant nos données.
+
+		MongoDB n'utilise pas le langage de requêtes fameux SQL pour gérer les interactions avec la base de données. Toutefois, le langage de requêtes utilisé reste bien facile à maîtriser et bien puissant pour couvrir une grande gamme de fonctionnalités nécessaires pour une gestion efficace des données.
+
+		Par conséquent, nous avons créé une base données dans laquelle nous avons stocké nos données en deux collections: une pour stocker les cartes, et l'autre pour stocker les données cartographiques. (Voir figure \ref{fig:schemaBDD})
+
+		\begin{figure}
+			\centering
+			\begin{tikzpicture}[node distance=6.5cm]
+			  \node[entity] (card) {Card};
+			  \node[attribute] (id) [above=of card] {\underline{Id}} edge (card);
+			  \node[attribute] (type) [above right=of card] {Type} edge (card);
+				\node[attribute] (category) [above left=of card] {Category} edge (card);
+				\node[attribute] (path) [below right=of card] {Path} edge (card);
+				\node[attribute] (action) [below left=of card] {Action} edge (card);
+
+			  \node[entity] (maptiles) [right=of card] {MapTiles};
+				\node[attribute] (id) [above=of maptiles] {\underline{Id}} edge (maptiles);
+			  \node[attribute] (environment) [below right=of maptiles] {Environment} edge (maptiles);
+				\node[attribute] (background) [below left=of maptiles] {Background} edge (maptiles);
+			\end{tikzpicture}
+			\caption{Modèle EA}
+			\label{fig:schemaBDD}
+		\end{figure}
 
 \chapter{Développement}
 
