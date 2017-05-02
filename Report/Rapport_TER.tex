@@ -132,6 +132,13 @@
     \section{Architecture du site}
 
     \section{Choix des technologies}
+		Avant de choisir les technologies permettant une implémentation optimale de notre jeu, nous nous sommes penchés tout d'abord sur l'analyse des contraintes de qualité à satisfaire afin d'assurer un déroulement souple de ce dernier. Autrement dit, nous nous sommes aperçus de la nécessité d'établir une communication en temps réel entre les clients utilisant l'application pour assurer un déroulement réalistique et interactif du jeu, aussi bien que de l'indispensabilité du paradigme événementiel pour le rendre plus ergonomique et dynamique. De plus, vu qu'il s'agit d'un jeu, en particulier d'un jeu de société, l'intégration des effets graphiques pour l'animer et le rendre le plus élégant possible paraît évident, voire même trivial.
+
+		Ainsi, pour assurer la réalisation de ces contraintes, nous avons choisi JavaScript comme le seul langage de programmation pour développer notre jeu ce qui a plus ou moins réduit la durée de notre apprentissage. Effectivement, l'abondance des fonctionnalités fournies par JavaScript permet une implémentation JavaScript pure englobant la totalité de l'architecture client-serveur de notre jeu. En réalité, JavaScript a progressé d'un langage web objet/événementiel incontournable conçu pour la dynamisation des pages web du côté client (manipulation du DOM, la bibliothèque jQuery) en un véritable outil omnipotent avec l'arrivée de NodeJS. En réalité, Le modèle non-bloquant avec les fonctions de callback caractérisant NodeJS permettent une communication extrêmement rapide sur un thread unique entre le serveur et les clients.
+
+		NodeJS intègre aussi la technologie WebSocket dans le module socket.io. Il s'agit d'une API (Application Programming Interface) JavaScript permettant un échange bilatéral synchrone entre les clients et le serveur, contrairement aux serveurs web classiques tels que Apache où la communication se déroule normalement d'une façon asynchrone. Cette caractéristique de WebSocket la rend idéale pour des applications nécessitant une communication en temps réel entre les clients comme la nôtre.
+
+		Outre, l'API JavaScript D3 offre une myriade de fonctionnalités permettant la mise en \oe{}uvre d'animations, entre autres, notamment avec des éléments SVG, ce qui la rend parfaite pour assurer le respect de la contrainte de qualité relative à l'aspect esthétique du jeu.
 
     \section{Base de données}
 		Pour stocker les cartes, ainsi que les différentes données cartographiques du jeu, nous nous sommes servis de la notation JSON, un concept fondamental dans le cadre du JavaScript et un moyen ultra efficace pour la manipulation, le transfert, et le stockage des données.
