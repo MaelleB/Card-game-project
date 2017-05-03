@@ -86,21 +86,17 @@
 \chapter{Organisation du projet}
 
     \section{Organisation du travail}
-		A fin de mener à bien  ce projet, il nous a fallu investir du temps dans la réflexion préalable et dans l’organisation étant les outils nécessaires au lancement et  à la bonne conduite  de tout projet.
+		Afin de mener à bien  ce projet, il nous a fallu investir du temps dans la réflexion préalable et dans l’organisation, étape nécessaire au lancement et  à la bonne conduite  de tout projet.
 
 		Avant de se mettre à  la réalisation, nous avons commencé par une étape d’initialisation d’ouvrage. Dans cette étape, nous avons tenu une réunion avec l’ensemble des parties prenantes  qui comprenaient les trois membres du groupe  mais également l’encadrant, et dans la quelle on a pu analyser  les besoins ainsi que clarifier les objectifs et les finalités du projet.
-		Ensuite,  nous avons procédé   à l’élaboration d ‘une modélisation initiale  où nous avons désigné plusieurs outils ainsi que fonctionnalités qui pourraient nous servir lors du  développement du projet.
+		Ensuite, nous avons procédé à l’élaboration d'une modélisation initiale où nous avons désigné plusieurs outils ainsi que les fonctionnalités qui pourraient nous servir lors du  développement du projet.
 
 
-		Pour atteindre les objectifs fixés,  nous avons jugé que la planification est une phase indispensable.
-		Dans ce cadre,  nous avons opté pour un diagramme de Gantt comme outil de planification de taches et de pilotage de projet au vu  des nombreux atouts qu’il présente.
+		Pour atteindre les objectifs fixés,  nous avons jugé qu'il était nécessaire de planifier notre travail. Dans ce cadre,  nous avons opté pour un diagramme de Gantt comme outil de planification de tâches et de pilotage de projet au vu  des nombreux atouts qu’il présente. En effet, le diagramme de Gant offre la possibilité de projeter sur écran l’enchaînement des tâches en faisant apparaître leur durée. Associées à ces tâches, les ressources humaines utilisées sont  également mentionnées. Il représente aussi un très bon support d’organisation où l'on peut suivre l’avancement des travaux ainsi que la répartition des tâches parmi les membres du groupe.
 
-		En effet, le diagramme de Gant offre la possibilité de projeter sur écran, l’enchaînement des tâches les unes par rapport aux autres en faisant apparaître leurs durées. Associées à ces tâches, les ressources humaines utilisées sont  également mentionnées.
-		Il représente aussi un très bon support d’organisation où on peut suivre l’avancement des travaux ainsi que la répartition des taches.
+		Ainsi  on peut voir sur le diagramme de Gantt sur lequel nous nous sommes appuyés (figure ) quatre activités principales incluant l’étape d’initialisation d’ouvrage précédemment explicitée (avant projet et modélisation initiale).
 
-		Ainsi  on peut voir que sur le diagramme de Gantt sur lequel on s’est basé (figure ) figurent quatre activités principales incluant l’étape d’initialisation  d’ouvrage précédemment citée (avant projet et modélisation initiale).
-
-		Ayant le  développement et l’organisation comme activité principale du projet (figure  ), nous avons pu l’accompagner d’un listing de sous-taches à accomplir  qui nous permettait d’avoir une vision synthétique du déroulement à venir.
+		Les activités principales du projet étant le développement et l'organisation (voir figure  ), nous les avons accompagnées d’un listing de sous-tâches à accomplir qui nous permettait d’avoir une vision synthétique du déroulement du projet.
 \newpage
 
 
@@ -111,15 +107,15 @@
 	Avant de commencer la phase de programmation, nous avons modélisé nos objets et préparé une maquette visuelle de notre programme. Nous avons également choisi les technologies nécessaires et pertinentes pour notre projet.
 
     \section{Modélisation des objets}
-		Le jeu se déroulant dans le cadre d'une interaction continue entre les joueurs d'une part, et entre chaque joueur et l'ensemble des cartes tirées depuis la pile et éventuellement stockées dans sa main d'une autre part, nous avons choisi de définir un objet (au sens du JavaScript) bien spécifique pour chacun de ses deux entités (joueur et carte).
+		Le jeu se déroulant dans le cadre d'une interaction continue entre les joueurs d'une part, et entre chaque joueur et l'ensemble des cartes tirées depuis la pile et éventuellement stockées dans sa main d'une autre part, nous avons choisi de définir un objet (au sens du JavaScript) bien spécifique pour chacune de ces deux entités (joueur et carte).
 
-		En effet, un joueur est identifié par un unique pseudo/alias (une chaîne de caractères), et par un numéro initialisé à -1 quand le joueur n'est pas connecté au jeu, prenant plus tard une valeur entre 0 et 4 une fois connecté au jeu selon son emplacement dans la liste des joueurs participants. Par ailleurs, un joueur possède aussi les propriétés descriptives suivantes: les statistiques de défense et d'attaque (des nombres), le statut indiquant l'état de son tour (0 pour non-active et 1 pour active), l'ensemble des cartes dans sa main (un tableau de cartes), et le nombre des cartes équipées.
+		En effet, un joueur est identifié par un unique pseudo/alias (une chaîne de caractères), et par un numéro initialisé à -1 quand le joueur n'est pas connecté au jeu, prenant plus tard une valeur entre 0 et 4 une fois connecté au jeu selon son emplacement dans la liste des participants. Par ailleurs, un joueur possède aussi les propriétés descriptives suivantes: les statistiques de défense et d'attaque (des nombres), le statut indiquant l'état de son tour (0 pour non-active et 1 pour active), l'ensemble des cartes dans sa main (un tableau de cartes), et le nombre de cartes équipées.
 
-		D'autre part, une carte est identifiée par un code fantastique, et possède les propriétés descriptives suivantes: un type (une chaîne de caractères indiquant si la carte est utilisable, équippable, reflétant un événement, ou un monstre), une catégorie (une chaîne de caractères, éventuellement vide si les cartes ne sont ni utilisables ni équipables, indiquant la nature de la carte dans le cas contraire, une potion ou une armure par exemple), un chemin (une chaîne de caractères correspondant au chemin de l'image de la carte), une action (une chaîne de caractère indiquant l'effet de la carte sous forme d'une fonction ayant un nom et éventuellement des paramètres), et un drapeau booléen indiquant si la carte est équipée ou pas.
+		D'autre part, une carte est identifiée par un code fantastique, et possède les propriétés descriptives suivantes: un type (une chaîne de caractères indiquant si la carte est utilisable, équipable, déclenche un événement, ou une rencontre avec un monstre), une catégorie (une chaîne de caractères, éventuellement vide si les cartes ne sont ni utilisables ni équipables, indiquant la nature de la carte dans le cas contraire, une potion ou une armure par exemple), un chemin (une chaîne de caractères correspondant au chemin de l'image depuis l'emplacement du projet), une action (une chaîne de caractère indiquant l'effet de la carte sous forme d'une fonction ayant un nom et éventuellement des paramètres), et un booléen indiquant si la carte est équipée ou pas.
 
     \section{Maquette graphique}
 
-    Afin de visualiser le rendu de notre jeu et avoir une référence lors du code de l'affichage, nous avons réalisé une maquette graphique de notre programme (voir figure \ref{fig:maquette}). Les illustrations n'étant pas encore réalisées à cette étape, nous avons utilisé d'autres dessins d'une artiste collaborant avec nous. Le but de cette maquette n'étant pas de définir l'aspect final mais l'emplacement des objets, elle est minimaliste et le rendu final du jeu devait être plus esthétique.\\[1.5cm]
+	    Afin de visualiser le rendu de notre jeu et avoir une référence lors du code de l'affichage, nous avons réalisé une maquette graphique de notre programme (voir figure \ref{fig:maquette}). Les illustrations n'étant pas encore réalisées à cette étape, nous avons utilisé d'autres dessins d'une artiste collaborant avec nous. Le but de cette maquette n'étant pas de définir l'aspect final mais l'emplacement des objets, elle est minimaliste et le rendu final du jeu devait être plus esthétique.\\[1.5cm]
 
     \begin{figure}[h!]
     	\centering
@@ -132,24 +128,25 @@
     \section{Architecture du site}
 
     \section{Choix des technologies}
-		Avant de choisir les technologies permettant une implémentation optimale de notre jeu, nous nous sommes penchés tout d'abord sur l'analyse des contraintes de qualité à satisfaire afin d'assurer un déroulement souple de ce dernier. Autrement dit, nous nous sommes aperçus de la nécessité d'établir une communication en temps réel entre les clients utilisant l'application pour assurer un déroulement réalistique et interactif du jeu, aussi bien que de l'indispensabilité du paradigme événementiel pour le rendre plus ergonomique et dynamique. De plus, vu qu'il s'agit d'un jeu, en particulier d'un jeu de société, l'intégration des effets graphiques pour l'animer et le rendre le plus élégant possible paraît évident, voire même trivial.
+    
+		Avant de choisir les technologies permettant une implémentation optimale de notre jeu, nous nous sommes penchés tout d'abord sur l'analyse des contraintes de qualité à satisfaire afin d'assurer un déroulement souple de ce dernier. Autrement dit, nous nous sommes aperçus de la nécessité d'établir une communication en temps réel entre les clients utilisant l'application pour assurer un déroulement réaliste et interactif du jeu, aussi bien que du caractère indispensable du paradigme événementiel pour le rendre plus ergonomique et dynamique. De plus, vu qu'il s'agit d'un jeu, en particulier d'un jeu de société, l'intégration des effets graphiques pour l'animer et le rendre le plus élégant possible paraît évident, voire même trivial.
 
-		Ainsi, pour assurer la réalisation de ces contraintes, nous avons choisi JavaScript comme le seul langage de programmation pour développer notre jeu ce qui a plus ou moins réduit la durée de notre apprentissage. Effectivement, l'abondance des fonctionnalités fournies par JavaScript permet une implémentation JavaScript pure englobant la totalité de l'architecture client-serveur de notre jeu. En réalité, JavaScript a progressé d'un langage web objet/événementiel incontournable conçu pour la dynamisation des pages web du côté client (manipulation du DOM, la bibliothèque jQuery) en un véritable outil omnipotent avec l'arrivée de NodeJS. En réalité, Le modèle non-bloquant avec les fonctions de callback caractérisant NodeJS permettent une communication extrêmement rapide sur un thread unique entre le serveur et les clients.
+		Ainsi, pour assurer la réalisation de ces contraintes, nous avons choisi JavaScript comme seul langage de programmation pour développer notre jeu ce qui a plus ou moins réduit la durée de notre apprentissage. Effectivement, l'abondance des fonctionnalités fournies par ce langage permet une implémentation JavaScript pure englobant la totalité de l'architecture client-serveur de notre jeu. En réalité, JavaScript a progressé d'un langage web objet/événementiel incontournable conçu pour la dynamisation des pages web du côté client (manipulation du DOM, la bibliothèque jQuery) en un véritable outil omnipotent avec l'arrivée de NodeJS. En réalité, le modèle non-bloquant avec les fonctions de callback caractérisant NodeJS permet une communication extrêmement rapide sur un thread unique entre le serveur et les clients.
 
 		NodeJS intègre aussi la technologie WebSocket dans le module socket.io. Il s'agit d'une API (Application Programming Interface) JavaScript permettant un échange bilatéral synchrone entre les clients et le serveur, contrairement aux serveurs web classiques tels que Apache où la communication se déroule normalement d'une façon asynchrone. Cette caractéristique de WebSocket la rend idéale pour des applications nécessitant une communication en temps réel entre les clients comme la nôtre.
 
-		Outre, l'API JavaScript D3 offre une myriade de fonctionnalités permettant la mise en \oe{}uvre d'animations, entre autres, notamment avec des éléments SVG, ce qui la rend parfaite pour assurer le respect de la contrainte de qualité relative à l'aspect esthétique du jeu.
+		Outre cela, l'API JavaScript D3 offre une myriade de fonctionnalités permettant la mise en \oe{}uvre d'animations, entre autres, notamment avec des éléments SVG, ce qui la rend parfaite pour assurer le respect de la contrainte de qualité relative à l'aspect esthétique du jeu.
 
     \section{Base de données}
-		Pour stocker les cartes, ainsi que les différentes données cartographiques du jeu, nous nous sommes servis de la notation JSON, un concept fondamental dans le cadre du JavaScript et un moyen ultra efficace pour la manipulation, le transfert, et le stockage des données.
+		Pour stocker les cartes, ainsi que les différentes données cartographiques du jeu, nous nous sommes servis de la notation JSON, un concept fondamental dans le cadre du JavaScript et un moyen très efficace pour la manipulation, le transfert, et le stockage des données.
 
-		Outre l'objet modélisant les cartes du jeux, la notation JSON adoptée pour les hexagones cartographiques consiste d'un identifiant dénotant les coordonnées de l'hexagone (une chaîne de caractères), un environnement indiquant le type du plan dans lequel se déroule le jeu tel qu'une rivière par exemple (une chaîne de caractères), et un chemin indiquant l'emplacement de l'image du fond correspondant au environnement (une chaîne de caractères).
+		Outre l'objet modélisant les cartes du jeu, la notation JSON adoptée pour les hexagones cartographiques est composé de trois chaînes de caractères : un identifiant dénotant les coordonnées de l'hexagone, un environnement indiquant le type du plan dans lequel se déroule le jeu tel qu'une rivière par exemple, et un chemin indiquant l'emplacement de l'image du fond correspondant à l'environnement.
 
 		Pour manipuler, transférer et stocker les données nous avons utilisé le SGBD (Système de Gestion de Bases de Données) offert par MongoDB qui s'avère bien pratique dans le cadre d'une architecture de développement purement basée sur JavaScript telle que la nôtre. En effet, NodeJS offre un module contenant une multitude de fonctionnalités permettant d'interagir aisément avec les bases de données gérées par MongoDB, ce qui facilite énormément la connexion à la base données et la manipulation des données qui y sont stockées.
 
 		MongoDB permet la création de plusieurs bases de données regroupant chacune les données sous forme de \textit{collections} (concept approximatif équivalent à la notion de \textit{tables} dans le cadre d'un modèle de base de données relationnel), contenant chacune des \textit{documents} désignant les objets JSON reflétant nos données.
 
-		MongoDB n'utilise pas le langage de requêtes fameux SQL pour gérer les interactions avec la base de données. Toutefois, le langage de requêtes utilisé reste bien facile à maîtriser et bien puissant pour couvrir une grande gamme de fonctionnalités nécessaires pour une gestion efficace des données.
+		MongoDB n'utilise pas le langage de requêtes SQL pour gérer les interactions avec la base de données. Toutefois, le langage de requêtes utilisé reste bien facile à maîtriser et puissant pour couvrir une grande gamme de fonctionnalités nécessaires pour une gestion efficace des données.
 
 		Par conséquent, nous avons créé une base données dans laquelle nous avons stocké nos données en deux collections: une pour stocker les cartes, et l'autre pour stocker les données cartographiques. (Voir figure \ref{fig:schemaBDD})
 
@@ -178,7 +175,7 @@
 
     \section{Graphismes}
 	    
-	    Aidés par les artistes avec lesquels nous avons collaboré, nous avons entièrement réalisé les graphismes de notre jeu, avant d'implémenter l'affichage de ceux-ci.
+	    Aidés par les artistes avec lesquels nous avons collaboré, nous avons entièrement réalisé les graphismes de notre jeu, avant d'implémenter l'affichage de ceux-ci. Un travail collaboratif donc, que nous allons détailler dans cette partie. 
 
         \subsection{Réalisation des images}
 
