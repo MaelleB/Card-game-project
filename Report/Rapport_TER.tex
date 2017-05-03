@@ -177,6 +177,8 @@
     \section{Gestion de l'événementiel}
 
     \section{Graphismes}
+	    
+	    Aidés par les artistes avec lesquels nous avons collaboré, nous avons entièrement réalisé les graphismes de notre jeu, avant d'implémenter l'affichage de ceux-ci.
 
         \subsection{Réalisation des images}
 
@@ -184,7 +186,7 @@
 
         \begin{figure}[h!]
 	       	\centering
-           	\includegraphics[scale=0.4]{cards.png}
+           	\includegraphics[scale=0.45]{cards.png}
            	\caption{Exemple de cartes crées ainsi que le fond du site.}
            	\label{fig:cartes}
         \end{figure}
@@ -209,16 +211,30 @@
 
         Ici, 'svgWin' désigne la balise html <div> ayant pour attribut "id = 'svgWin' ". La fonction append('svg') permet de créer un élément SVG fils de "svgWin". Nous lui attribuons ensuite une largeur et une hauteur correspondant à la taille de la zone dédiée au jeu. Nous avons procédé de la même manière pour les images, avec des objets de type "svg:image", en y ajoutant les attributs "x" et "y" pour la position dans la zone SVG.
 
-        Outre l'affichage d'image, nous avons également affiché la carte des zones du jeu à l'aide de D3. Pour cela, nous avons créé des hexagones que nous avons rempli de couleurs correspondant à l'environnement de la zone représentée par chaque hexagone. Le dessin des hexagones est réalisé à l'aide de "path", qui permet de dessiner les contours d'une forme (rectangle, cercle, simple ligne...).
+        Outre l'affichage d'image, nous avons également affiché la carte des zones du jeu à l'aide de D3 (voir figure \ref{fig:map}). Pour cela, nous avons créé des hexagones que nous avons rempli de couleurs correspondant à l'environnement de la zone représentée par chaque hexagone. Le dessin des hexagones est réalisé à l'aide de "path", qui permet de dessiner les contours d'une forme (rectangle, cercle, simple ligne...). La position sur la carte, qui se déplace lorsque les joueurs changent de lieu, est marquée par un cercle. 
+        
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.95]{map}
+			\label{fig:map}
+			\caption{La carte des zones du jeu implémentée en JavaScript (D3)}
+		\end{figure}
 
-        Nous avons également utilisé D3 pour effectuer un zoom sur les cartes en main lors du passage de la souris sur celles-ci afin que les joueurs puissent lire les effets de leurs cartes plus facilement.
+        Nous avons également utilisé D3 pour effectuer un zoom sur les cartes en main lors du passage de la souris sur celles-ci (voir figure \ref{fig:zoom})afin que les joueurs puissent lire les effets de leurs cartes plus facilement.
+        
+		\begin{figure}[h!]
+			\centering
+			\includegraphics[scale=0.6]{zoom}
+			\label{fig:zoom}
+			\caption{Le zoom effectué lorsque la souris est passée sur une carte de la main}
+		\end{figure}
 
 
 \chapter{Manuel d'utilisation}
 
     \section{Navigation sur le site}
 
-    Le site comporte 3 différentes pages, accessibles depuis la barre de menu en haut. La page principale est celle concernant uniquement le jeu, avec en haut à gauche le champ de texte pour entrer un pseudo et se connecter, ainsi que le bouton permettant de quitter la partie. Au centre de la page se trouve la fenêtre de jeu.
+    Le site comporte 3 différentes pages, accessibles depuis la barre de menu en haut (voir 1 figure \ref{fig:menu}). La page principale est celle concernant uniquement le jeu, avec en haut à gauche le champ de texte pour entrer un pseudo et se connecter, ainsi que le bouton permettant de quitter la partie (voir 2 figure \ref{fig:manual})). Au centre de la page se trouve la fenêtre de jeu.
 
     Il est possible de consulter les règles du jeu en cliquant sur le lien "Règles" dans le menu. On y trouve toutes les informations nécessaires pour une partie.
 
@@ -226,13 +242,22 @@
 
     \section{Fonctionnement du jeu}
 
-    Une fois la partie commencée, chaque joueur joue tour à tour. Un tour consiste à tirer une carte de la pile, en cliquant sur l'image du dos de carte sur la gauche de la fenêtre de jeu. Le joueur peut alors décider de prendre la carte ou la jeter, en cliquant sur le bouton correspondant qui s'affichera en même temps que la carte tirée.
+    Une fois la partie commencée, chaque joueur joue tour à tour. Un tour consiste à tirer une carte de la pile, en cliquant sur l'image du dos de carte sur la gauche de la fenêtre de jeu (voir 3 figure \ref{fig:manual}). Le joueur peut alors décider de prendre la carte ou la jeter, en cliquant sur le bouton correspondant qui s'affichera en même temps que la carte tirée, qui sera affichée au centre de l'écran (voir 4 figure \ref{fig:manual}).
 
-    Les cartes que le joueur décide de prendre s'affichent en bas de la fenêtre de jeu. La main du joueur est limitée à cinq cartes, par conséquent, si l'on a déjà une main pleine on ne peut pas prendre de nouvelle carte sans se débarrasser d'une autre. Différentes interactions sont possibles avec les cartes que l'on a en main : en cliquant sur une carte, des choix s'offrent à nous, modélisés par des boutons. S'il s'agit d'une carte équipable, on peut l'équiper. S'il s'agit d'une carte utilisable (potion ou objet permettant de changer de lieu), on peut l'utiliser. Dans tous les cas, il est possible de jeter la carte si on décide qu'elle ne nous est plus d'aucune utilité ou que l'on souhaite faire de la place dans notre main.
+    Les cartes que le joueur décide de prendre s'affichent en bas de la fenêtre de jeu (voir 5 figure \ref{fig:manual}). La main du joueur est limitée à cinq cartes, par conséquent, si l'on a déjà une main pleine on ne peut pas prendre de nouvelle carte sans se débarrasser d'une autre. Différentes interactions sont possibles avec les cartes que l'on a en main : en cliquant sur une carte, des choix s'offrent à nous, modélisés par des boutons. S'il s'agit d'une carte équipable, on peut l'équiper. S'il s'agit d'une carte utilisable (potion ou objet permettant de changer de lieu), on peut l'utiliser. Dans tous les cas, il est possible de jeter la carte si on décide qu'elle ne nous est plus d'aucune utilité ou que l'on souhaite faire de la place dans notre main.
+    
+	\begin{figure}[h!]
+		\centering
+		\includegraphics[scale=0.35]{manual}
+		\label{fig:manual}
+		\caption{Aperçu de la page du jeu et ses différents éléments.}
+	\end{figure}
 
     Dans le cas de l'utilisation d'un objet permettant de changer de zone, il faut choisir la zone suivante dans laquelle les joueurs veulent se placer. Il est impossible de reculer, seules trois directions sont possibles : haut, droite, bas.
 
     Un joueur dispose d'un temps imparti pour terminer son tour. Il est possible de passer son tour après avoir réalisé toutes les actions que l'on souhaitait faire en cliquant sur le bouton "Terminer le tour". Si le joueur ne clique pas sur ce bouton dans les temps, le tour passe automatiquement au joueur suivant afin d'éviter que la partie ne soit bloquée par un joueur inactif.
+    
+    Les cartes équipables ainsi que les potions permettent de modifier les statistiques de défense et/ou d'attaque d'un joueur. Celles-ci sont visibles sur le côté droit de la fenêtre de jeu (voir 6 figure \ref{fig:manual}).
 
 \chapter*{Conclusion}
 \addcontentsline{toc}{chapter}{Conclusion}
