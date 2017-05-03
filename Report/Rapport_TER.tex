@@ -7,6 +7,7 @@
 \usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
+\usepackage{tikz-uml}
 \usepackage{tikz-er2}
 
 \usetikzlibrary{positioning}
@@ -113,6 +114,42 @@
 
 		D'autre part, une carte est identifiée par un code fantastique, et possède les propriétés descriptives suivantes: un type (une chaîne de caractères indiquant si la carte est utilisable, équipable, déclenche un événement, ou une rencontre avec un monstre), une catégorie (une chaîne de caractères, éventuellement vide si les cartes ne sont ni utilisables ni équipables, indiquant la nature de la carte dans le cas contraire, une potion ou une armure par exemple), un chemin (une chaîne de caractères correspondant au chemin de l'image depuis l'emplacement du projet), une action (une chaîne de caractère indiquant l'effet de la carte sous forme d'une fonction ayant un nom et éventuellement des paramètres), et un booléen indiquant si la carte est équipée ou pas.
 
+		Outre ces deux objets, on a aussi défini un objet pour chaque hexagone de la carte du jeu. En effet, chaque hexagone cartographique est identifié par un code "x:y" dénotant ses coordonnées sur la carte (une chaîne de caractères), et possède les propriétés descriptives suivantes: un environnement indiquant le type du plan dans lequel se déroule le jeu tel qu'une rivière par exemple (une chaîne de caractères), et un chemin indiquant l'emplacement de l'image du fond correspondant à l'environnement (une chaîne de caractères).
+
+		Enfin, voici le diagramme d'UML représentant les trois objets ci-dessus (voir figure \ref{fig:UML})
+
+		\begin{figure}
+			\begin{tikzpicture}
+				\umlclass{Player}{
+					-- aliasName : String \\
+					-- playerNum : String \\
+					-- attack : Number \\
+					-- defense : Number \\
+					-- status : Number \\
+					-- nbEquippedCards : Number
+				}
+				{}
+				\umlclass[x=10]{Card}{
+					-- id : String \\
+					-- type : String \\
+					-- category : String \\
+					-- path : String \\
+					-- action : String \\
+					-- isEquipped : boolean
+				}
+				{}
+				\umlclass[x=5.3, y=-4]{MapTile}{
+					-- id : String \\
+					-- environment : String \\
+					-- background : String \\
+				}
+				{}
+				\umluniaggreg[stereo=posséder, mult1=1, arg2=hand, mult2=0..5]{Player}{Card}
+			\end{tikzpicture}
+			\caption{Diagramme UML}
+			\label{fig:UML}
+		\end{figure}
+
     \section{Maquette graphique}
 
 	    Afin de visualiser le rendu de notre jeu et avoir une référence lors du code de l'affichage, nous avons réalisé une maquette graphique de notre programme (voir figure \ref{fig:maquette}). Les illustrations n'étant pas encore réalisées à cette étape, nous avons utilisé d'autres dessins d'une artiste collaborant avec nous. Le but de cette maquette n'étant pas de définir l'aspect final mais l'emplacement des objets, elle est minimaliste et le rendu final du jeu devait être plus esthétique.\\[1.5cm]
@@ -128,7 +165,6 @@
     \section{Architecture du site}
 
     \section{Choix des technologies}
-    
 		Avant de choisir les technologies permettant une implémentation optimale de notre jeu, nous nous sommes penchés tout d'abord sur l'analyse des contraintes de qualité à satisfaire afin d'assurer un déroulement souple de ce dernier. Autrement dit, nous nous sommes aperçus de la nécessité d'établir une communication en temps réel entre les clients utilisant l'application pour assurer un déroulement réaliste et interactif du jeu, aussi bien que du caractère indispensable du paradigme événementiel pour le rendre plus ergonomique et dynamique. De plus, vu qu'il s'agit d'un jeu, en particulier d'un jeu de société, l'intégration des effets graphiques pour l'animer et le rendre le plus élégant possible paraît évident, voire même trivial.
 
 		Ainsi, pour assurer la réalisation de ces contraintes, nous avons choisi JavaScript comme seul langage de programmation pour développer notre jeu ce qui a plus ou moins réduit la durée de notre apprentissage. Effectivement, l'abondance des fonctionnalités fournies par ce langage permet une implémentation JavaScript pure englobant la totalité de l'architecture client-serveur de notre jeu. En réalité, JavaScript a progressé d'un langage web objet/événementiel incontournable conçu pour la dynamisation des pages web du côté client (manipulation du DOM, la bibliothèque jQuery) en un véritable outil omnipotent avec l'arrivée de NodeJS. En réalité, le modèle non-bloquant avec les fonctions de callback caractérisant NodeJS permet une communication extrêmement rapide sur un thread unique entre le serveur et les clients.
@@ -140,9 +176,7 @@
     \section{Base de données}
 		Pour stocker les cartes, ainsi que les différentes données cartographiques du jeu, nous nous sommes servis de la notation JSON, un concept fondamental dans le cadre du JavaScript et un moyen très efficace pour la manipulation, le transfert, et le stockage des données.
 
-		Outre l'objet modélisant les cartes du jeu, la notation JSON adoptée pour les hexagones cartographiques est composé de trois chaînes de caractères : un identifiant dénotant les coordonnées de l'hexagone, un environnement indiquant le type du plan dans lequel se déroule le jeu tel qu'une rivière par exemple, et un chemin indiquant l'emplacement de l'image du fond correspondant à l'environnement.
-
-		Pour manipuler, transférer et stocker les données nous avons utilisé le SGBD (Système de Gestion de Bases de Données) offert par MongoDB qui s'avère bien pratique dans le cadre d'une architecture de développement purement basée sur JavaScript telle que la nôtre. En effet, NodeJS offre un module contenant une multitude de fonctionnalités permettant d'interagir aisément avec les bases de données gérées par MongoDB, ce qui facilite énormément la connexion à la base données et la manipulation des données qui y sont stockées.
+		Par conséquent, nous avons utilisé le SGBD (Système de Gestion de Bases de Données) offert par MongoDB qui s'avère bien pratique dans le cadre d'une architecture de développement purement basée sur JavaScript telle que la nôtre. En effet, NodeJS offre un module contenant une multitude de fonctionnalités permettant d'interagir aisément avec les bases de données gérées par MongoDB, ce qui facilite énormément la connexion à la base données et la manipulation des données qui y sont stockées.
 
 		MongoDB permet la création de plusieurs bases de données regroupant chacune les données sous forme de \textit{collections} (concept approximatif équivalent à la notion de \textit{tables} dans le cadre d'un modèle de base de données relationnel), contenant chacune des \textit{documents} désignant les objets JSON reflétant nos données.
 
@@ -174,8 +208,8 @@
     \section{Gestion de l'événementiel}
 
     \section{Graphismes}
-	    
-	    Aidés par les artistes avec lesquels nous avons collaboré, nous avons entièrement réalisé les graphismes de notre jeu, avant d'implémenter l'affichage de ceux-ci. Un travail collaboratif donc, que nous allons détailler dans cette partie. 
+
+	    Aidés par les artistes avec lesquels nous avons collaboré, nous avons entièrement réalisé les graphismes de notre jeu, avant d'implémenter l'affichage de ceux-ci. Un travail collaboratif donc, que nous allons détailler dans cette partie.
 
         \subsection{Réalisation des images}
 
@@ -208,8 +242,8 @@
 
         Ici, 'svgWin' désigne la balise html <div> ayant pour attribut "id = 'svgWin' ". La fonction append('svg') permet de créer un élément SVG fils de "svgWin". Nous lui attribuons ensuite une largeur et une hauteur correspondant à la taille de la zone dédiée au jeu. Nous avons procédé de la même manière pour les images, avec des objets de type "svg:image", en y ajoutant les attributs "x" et "y" pour la position dans la zone SVG.
 
-        Outre l'affichage d'image, nous avons également affiché la carte des zones du jeu à l'aide de D3 (voir figure \ref{fig:map}). Pour cela, nous avons créé des hexagones que nous avons rempli de couleurs correspondant à l'environnement de la zone représentée par chaque hexagone. Le dessin des hexagones est réalisé à l'aide de "path", qui permet de dessiner les contours d'une forme (rectangle, cercle, simple ligne...). La position sur la carte, qui se déplace lorsque les joueurs changent de lieu, est marquée par un cercle. 
-        
+        Outre l'affichage d'image, nous avons également affiché la carte des zones du jeu à l'aide de D3 (voir figure \ref{fig:map}). Pour cela, nous avons créé des hexagones que nous avons rempli de couleurs correspondant à l'environnement de la zone représentée par chaque hexagone. Le dessin des hexagones est réalisé à l'aide de "path", qui permet de dessiner les contours d'une forme (rectangle, cercle, simple ligne...). La position sur la carte, qui se déplace lorsque les joueurs changent de lieu, est marquée par un cercle.
+
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=0.95]{map}
@@ -218,7 +252,7 @@
 		\end{figure}
 
         Nous avons également utilisé D3 pour effectuer un zoom sur les cartes en main lors du passage de la souris sur celles-ci (voir figure \ref{fig:zoom})afin que les joueurs puissent lire les effets de leurs cartes plus facilement.
-        
+
 		\begin{figure}[h!]
 			\centering
 			\includegraphics[scale=0.6]{zoom}
@@ -242,7 +276,7 @@
     Une fois la partie commencée, chaque joueur joue tour à tour. Un tour consiste à tirer une carte de la pile, en cliquant sur l'image du dos de carte sur la gauche de la fenêtre de jeu (voir 3 figure \ref{fig:manual}). Le joueur peut alors décider de prendre la carte ou la jeter, en cliquant sur le bouton correspondant qui s'affichera en même temps que la carte tirée, qui sera affichée au centre de l'écran (voir 4 figure \ref{fig:manual}).
 
     Les cartes que le joueur décide de prendre s'affichent en bas de la fenêtre de jeu (voir 5 figure \ref{fig:manual}). La main du joueur est limitée à cinq cartes, par conséquent, si l'on a déjà une main pleine on ne peut pas prendre de nouvelle carte sans se débarrasser d'une autre. Différentes interactions sont possibles avec les cartes que l'on a en main : en cliquant sur une carte, des choix s'offrent à nous, modélisés par des boutons. S'il s'agit d'une carte équipable, on peut l'équiper. S'il s'agit d'une carte utilisable (potion ou objet permettant de changer de lieu), on peut l'utiliser. Dans tous les cas, il est possible de jeter la carte si on décide qu'elle ne nous est plus d'aucune utilité ou que l'on souhaite faire de la place dans notre main.
-    
+
 	\begin{figure}[h!]
 		\centering
 		\includegraphics[scale=0.35]{manual}
@@ -253,7 +287,7 @@
     Dans le cas de l'utilisation d'un objet permettant de changer de zone, il faut choisir la zone suivante dans laquelle les joueurs veulent se placer. Il est impossible de reculer, seules trois directions sont possibles : haut, droite, bas.
 
     Un joueur dispose d'un temps imparti pour terminer son tour. Il est possible de passer son tour après avoir réalisé toutes les actions que l'on souhaitait faire en cliquant sur le bouton "Terminer le tour". Si le joueur ne clique pas sur ce bouton dans les temps, le tour passe automatiquement au joueur suivant afin d'éviter que la partie ne soit bloquée par un joueur inactif.
-    
+
     Les cartes équipables ainsi que les potions permettent de modifier les statistiques de défense et/ou d'attaque d'un joueur. Celles-ci sont visibles sur le côté droit de la fenêtre de jeu (voir 6 figure \ref{fig:manual}).
 
 \chapter*{Conclusion}
@@ -261,27 +295,27 @@
 
     \section*{Bilan}
     \addcontentsline{toc}{section}{Bilan}
-    
-    Globalement, nous avons réussi à développer une version fonctionnelle du jeu. Nous avons implémenté une majeure partie des fonctionnalités que nous souhaitions intégrer au projet. Les mécanismes de base du jeu tels que le tour par tour ou encore le tirage de cartes fonctionnent bien. Les éléments cartographiques sont également terminés et fonctionnels. Nous avons réussi l'affichage graphique de tous les éléments (cartes tirées, cartes équipées, pile, etc) et également les fonctions permettant l'interaction avec les cartes. 
-    
-    En revanche, il nous reste quelques problèmes à résoudre, certains cas d'erreur et quelques fonctionnalités que nous comptons rajouter avant la fin du temps imparti pour le projet. Parmi ces fonctionnalités, l'affichage des cartes équipées par chaque joueur en passant la souris sur son nom, mais également le combat avec le monstre qui n'est pas encore fonctionnel. Nous avons également manqué de temps pour réaliser le nombre de cartes que nous souhaitions intégrer, notamment car nos coéquipiers illustrateurs ont renoncé à leur rôle au cours du projet par manque de disponibilité. 
-    
+
+    Globalement, nous avons réussi à développer une version fonctionnelle du jeu. Nous avons implémenté une majeure partie des fonctionnalités que nous souhaitions intégrer au projet. Les mécanismes de base du jeu tels que le tour par tour ou encore le tirage de cartes fonctionnent bien. Les éléments cartographiques sont également terminés et fonctionnels. Nous avons réussi l'affichage graphique de tous les éléments (cartes tirées, cartes équipées, pile, etc) et également les fonctions permettant l'interaction avec les cartes.
+
+    En revanche, il nous reste quelques problèmes à résoudre, certains cas d'erreur et quelques fonctionnalités que nous comptons rajouter avant la fin du temps imparti pour le projet. Parmi ces fonctionnalités, l'affichage des cartes équipées par chaque joueur en passant la souris sur son nom, mais également le combat avec le monstre qui n'est pas encore fonctionnel. Nous avons également manqué de temps pour réaliser le nombre de cartes que nous souhaitions intégrer, notamment car nos coéquipiers illustrateurs ont renoncé à leur rôle au cours du projet par manque de disponibilité.
+
     \section*{Perspectives}
     \addcontentsline{toc}{section}{Perspectives}
-    
-    Nous avons l'intention d'améliorer le jeu en y ajoutant des fonctionnalités afin d'y ajouter plus de stratégie, de dynamisme et d'effets visuels. Par exemple, il serait bien de pouvoir y intégrer un système de classes de personnages : chaque joueur choisirait à sa connexion une classe parmi plusieurs, sachant que certains objets seraient spécifiques à une classe. Nous pourrions également ajouter la possibilité de donner des cartes à un autre joueur afin d'améliorer la coopération du groupe. 
-    
-    Pour ajouter à l'esthétisme du jeu, nous pourrions intégrer des animations pour le tirage de carte par exemple, ou encore pour le changement de zone. Nous pourrions également accompagner l'effet visuel d'un effet audio avec des bruitages spécifiques à certaines cartes. 
-    
+
+    Nous avons l'intention d'améliorer le jeu en y ajoutant des fonctionnalités afin d'y ajouter plus de stratégie, de dynamisme et d'effets visuels. Par exemple, il serait bien de pouvoir y intégrer un système de classes de personnages : chaque joueur choisirait à sa connexion une classe parmi plusieurs, sachant que certains objets seraient spécifiques à une classe. Nous pourrions également ajouter la possibilité de donner des cartes à un autre joueur afin d'améliorer la coopération du groupe.
+
+    Pour ajouter à l'esthétisme du jeu, nous pourrions intégrer des animations pour le tirage de carte par exemple, ou encore pour le changement de zone. Nous pourrions également accompagner l'effet visuel d'un effet audio avec des bruitages spécifiques à certaines cartes.
+
     Enfin, nous comptons rajouter des cartes de chaque type afin de diversifier le jeu, ainsi que faire évoluer l'objectif en y intégrant des étapes (par exemple, vaincre un premier monstre, puis obtenir un certain objet, avant de tuer le monstre final).
 
     \section*{Apports personnels du projet}
     \addcontentsline{toc}{section}{Apports personnels du projet}
-    
-    La réalisation de ce projet nous a tout d'abord amenés à apprendre un langage qui jusqu'ici ne nous avait pas été enseigné. Nous avions en effet l'habitude de travailler avec le C ou le C++ et nous avions peu de connaissances en développement web. Nous avons également appris à utiliser NodeJS et notamment les WebSockets, ainsi que la gestion de base de données NoSQL que nous avons abordés pour la première fois en travaillant sur le jeu. L'utilisation de D3 a enrichi les connaissances en JavaScript que nous avons acquises pour développer ce jeu, en nous donnant un aperçu des nombreuses possibilités de cet API. 
-    
-    Outre les connaissances informatiques, le travail en groupe nous a apporté de l'expérience de gestion de projet, de répartition des tâches et gestion du temps, ainsi qu'en communication et compréhension de l'autre. 
-    
-    Enfin, nous avons appris les bases de la création d'un projet car nous avons préféré créer notre propre projet plutôt que partir sur un sujet proposé par un encadrant. Il nous a donc fallu établir nous-mêmes le cahier des charges à respecter. 
+
+    La réalisation de ce projet nous a tout d'abord amenés à apprendre un langage qui jusqu'ici ne nous avait pas été enseigné. Nous avions en effet l'habitude de travailler avec le C ou le C++ et nous avions peu de connaissances en développement web. Nous avons également appris à utiliser NodeJS et notamment les WebSockets, ainsi que la gestion de base de données NoSQL que nous avons abordés pour la première fois en travaillant sur le jeu. L'utilisation de D3 a enrichi les connaissances en JavaScript que nous avons acquises pour développer ce jeu, en nous donnant un aperçu des nombreuses possibilités de cet API.
+
+    Outre les connaissances informatiques, le travail en groupe nous a apporté de l'expérience de gestion de projet, de répartition des tâches et gestion du temps, ainsi qu'en communication et compréhension de l'autre.
+
+    Enfin, nous avons appris les bases de la création d'un projet car nous avons préféré créer notre propre projet plutôt que partir sur un sujet proposé par un encadrant. Il nous a donc fallu établir nous-mêmes le cahier des charges à respecter.
 
 \end{document}
