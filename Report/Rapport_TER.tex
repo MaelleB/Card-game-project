@@ -207,9 +207,9 @@
 \chapter{Développement}
 
     \section{Gestion de l'événementiel}
-		L'un des atouts de la programmation événementielle c'est qu'elle ajoute une dynamicité à l'application en se basant sur une modélisation intuitive de la gestion des événements et de leurs fonctions de rappel correspondantes (\textit{callback functions} ou \textit{handlers}). Celle-ci consiste à rendre l'interaction entre les utilisateurs et l'application comme la source principale influençant la progression de l'application et sa transition entre les différents états du programme.
+		L'un des atouts de la programmation événementielle est qu'elle ajoute un dynamisme à l'application en se basant sur une modélisation intuitive de la gestion des événements et de leurs fonctions de rappel correspondantes (\textit{callback functions} ou \textit{handlers}). Celle-ci consiste à rendre l'interaction entre les utilisateurs et l'application comme la source principale influençant la progression de l'application et sa transition entre les différents états du programme.
 
-		En particulier, ce paradigme est caractéristique du langage JavaScript et de toutes les API et frameworks qui y sont basés dessus. Dans notre jeu on a utilisé différentes façons pour implémenter cette interaction selon le cas d'utilisation. En effet, pour gérer les événements dont les handlers avaient uniquement un effet local dans la fenêtre du client, nous nous sommes servis des fonctionnalités offertes par l'API JavaScript permettant de manipuler le DOM, de la bibliothèque jQuery, et de l'API D3 pour les effets graphiques. D'autre part, pour gérer les événements dont les handlers avaient des effets qui doivent être transmises au serveur, et éventuellement du serveur aux clients par la suite, nous avons utilisé les fonctionnalités offertes par le module socket.io.
+		En particulier, ce paradigme est caractéristique du langage JavaScript et de toutes les API et \textit{frameworks} qui sont basés dessus. Dans notre jeu nous avons utilisé différentes façons d'implémenter cette interaction selon le cas d'utilisation. En effet, pour gérer les événements dont les gestionnaires avaient uniquement un effet local sur la fenêtre du client, nous nous sommes servi des fonctionnalités offertes par l'API JavaScript permettant de manipuler le DOM, de la bibliothèque jQuery, et de l'API D3 pour les effets graphiques. D'autre part, pour gérer les événements dont les gestionnaires avaient des effets qui doivent être transmises au serveur, et éventuellement du serveur aux clients par la suite, nous avons utilisé les fonctionnalités offertes par le module socket.io.
 
 		L'implémentation de la gestion des événements à travers l'API de JavaScript pour manipuler le DOM se fait de la manière suivante:
 
@@ -224,7 +224,7 @@
 				- event: une chaîne de caractères désignant un événement
 				(click, keypress, focus, etc...)
 				- params: les éventuels paramètres utilisés par la fonction
-				de callback dans son corps
+				de rappel dans son corps
 				(e par exemple pour désigner l'événement associé à la fonction)
 			*/
 		\end{verbatimtab}
@@ -265,7 +265,7 @@
 			faire passer au serveur
 		*/
 
-		//pour lancer une fonction de callback en réception d'un événement
+		//pour lancer une fonction de rappel en réception d'un événement
 		//personnalisé du serveur
 
 		socket.on(customizedServerEvent, function(data){
@@ -305,8 +305,8 @@
 
 		Dans notre jeu, nous avons utilisé ces trois manières différentes pour gérer les événements que nous avons catégorisés en trois grande parties:
 		\begin{itemize}
-			\item{Connexion au serveur, joindre et quitter le jeu.}
-			\item{Chargement et manipulation de la carte du jeu.}
+			\item{Connexion au serveur, joindre et quitter le jeu;}
+			\item{Chargement et manipulation de la carte tirée;}
 			\item{Manipulation des cartes du jeu.}
 		\end{itemize}
 
