@@ -7,6 +7,7 @@
 \usepackage[a4paper,left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[pdftex]{graphicx}
 \usepackage{float}
+\usepackage{moreverb}
 \usepackage{tikz-uml}
 \usepackage{tikz-er2}
 
@@ -206,6 +207,108 @@
 \chapter{Développement}
 
     \section{Gestion de l'événementiel}
+		L'un des atouts de la programmation événementielle c'est qu'elle ajoute une dynamicité à l'application en se basant sur une modélisation intuitive de la gestion des événements et de leurs fonctions de rappel correspondantes (\textit{callback functions} ou \textit{handlers}). Celle-ci consiste à rendre l'interaction entre les utilisateurs et l'application comme la source principale influençant la progression de l'application et sa transition entre les différents états du programme.
+
+		En particulier, ce paradigme est caractéristique du langage JavaScript et de toutes les API et frameworks qui y sont basés dessus. Dans notre jeu on a utilisé différentes façons pour implémenter cette interaction selon le cas d'utilisation. En effet, pour gérer les événements dont les handlers avaient uniquement un effet local dans la fenêtre du client, nous nous sommes servis des fonctionnalités offertes par l'API JavaScript permettant de manipuler le DOM, de la bibliothèque jQuery, et de l'API D3 pour les effets graphiques. D'autre part, pour gérer les événements dont les handlers avaient des effets qui doivent être transmises au serveur, et éventuellement du serveur aux clients par la suite, nous avons utilisé les fonctionnalités offertes par le module socket.io.
+
+		L'implémentation de la gestion des événements à travers l'API de JavaScript pour manipuler le DOM se fait de la manière suivante:
+
+		\begin{verbatimtab}[4]
+			element.addEventListener(event, function(params){
+				//actions
+			});
+
+			/*
+				- element: un objet désignant un élément du DOM
+				(un bouton ayant la balise <button> par exemple en HTML)
+				- event: une chaîne de caractères désignant un événement
+				(click, keypress, focus, etc...)
+				- params: les éventuels paramètres utilisés par la fonction
+				de callback dans son corps
+				(e par exemple pour désigner l'événement associé à la fonction)
+			*/
+		\end{verbatimtab}
+
+		L'implémentation de la gestion des événements à travers la bibliothèque jQuery se fait de la manière suivante:
+
+		\begin{verbatimtab}[4]
+			$(css_selector).on(event, function(params){
+				//actions
+			});
+
+			/*
+				- $: l'objet parent de la bibliothèque jQuery permettant de
+				sélectionner les éléments de la page web
+				- css_selector: un sélecteur css permettant de récupérer un
+				ou plusieurs éléments de la page web
+				- event et params sont les mêmes que ceux discutés
+				dessus avec l'API JavaScript pour manipuler le DOM
+			*/
+		\end{verbatimtab}
+
+		L'implémentation de la gestion des événements à travers le module socket.io se fait de la manière suivante:
+
+		\begin{verbatimtab}[4]
+		/*CLIENT*/
+
+		//pour émettre un événement personnalisé au serveur avec éventuellement
+		//des données
+
+		socket.emit(customizedClientEvent, data);
+
+		/*
+			- socket: l'objet désignant le socket permettant la communication en
+			temps réel entre le client et le serveur
+			- customizedClientEvent: une chaîne de caractères désignant le nom d'un
+			événement personnalisé ("drawCard", "drawMap" par exemple)
+			- data: un éventuel objet contenant des données que l'on souhaite
+			faire passer au serveur
+		*/
+
+		//pour lancer une fonction de callback en réception d'un événement
+		//personnalisé du serveur
+
+		socket.on(customizedServerEvent, function(data){
+			//actions
+		});
+
+		/*
+			- socket: le même objet mentionné dessus
+			- customizedServerEvent: un événement personnalisé émis par le serveur
+			- data: les éventuelles données envoyées par le serveur
+			sous forme d'un objet
+		*/
+
+		/*SERVEUR*/
+
+		//émettre un signal à tous les clients avec éventuellement des données
+		io.emit(customizedServerEvent, data);
+
+		//émettre un signal à un client suite à la réception d'un événement
+		//envoyé par ce dernier
+
+		socket.on(customizedClientEvent, function(clientData){
+			//actions
+			socket.emit(customizedServerEvent, serverData);
+			//actions
+		});
+
+		//suite à la réception d'un événement d'un client,
+		//émettre un signal à tous les autres clients
+
+		socket.on(customizedClientEvent, function(clientData){
+			//actions
+			socket.broadcast.emit(customizedServerEvent, serverData);
+			//actions
+		});
+		\end{verbatimtab}
+
+		Dans notre jeu, nous avons utilisé ces trois manières différentes pour gérer les événements que nous avons catégorisés en trois grande parties:
+		\begin{itemize}
+			\item{Connexion au serveur, joindre et quitter le jeu.}
+			\item{Chargement et manipulation de la carte du jeu.}
+			\item{Manipulation des cartes du jeu.}
+		\end{itemize}
 
     \section{Graphismes}
 
