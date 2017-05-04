@@ -95,10 +95,18 @@
 
 
 		Pour atteindre les objectifs fixés,  nous avons jugé qu'il était nécessaire de planifier notre travail. Dans ce cadre,  nous avons opté pour un diagramme de Gantt comme outil de planification de tâches et de pilotage de projet au vu  des nombreux atouts qu’il présente. En effet, le diagramme de Gant offre la possibilité de projeter sur écran l’enchaînement des tâches en faisant apparaître leur durée. Associées à ces tâches, les ressources humaines utilisées sont  également mentionnées. Il représente aussi un très bon support d’organisation où l'on peut suivre l’avancement des travaux ainsi que la répartition des tâches parmi les membres du groupe.
+		\begin{figure}[h!]
+    	\centering
+	    \includegraphics[scale=0.3]{diagrammeGantt.jpeg}
+	    \caption{Diagramme de gantt du projet}
+	    \label{fig:diagGantt}
+    \end{figure}
 
-		Ainsi  on peut voir sur le diagramme de Gantt sur lequel nous nous sommes appuyés (figure ) quatre activités principales incluant l’étape d’initialisation d’ouvrage précédemment explicitée (avant projet et modélisation initiale).
+\newpage
+		Ainsi  on peut voir sur le diagramme de Gantt sur lequel nous nous sommes appuyés (figure \ref{fig:diagGantt})) quatre activités principales incluant l’étape d’initialisation d’ouvrage précédemment explicitée (avant projet et modélisation initiale).
 
-		Les activités principales du projet étant le développement et l'organisation (voir figure  ), nous les avons accompagnées d’un listing de sous-tâches à accomplir qui nous permettait d’avoir une vision synthétique du déroulement du projet.
+		Les activités principales du projet étant le développement et l'organisation (voir figure \ref{fig:diagGantt}), nous les avons accompagnées d’un listing de sous-tâches à accomplir qui nous permettait d’avoir une vision synthétique du déroulement du projet.
+
 \newpage
 
 
@@ -122,7 +130,6 @@
    Et dans ce contexte, nous avons choisi unanimement d’utiliser Atom qui fait aussi partie des projets développés  par Github.\\*
    Outre le fait qu’il soit un logiciel multiplateforme, Atom se distingue par son coté personnalisable.
    Cet éditeur a été donc l’idéal pour notre projet, surtout en considérant le fait qu’il repose sur le moteur de Node.js, technologie que nous avons utilisée  dans le développement de ce projet.
-	 \vfill
 
 
 \chapter{Conception}
@@ -184,7 +191,7 @@
     \end{figure}
 
 
-    \section{Architecture du site}
+
 
     \section{Choix des technologies}
 		Avant de choisir les technologies permettant une implémentation optimale de notre jeu, nous nous sommes penchés tout d'abord sur l'analyse des contraintes de qualité à satisfaire afin d'assurer un déroulement souple de ce dernier. Autrement dit, nous nous sommes aperçus de la nécessité d'établir une communication en temps réel entre les clients utilisant l'application pour assurer un déroulement réaliste et interactif du jeu, aussi bien que du caractère indispensable du paradigme événementiel pour le rendre plus ergonomique et dynamique. De plus, vu qu'il s'agit d'un jeu, en particulier d'un jeu de société, l'intégration des effets graphiques pour l'animer et le rendre le plus élégant possible paraît évident, voire même trivial.
@@ -386,10 +393,30 @@
 
 
 \chapter{Manuel d'utilisation}
+\section{Navigation sur le site}
+\begin{figure}[h!]
+	\centering
+	\begin{tikzpicture}[node distance=1cm, auto]
+		\tikzset{
+		 mynode/.style={rectangle,rounded corners,draw=black, top color=white, bottom color=yellow!50,very thick, inner sep=1em, minimum size=3em, text centered},
+		 myarrow/.style={->, >=latex', shorten >=1pt, thick},
+		 mylabel/.style={text width=7em, text centered}
+		 }
+		\node[mynode] (accueil) {Page d'accueil};
+		\node[below=3cm of accueil] (dummy) {};
+		\node[mynode, left=of dummy] (retailer1) {Règles du jeu};
+		\node[mynode, right=of dummy] (retailer2) {Remerciements};
 
-    \section{Navigation sur le site}
+		\draw[myarrow] (accueil.south) -- ++(-.5,0) -- ++(0,-1) -|  (retailer1.north);
+		\draw[myarrow] (accueil.south) -- ++(.5,0) -- ++(0,-1) -|  (retailer2.north);
+		\end{tikzpicture}
+ \caption{Architecture du site}
+ \label{fig:ArchiSite}
+\end{figure}
 
-    Le site comporte 3 différentes pages, accessibles depuis la barre de menu en haut (voir 1 figure \ref{fig:menu}). La page principale est celle concernant uniquement le jeu, avec en haut à gauche le champ de texte pour entrer un pseudo et se connecter, ainsi que le bouton permettant de quitter la partie (voir 2 figure \ref{fig:manual})). Au centre de la page se trouve la fenêtre de jeu.
+
+
+    Le site comporte 3 différentes pages, accessibles depuis la barre de menu en haut (voir 1 figure \ref{fig:manual}). La page principale est celle concernant uniquement le jeu, avec en haut à gauche le champ de texte pour entrer un pseudo et se connecter, ainsi que le bouton permettant de quitter la partie (voir 2 figure \ref{fig:manual})). Au centre de la page se trouve la fenêtre de jeu.
 
     Il est possible de consulter les règles du jeu en cliquant sur le lien "Règles" dans le menu. On y trouve toutes les informations nécessaires pour une partie.
 
