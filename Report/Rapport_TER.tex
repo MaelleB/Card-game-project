@@ -229,34 +229,45 @@
 		element.addEventListener(event, function(params){
 			//actions
 		});
-
-		/*
-			- element: un objet désignant un élément du DOM
-			(un bouton ayant la balise <button> par exemple en HTML)
-			- event: une chaîne de caractères désignant un événement
-			(click, keypress, focus, etc...)
-			- params: les éventuels paramètres utilisés par la fonction
-			de rappel dans son corps
-			(e par exemple pour désigner l'événement associé à la fonction)
-		*/
 	\end{verbatimtab}
+
+	\begin{description}
+		\item[element :]{
+			un objet désignant un élément du DOM
+			(un bouton ayant la balise <button> par exemple en HTML).
+		}
+		\item[event :]{
+			une chaîne de caractères désignant un événement
+			(click, keypress, focus, etc...).
+		}
+		\item[params :]{
+			les éventuels paramètres utilisés par la fonction de rappel dans son corps
+			(e par exemple pour désigner l'événement associé à la fonction).
+		}
+	\end{description}
 
 	L'implémentation de la gestion des événements à travers la bibliothèque jQuery se fait de la manière suivante:
 
-	\begin{verbatimtab}[4]
+	\begin{verbatim}
 		$(css_selector).on(event, function(params){
-			//actions
+		  //actions
 		});
+	\end{verbatim}
 
-		/*
-			- $: l'objet parent de la bibliothèque jQuery permettant de
-			sélectionner les éléments de la page web
-			- css_selector: un sélecteur css permettant de récupérer un
-			ou plusieurs éléments de la page web
-			- event et params sont les mêmes que ceux discutés
-			dessus avec l'API JavaScript pour manipuler le DOM
-		*/
-	\end{verbatimtab}
+	\begin{description}
+		\item[\$ :]{
+			l'objet parent de la bibliothèque jQuery permettant de sélectionner les éléments de la page web.
+		}
+		\item[css\_selector :]{
+			un sélecteur css permettant de récupérer un ou plusieurs éléments de la page web.
+		}
+		\item[event :]{
+			idem que \textbf{event} dans l'exemple avec l'API JavaScript pour manipuler le DOM.
+		}
+		\item[params :]{
+			idem que \textbf{params} dans l'exemple avec l'API JavaScript pour manipuler le DOM.
+		}
+	\end{description}
 
 	L'implémentation de la gestion des événements à travers le module socket.io se fait de la manière suivante:
 
@@ -268,15 +279,6 @@
 
 	socket.emit(customizedClientEvent, clientData);
 
-	/*
-		- socket: l'objet désignant le socket permettant la communication en
-		temps réel entre le client et le serveur
-		- customizedClientEvent: une chaîne de caractères désignant le nom d'un
-		événement personnalisé ("drawCard", "drawMap" par exemple)
-		- clientData: un éventuel objet contenant des données que l'on souhaite
-		faire passer au serveur
-	*/
-
 	//pour lancer une fonction de rappel en réception d'un événement
 	//personnalisé du serveur
 
@@ -284,16 +286,10 @@
 		//actions
 	});
 
-	/*
-		- socket: le même objet mentionné dessus
-		- customizedServerEvent: un événement personnalisé émis par le serveur
-		- serverData: les éventuelles données envoyées par le serveur
-		sous forme d'un objet
-	*/
-
 	/*SERVEUR*/
 
 	//émettre un signal à tous les clients avec éventuellement des données
+
 	io.emit(customizedServerEvent, serverData);
 
 	//émettre un signal à un client suite à la réception d'un événement
@@ -315,12 +311,30 @@
 	});
 	\end{verbatimtab}
 
+	\begin{description}
+		\item [socket :]{
+			l'objet désignant le socket permettant la communication en temps réel entre le client et le serveur.
+		}
+		\item [customizedClientEvent :]{
+			une chaîne de caractères désignant le nom d'un événement personnalisé émis par le client ("drawCard", "drawMap" par exemple).
+		}
+		\item [clientData :]{
+			un éventuel objet contenant des données que l'on souhaite faire passer au serveur.
+		}
+		\item [customizedServerEvent :]{
+			une chaîne de caractères désignant le nom d'un événement personnalisé émis par le serveur.
+		}
+		\item [serverData :]{
+			les éventuelles données envoyées par le serveur sous forme d'un objet.
+		}
+	\end{description}
+
 	Dans notre jeu, nous avons utilisé ces trois manières différentes pour gérer les événements que nous avons catégorisés en trois grande parties:
-	\begin{itemize}
+	\begin{enumerate}
 		\item{Connexion au serveur, joindre et quitter le jeu;}
 		\item{Chargement et affichage de la carte du jeu;}
 		\item{Manipulation des cartes du jeu.}
-	\end{itemize}
+	\end{enumerate}
 
   \section{Graphismes}
 	Aidés par les artistes avec lesquels nous avons collaboré, nous avons entièrement réalisé les graphismes de notre jeu, avant d'implémenter l'affichage de ceux-ci. Un travail collaboratif donc, que nous allons détailler dans cette partie.
