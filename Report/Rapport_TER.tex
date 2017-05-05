@@ -215,6 +215,26 @@
 		\label{fig:schemaBDD}
 	\end{figure}
 
+	\section{Cas d'usage}
+	Pour clarifier et résumer tout ce qui vient d'être mentionné, voici deux exemples de cas d'usage permettant de visualiser la progression du jeu selon les actions du joueur :
+
+	  	\subsection{Connexion au jeu et chargement de la carte}
+			Avant que le joueur puisse tirer une carte, il doit se connecter au serveur. Une fois connecté, sa fenêtre enverra un événement "état" sans aucune donnée et le serveur répondera en lui renvoyant un événement ayant le même nom avec le nombre des joueurs ainsi que les noms des joueurs connectés (ceci même avant qu'il essaie de rejoindre le jeu, donc en mode spectateur). À la réception de l'événement "état" du côté serveur, la fenêtre du client affichera les noms des joueurs participant au jeu ainsi que leurs statistiques d'attaque et de défense.
+
+			Simultanément, une fois la fenêtre complétement chargée, elle envoie un événement "loadMap" au serveur tout en initialisant les composants de la fenêtre permettant d'afficher et de manipuler la carte du jeu. À la réception de "loadMap", le serveur connecte à la base de données et récupére la carte qu'il envoie à la fenêtre du joueur avec l'événement "mapLoaded". Suite à la réception de "mapLoaded" la fenêtre du joueur stocke la carte du jeu et l'affiche dans la fenêtre du jeu.
+
+			Le joueur essaie après de rejoindre le jeu en tappant un pseudo (qui doit être unique) dans la région de saisie dans sa fenêtre et puis en cliquant sur le bouton "Rejoindre l'aventure". Une fois le bouton cliqué, celui-ci envoi l'événement "rejoindre" avec un objet encapsulant le pseudo du joueur, si ce dernier est unique parmi les pseudos des joueurs participant. Une fois le serveur reçoit l'événement "rejoindre" il crée une nouvelle instance de l'objet "Player", tout en initialisant les propriétés du nouveau joueur comme il faut (l'attribution des statistiques de base pour la défense et l'attaque, un tableau vide correspondant à une main vide, l'initialisation du tour du nouveau joueur en fonction des joueurs connectés, la mise à jour du nombre des joueurs connectés, etc...). Après, le serveur renvoie deux événements : "newPlayer" avec les propriétés initialisés du joueur et "status" avec le statut du tour du joueur.
+
+			À la réception de "newPlayer", la fenêtre du nouveau joueur affichera les informations du nouveau joueur participant au jeu. À la réception de "status", le tour du nouveau joueur sera initialisé selon le nombre de joueurs participant. Si c'est le premier joueur connecté, ça sera directement son tour pour tirer une carte, son tour sera activé une fois le joueur le précédant dans la liste des joueurs participants aura joué.
+
+			Cette progression est schématisé dans le diagramme suivant :
+
+			\begin{figure}[h!]
+		  	\centering
+		    \includegraphics[scale=0.5]{useCase1.png}
+		    \caption{Connexion au jeu et chargement de la carte.}
+		  \end{figure}
+
 \chapter{Développement}
 
   \section{Gestion de l'événementiel}
