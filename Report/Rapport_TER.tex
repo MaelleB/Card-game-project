@@ -86,7 +86,7 @@
 
 		\begin{figure}[h!]
     	\centering
-	    \includegraphics[scale=0.3]{diagrammeGantt.jpg}
+	    \includegraphics[scale=0.4]{diagrammeGantt.jpg}
 	    \caption{Diagramme de Gantt du projet}
 	    \label{fig:diagGantt}
     \end{figure}
@@ -366,8 +366,8 @@
 
     Ici, 'svgWin' désigne la balise html \textless{}div\textgreater{} ayant pour attribut "id = 'svgWin' ". La fonction append('svg') permet de créer un élément SVG fils de "svgWin". Nous lui attribuons ensuite une largeur et une hauteur correspondant à la taille de la zone dédiée au jeu. Nous avons procédé de la même manière pour les images, avec des objets de type "svg:image", en y ajoutant les attributs "x" et "y" pour la position dans la zone SVG.
 
-    Outre l'affichage d'image, nous avons également affiché la carte des zones du jeu à l'aide de D3 (voir figure \ref{fig:map}). Pour cela, nous avons créé des hexagones que nous avons rempli de couleurs correspondant à l'environnement de la zone représentée par chaque hexagone. Le dessin des hexagones est réalisé à l'aide de "path", qui permet de dessiner les contours d'une forme (rectangle, cercle, simple ligne...). Voici un exemple de code simplifié permettant d'afficher plusieurs formes à la suite :  
-    
+    Outre l'affichage d'image, nous avons également affiché la carte des zones du jeu à l'aide de D3 (voir figure \ref{fig:map}). Pour cela, nous avons créé des hexagones que nous avons rempli de couleurs correspondant à l'environnement de la zone représentée par chaque hexagone. Le dessin des hexagones est réalisé à l'aide de "path", qui permet de dessiner les contours d'une forme (rectangle, cercle, simple ligne...). Voici un exemple de code simplifié permettant d'afficher plusieurs formes à la suite :
+
 	\begin{verbatim}
 for(let l=0; l < lines; l++){
     for(let c=0; c < columns; c++){
@@ -378,17 +378,17 @@ for(let l=0; l < lines; l++){
             d += // On attribue ici la valeur de d en fonction de x et y
         }
     }
-        
+
     d3.select(element).append('path')
                       .attr('d', d)
                       .attr('stroke', color)
                       .attr('fill', color2);
 }
 	\end{verbatim}
-        
+
 	\begin{itemize}
-        	\item \textbf{Lines} représente le nombre de lignes sur lesquelles nous voulons afficher les formes. 
-        	\item De même, \textbf{columns} représente le nombre de colonnes. \item \textbf{color} et \textbf{color2} sont respectivement les couleurs du contour et du remplissage de la forme (l'attribut "stroke" étant le tracé de "path" et "fill" son remplissage). \item \textbf{Element} est l'élément svg auquel nous voulons rajouter les formes à afficher. 
+        	\item \textbf{Lines} représente le nombre de lignes sur lesquelles nous voulons afficher les formes.
+        	\item De même, \textbf{columns} représente le nombre de colonnes. \item \textbf{color} et \textbf{color2} sont respectivement les couleurs du contour et du remplissage de la forme (l'attribut "stroke" étant le tracé de "path" et "fill" son remplissage). \item \textbf{Element} est l'élément svg auquel nous voulons rajouter les formes à afficher.
         	\item \textbf{Shape} est un tableau de points correspondant à la forme que nous souhaitons dessiner.
         	\item \textbf{d} permet de définir la forme du tracé de "path".
 	\end{itemize}
@@ -416,7 +416,7 @@ for(let l=0; l < lines; l++){
 	\section{Navigation sur le site}
 
 		Le site comporte trois différentes pages (voir figure \ref{fig:ArchiSite}), accessibles depuis la barre de menu en haut (voir figure \ref{fig:manual}). La page principale est celle concernant uniquement le jeu, avec en haut à gauche le champ de texte pour entrer un pseudo et se connecter, ainsi que le bouton permettant de quitter la partie (voir figure \ref{fig:manual}). Au centre de la page se trouve la fenêtre du jeu.
-		
+
 		\begin{figure}[h!]
 			\centering
 			\begin{tikzpicture}[node distance=1cm, auto]
@@ -429,15 +429,15 @@ for(let l=0; l < lines; l++){
 			\node[below=3cm of accueil] (dummy) {};
 			\node[mynode, left=of dummy] (retailer1) {Règles du jeu};
 			\node[mynode, right=of dummy] (retailer2) {Remerciements};
-			
-			\draw[myarrow] (accueil.south) -- ++(0,0) -- ++(0,-1) -| 
+
+			\draw[myarrow] (accueil.south) -- ++(0,0) -- ++(0,-1) -|
 			(retailer1.north);
 			\draw[myarrow] (accueil.south) -- ++(0,0) -- ++(0,-1) -|  (retailer2.north);
 			\end{tikzpicture}
 			\caption{Architecture du site}
 			\label{fig:ArchiSite}
 		\end{figure}
-	 
+
 		Il est possible de consulter les règles du jeu en cliquant sur le lien 	"Règles" dans le menu. On y trouve toutes les informations nécessaires pour une partie.
 
 		Enfin, tous les contributeurs du projet (les artistes ayant collaboré avec nous ainsi que nous-mêmes) sont listés sur la page "remerciements", également accessible à l'aide du lien ayant le même nom dans le menu.
@@ -453,8 +453,8 @@ for(let l=0; l < lines; l++){
 			\label{fig:manual}
 			\caption{Aperçu de la page du jeu et ses différents éléments.}
 		\end{figure}
-		
-		La carte en haut à gauche de la zone de jeu permet de savoir où se trouvent les joueurs ainsi que les environnements des différentes zones. Le point représente la position des joueurs. Les zones bleues sont de type "rivière", le vert clair représente les zones "prairie" et le vert foncé l'environnement "forêt". Le fond de la zone de jeu s'accorde à l'environnement dans lequel se trouvent les joueurs. 
+
+		La carte en haut à gauche de la zone de jeu permet de savoir où se trouvent les joueurs ainsi que les environnements des différentes zones. Le point représente la position des joueurs. Les zones bleues sont de type "rivière", le vert clair représente les zones "prairie" et le vert foncé l'environnement "forêt". Le fond de la zone de jeu s'accorde à l'environnement dans lequel se trouvent les joueurs.
 
 		Dans le cas de l'utilisation d'un objet permettant de changer de zone, il faut choisir la zone suivante dans laquelle les joueurs veulent se placer. Il est impossible de reculer, seules trois directions sont possibles : haut, droite, bas.
 
