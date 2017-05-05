@@ -27,7 +27,7 @@
 
 		\begin{center}
 
-			\includegraphics[scale=0.11]{logo-um.png}~\\[1.5cm]
+			\includegraphics[scale=0.11]{images/logo-um.png}~\\[1.5cm]
 			\textsc{\Large Faculté des Sciences de Montpellier}\\[2cm]
 			\textsc{\Large Rapport de projet - Licence 2ème année}\\[0.5cm]
 			\textsc{\Large Informatique - TER (HLIN405)}\\[0.5cm]
@@ -47,7 +47,7 @@
 
 			\vfill
 
-			\includegraphics[scale=0.3]{logo-fds.jpg}~
+			\includegraphics[scale=0.3]{images/logo-fds.jpg}~
 
 		\end{center}
 
@@ -86,7 +86,7 @@
 
 		\begin{figure}[h!]
     	\centering
-	    \includegraphics[scale=0.4]{diagrammeGantt.jpg}
+	    \includegraphics[scale=0.4]{images/diagrammeGantt.jpg}
 	    \caption{Diagramme de Gantt du projet}
 	    \label{fig:diagGantt}
     \end{figure}
@@ -171,7 +171,7 @@
 
   \begin{figure}[h!]
   	\centering
-    \includegraphics[scale=2.8]{mock-up.png}
+    \includegraphics[scale=2.8]{images/mock-up.png}
     \caption{Maquette graphique du jeu.}
     \label{fig:maquette}
   \end{figure}
@@ -219,20 +219,66 @@
 	Pour clarifier et résumer tout ce qui vient d'être mentionné, voici deux exemples de cas d'usage permettant de visualiser la progression du jeu selon les actions du joueur :
 
 	  	\subsection{Connexion au jeu et chargement de la carte}
-			Avant que le joueur puisse tirer une carte, il doit se connecter au serveur. Une fois connecté, sa fenêtre enverra un événement "état" sans aucune donnée et le serveur répondera en lui renvoyant un événement ayant le même nom avec le nombre des joueurs ainsi que les noms des joueurs connectés (ceci même avant qu'il essaie de rejoindre le jeu, donc en mode spectateur). À la réception de l'événement "état" du côté serveur, la fenêtre du client affichera les noms des joueurs participant au jeu ainsi que leurs statistiques d'attaque et de défense.
+			Avant que le joueur puisse tirer une carte, il doit se connecter au serveur. Une fois connecté, sa fenêtre enverra un événement "état" sans aucune donnée et le serveur répondera en lui renvoyant un événement ayant le même nom avec le nombre des joueurs ainsi que les noms des joueurs connectés (ceci même avant qu'il essaie de rejoindre le jeu, donc en mode spectateur). À la réception de l'événement "état" du côté serveur, la fenêtre du client affichera les noms des joueurs participant au jeu ainsi que leurs statistiques d'attaque et de défense. (flèches 1 et 2 en bleu dans figure \ref{fig:useCase1})
 
-			Simultanément, une fois la fenêtre complétement chargée, elle envoie un événement "loadMap" au serveur tout en initialisant les composants de la fenêtre permettant d'afficher et de manipuler la carte du jeu. À la réception de "loadMap", le serveur connecte à la base de données et récupére la carte qu'il envoie à la fenêtre du joueur avec l'événement "mapLoaded". Suite à la réception de "mapLoaded" la fenêtre du joueur stocke la carte du jeu et l'affiche dans la fenêtre du jeu.
+			Simultanément, une fois la fenêtre complétement chargée, elle envoie un événement "loadMap" au serveur tout en initialisant les composants de la fenêtre permettant d'afficher et de manipuler la carte du jeu. À la réception de "loadMap", le serveur connecte à la base de données et récupére la carte qu'il envoie à la fenêtre du joueur avec l'événement "mapLoaded". Suite à la réception de "mapLoaded" la fenêtre du joueur stocke la carte du jeu et l'affiche dans la fenêtre du jeu. (flèches 1, 2, 3 et 4 en orange dans figure \ref{fig:useCase1})
 
 			Le joueur essaie après de rejoindre le jeu en tappant un pseudo (qui doit être unique) dans la région de saisie dans sa fenêtre et puis en cliquant sur le bouton "Rejoindre l'aventure". Une fois le bouton cliqué, celui-ci envoi l'événement "rejoindre" avec un objet encapsulant le pseudo du joueur, si ce dernier est unique parmi les pseudos des joueurs participant. Une fois le serveur reçoit l'événement "rejoindre" il crée une nouvelle instance de l'objet "Player", tout en initialisant les propriétés du nouveau joueur comme il faut (l'attribution des statistiques de base pour la défense et l'attaque, un tableau vide correspondant à une main vide, l'initialisation du tour du nouveau joueur en fonction des joueurs connectés, la mise à jour du nombre des joueurs connectés, etc...). Après, le serveur renvoie deux événements : "newPlayer" avec les propriétés initialisés du joueur et "status" avec le statut du tour du joueur.
 
-			À la réception de "newPlayer", la fenêtre du nouveau joueur affichera les informations du nouveau joueur participant au jeu. À la réception de "status", le tour du nouveau joueur sera initialisé selon le nombre de joueurs participant. Si c'est le premier joueur connecté, ça sera directement son tour pour tirer une carte, son tour sera activé une fois le joueur le précédant dans la liste des joueurs participants aura joué.
-
-			Cette progression est schématisé dans le diagramme suivant :
+			À la réception de "newPlayer", la fenêtre du nouveau joueur affichera les informations du nouveau joueur participant au jeu. À la réception de "status", le tour du nouveau joueur sera initialisé selon le nombre de joueurs participant. Si c'est le premier joueur connecté, ça sera directement son tour pour tirer une carte, sinon son tour sera activé une fois le joueur le précédant dans la liste des joueurs participants aura joué. (flèches 3 et 4 en bleu dans figure \ref{fig:useCase1})
 
 			\begin{figure}[h!]
 		  	\centering
-		    \includegraphics[scale=0.5]{useCase1.png}
+		    \includegraphics[scale=0.5]{images/useCase1.png}
 		    \caption{Connexion au jeu et chargement de la carte.}
+				\label{fig:useCase1}
+		  \end{figure}
+
+			\subsection{Tirage et utilisation d'une carte utilisable de catégorie potion}
+			Après la connexion au jeu et l'affichage de la carte du jeu, le joueur attend son tour pour qu'il puisse tirer une carte depuis la pile des cartes. Une fois son tour activé, le joueur aura la possibilité de cliquer sur la pile des cartes et/ou manipuler les cartes dans sa main avant de faire passer son tour au joueur suivant en cliquant sur le bouton "Terminer le tour". Si le joueur ne clique pas sur le bouton pendant quinze secondes après avoir interagit avec le jeu, son tour sera passé automatiquement au joueur suivant.
+
+			Dans le délai de quinze secondes, le joueur clique sur la pile des cartes et l'événement "drawCard" sera envoyé au serveur sans aucune donnée. À la réception de "drawCard", le serveur se connecte à la base de données et récupère aléatoirement une carte depuis l'ensemble des cartes stockées. Une fois la carte récupérée, le serveur envoie l'événement "showCard" avec la carte tirée à tous les joueurs pour que leurs fenêtres correspondantes puissent l'afficher. Simultanément, le serveur envoie l'événement "drawCard" avec la carte tirée au joueur qui a tiré la carte pour activer les bouttons permettant de la prendre ou de la défausser. (voir figure \ref{fig:useCase21})
+
+			\begin{figure}[h!]
+		  	\centering
+		    \includegraphics[scale=0.5]{images/useCase21.png}
+		    \caption{Tirage et affichage d'une carte.}
+				\label{fig:useCase21}
+		  \end{figure}
+
+			À la réception de l'événement "showCard", les fenêtres de tous les joueurs participant affichent la carte tirée. D'autre part, à la réception de l'événement "drawCard", le joueur aura la possibilité de choisir entre prendre la carte ou de la défausser si c'est une carte utilisable/équipable, sinon la carte sera un événement ou un monstre.
+
+			Dans cet exemple la carte tirée est de type utilisable. En particulier il s'agit d'une carte correspondant à une potion que le joueur choisit de prendre en cliquant sur le bouton "Take" qui sera affiché sur sa fenêtre une fois la carte tirée. En cliquant sur le bouton "Take", le statut d'équipage de la carte sera mis à faux, la carte sera stockée dans la main du joueur local, la main du joueur local sera affichée, et puis l'événement "cardTaken" sera envoyé au serveur.
+
+			L'événement "cardTaken" est envoyé pour mettre à jour les données du joueur sur le serveur et puis l'événement "discardCardAllClients" sera envoyé par le serveur à tous les joueurs pour enlever la carte affichée au sein de la fenêtre du jeu. (voir figure \ref{fig:useCase22})
+
+			\begin{figure}[h!]
+		  	\centering
+		    \includegraphics[scale=0.5]{images/useCase22.png}
+		    \caption{Prendre une carte tirée et l'enlever depuis la fenêtre du jeu de tous les joueurs.}
+				\label{fig:useCase22}
+		  \end{figure}
+
+			Lorsque la main du joueur local est affichée, il aura la chance de survoler chaque carte avec le curseur de la souris pour zoomer là-dessus et voir son effet. De plus, le joueur pourra cibler une carte pour la manipuler (soit l'utiliser en tappant sur la touche "u" ou "U", soit la défausser en tappant sur la touche "t" ou "T", soit l'équiper, si elle est équipable, en tappant sur la touche "e" ou "E").
+
+			Dans cet exemple, comme indiqué précédemment, la carte tirée est une potion que le joueur souhaite prendre. Le joueur ainsi cible la carte et tappe sur la touche "u" engendrant l'exécution de l'action associée à la carte, l'envoi de l'événement "modifyCard" au serveur, l'enlèvement de la carte depuis la main du joueur, et le réaffichage de la main par la suite.
+
+			L'exécution de l'action associée à la carte modifie les statistiques du joueur local et envoie l'événement "modify" au serveur pour refléter les changements locales au sein du serveur. Une fois les changements effectuées, le serveur envoie les nouvelles valeurs des statistiques à tous les joueurs pour les afficher localement sur leurs fenêtres de jeu correspondantes avec l'événement "état". D'autre part, l'événement "modifyCard" est envoyé pour enlever la carte depuis la main du joueur au sein du serveur. (voir figure \ref{fig:useCase23})
+
+			\begin{figure}[h!]
+		  	\centering
+		    \includegraphics[scale=0.5]{images/useCase23.png}
+		    \caption{Utiliser une carte dans la main et mettre à jour les statistiques du joueur.}
+				\label{fig:useCase23}
+		  \end{figure}
+
+			Une fois le joueur a terminé son tour il aura la possibilité de tapper sur le bouton "Terminer le tour" ou d'attendre la fin du délai de quinze secondes pour envoyer l'événement "playerTurn" au serveur afin d'activer le tour du joueur suivant. À la réception de l'événement "playerTurn" le serveur activera le tour du joueur suivant et envoie l'événement "status" à tous les joueurs de la partie pour les informer qui est le joueur suivant. (voir figure \ref{fig:useCase24})
+
+			\begin{figure}[h!]
+		  	\centering
+		    \includegraphics[scale=0.5]{images/useCase24.png}
+		    \caption{Faire passer le tour au joueur suivant.}
+				\label{fig:useCase24}
 		  \end{figure}
 
 \chapter{Développement}
@@ -363,7 +409,7 @@
 
     \begin{figure}[h!]
      	\centering
-       	\includegraphics[scale=0.45]{cards.png}
+       	\includegraphics[scale=0.45]{images/cards.png}
        	\caption{Exemple de cartes crées ainsi que le fond du site.}
        	\label{fig:cartes}
     \end{figure}
@@ -417,7 +463,7 @@ for(let l=0; l < lines; l++){
 
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale=0.8]{map}
+		\includegraphics[scale=0.8]{images/map.png}
 		\caption{La carte des zones du jeu implémentée en JavaScript (D3)}
 		\label{fig:map}
 	\end{figure}
@@ -426,7 +472,7 @@ for(let l=0; l < lines; l++){
 
 	\begin{figure}[h!]
 		\centering
-		\includegraphics[scale=0.6]{zoom}
+		\includegraphics[scale=0.6]{images/zoom.png}
 		\caption{Le zoom effectué lorsque la souris est passée sur une carte de la main}
 		\label{fig:zoom}
 	\end{figure}
@@ -469,7 +515,7 @@ for(let l=0; l < lines; l++){
 
 		\begin{figure}[h!]
 			\centering
-			\includegraphics[scale=0.35]{manual}
+			\includegraphics[scale=0.35]{images/manual.png}
 			\label{fig:manual}
 			\caption{Aperçu de la page du jeu et ses différents éléments.}
 		\end{figure}
