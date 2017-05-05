@@ -37,13 +37,18 @@
 			{ \huge \bfseries Jeu de cartes en ligne\\[0.4cm] }
 
 			\HRule \\[2cm]
-
+			
 			\begin{flushleft}
-				\large	\textsc{Beuret} Maëlle\\[0.5cm]
-				\large	\textsc{Farajallah} Othmane\\[0.5cm]
-				\large	\textsc{Rima} Bachar\\[0.5cm]
-				Début du projet : 18 janvier 2017
+				\begin{minipage}[b]{6cm}
+					\large	\textsc{Beuret} Maëlle\\[0.5cm]
+					\large	\textsc{Farajallah} Othmane\\[0.5cm]
+					\large	\textsc{Rima} Bachar\\[0.5cm]
+				\end{minipage}
 			\end{flushleft}
+			
+				Début du projet : 18 janvier 2017
+				
+				Encadrant : P.Pompidor
 
 			\vfill
 
@@ -62,7 +67,7 @@
   	\addcontentsline{toc}{section}{Présentation du jeu}
   	Les Voyageurs de Kaeraly est un jeu de cartes coopératif en ligne. Le but des joueurs est de tuer le Loup Alpha. Pour cela, il leur faudra traverser différentes zones (forêt, rivière, plaine) à l'aide d'objets trouvés aléatoirement lors de leur voyage, en étant équipés d'armure ou d'armes, et utiliser des potions afin d'améliorer leurs statistiques d'attaque et de défense.
 
-  	Inspiré des jeux de rôle sur table ainsi que des jeux de société tels que le Munchkin, nous avons eu l'idée de créer ce jeu en collaboration avec des illustrateurs venant de Suisse, de Roumanie et des Pays Bas, afin de partager l'expérience d'un jeu de société à distance, tout en ayant l'opportunité de s'améliorer dans nos domaines respectifs (graphisme et développement informatique). Ce projet faisant appel à de nombreuses technologies informatiques, nous avons décidé d'en faire notre projet universitaire de deuxième année de licence.
+  	Inspiré des jeux de rôle sur table ainsi que des jeux de société tels que le Munchkin, nous avons eu l'idée de créer ce jeu en collaboration avec des illustrateurs venant de Suisse, de Roumanie et des Pays Bas, afin de partager l'expérience d'un jeu de société à distance, tout en ayant l'opportunité de s'améliorer dans nos domaines respectifs (graphisme et développement informatique). Ce projet faisant appel à de nombreuses technologies informatiques, nous avons décidé d'en faire notre projet universitaire de deuxième année de licence. Cela constituait pour nous un défi car nous devions apprendre à maitriser des technologies que nous n'avions jamais utilisées au cours de notre cursus. 
 
   	\section*{Cahier des charges}
   	\addcontentsline{toc}{section}{Cahier des charges}
@@ -70,7 +75,7 @@
 
   	Il nous fallait également mettre en place un système de tour par tour afin que les joueurs ne puissent interagir avec les cartes que lorsque leur tour est activé. Le jeu étant multijoueurs, il nous fallait également intégrer le passage automatique du tour si un joueur s'absente pendant trop longtemps.
 
-    Afin de rendre le jeu le plus dynamique et ergonomique possible, nous devions mettre en place l'interaction avec les cartes optimale : pouvoir cliquer directement sur la pile pour tirer une carte, pouvoir sélectionner dans la main la carte que l'on souhaite utiliser, etc.
+    Afin de rendre le jeu le plus dynamique et ergonomique possible, nous devions mettre en place une interaction optimale avec les cartes : pouvoir cliquer directement sur la pile pour tirer une carte, pouvoir sélectionner dans la main la carte que l'on souhaite utiliser, etc.
 
     Enfin, nous avions besoin de créer et gérer une base de données afin de stocker toutes les cartes du jeu.
 
@@ -82,7 +87,7 @@
 		Avant de se mettre à la réalisation, nous avons commencé par une étape d’initialisation d’ouvrage. Dans cette étape, nous avons tenu une réunion avec l’ensemble des parties prenantes qui comprenaient les trois membres du groupe mais également l’encadrant, et dans laquelle nous avons pu analyser les besoins ainsi que clarifier les objectifs et les finalités du projet.
 		Ensuite, nous avons procédé à l’élaboration d'une modélisation initiale où nous avons désigné plusieurs outils ainsi que fonctionnalités qui pourraient nous servir lors du développement du projet.
 
-		Pour atteindre les objectifs fixés, nous avons jugé qu'il était nécessaire de planifier notre travail. Dans ce cadre, nous avons opté pour un diagramme de Gantt comme outil de planification de tâches et de pilotage de projet au vu des nombreux atouts qu’il présente. En effet, le diagramme de Gant offre la possibilité de projeter sur écran l’enchaînement des tâches en faisant apparaître leurs durées. Associées à ces tâches, les ressources humaines utilisées sont également mentionnées. Il représente aussi un très bon support d’organisation où l'on peut suivre l’avancement des travaux ainsi que la répartition des tâches parmi les membres du groupe.
+		Pour atteindre les objectifs fixés, nous avons jugé qu'il était nécessaire de planifier notre travail. Dans ce cadre, nous avons opté pour un diagramme de Gantt comme outil de planification de tâches et de pilotage de projet au vu des nombreux atouts qu’il présente. En effet, le diagramme de Gant offre la possibilité de projeter sur écran l’enchaînement des tâches en faisant apparaître leur durée. Associées à ces tâches, les ressources humaines utilisées sont également mentionnées. Il représente aussi un très bon support d’organisation où l'on peut suivre l’avancement des travaux ainsi que la répartition des tâches parmi les membres du groupe.
 
 		\begin{figure}[h!]
     	\centering
@@ -96,39 +101,39 @@
 
 		Les activités principales du projet étant le développement et l'organisation (voir figure \ref{fig:diagGantt}), nous les avons accompagnées d’un listing de sous-tâches à accomplir qui nous permettait d’avoir une vision synthétique du déroulement du projet.
 
-		\newpage
+		Nous nous sommes réparti les tâches et nous sommes réunis chaque semaine avec l'encadrant afin de faire le point sur l'avancement du projet, les éventuelles difficultés et les modifications à apporter. 
 
 		\section{Choix des outils de développement}
-		Lorsqu’on travaille à plusieurs sur un projet informatique, on est confronté à plusieurs problèmes liés aussi bien à l’organisation qu’à la compatibilité.
+		Lorsque l’on travaille à plusieurs sur un projet informatique, on est confronté à plusieurs problèmes liés aussi bien à l’organisation qu’à la compatibilité.
 		Pour éviter d'être confrontés à ce genre de problèmes, nous avons utilisé divers outils lors du développement de notre projet.
 
 			\subsection*{Git}
-	 		Parmi ces outils, nous avons eu recours à un logiciel de gestion de versions. Les logiciels de ce type permettent  de stocker un ensemble de fichiers tout en conservant la chronologie de toutes les modifications qui ont été effectuées dessus.
+	 		Parmi ces outils, nous avons eu recours à un gestionnaire de versions. Les logiciels de ce type permettent  de stocker un ensemble de fichiers tout en conservant la chronologie de toutes les modifications qui ont été effectuées dessus.
 	 		En plus de conserver l’historique d’évolution du code source, cet outil permet de faciliter la collaboration au sein d’un même projet. Et cela en permettant, par exemple, de fusionner les modifications sur un même fichier source sans perte d’information.
 
-	 		Entre les différents logiciels de gestion de versions disponibles, notre choix s’est porté sur Git qui a l’avantage d’être disponible sur la plupart des systèmes Unix et Windows, mais aussi et surtout d’être de type distribué. Cela signifie que le dépôt de fichier n’est pas unique mais que chaque développeur possède son propre dépôt.
+	 		Entre les différents gestionnaires de versions disponibles, notre choix s’est porté sur Git qui a l’avantage d’être disponible sur la plupart des systèmes Unix et Windows, mais aussi et surtout d’être de type distribué. Cela signifie que le dépôt de fichier n’est pas unique mais que chaque développeur possède son propre dépôt.
 
  			\subsection*{Github}
-   		L’une des particularités de Git, est l’existence de sites web collaboratifs basés sur ce dernier.\\* Parmi ces sites figure Github dont nous nous sommes servis tout  au long du projet.
+   		L’une des particularités de Git est l’existence de sites web collaboratifs basés sur ce dernier.\\* Parmi ces sites figure GitHub dont nous nous sommes servis tout  au long du projet.
    		GitHub fournit le serveur où les développeurs qui utilisent Git peuvent publier leurs projets ainsi que communiquer et signaler les problèmes de code.
 
  			\subsection*{Atom}
    		Afin de développer dans les meilleures conditions, il nous semblait préférable d’utiliser le même éditeur de texte.
    		Et dans ce contexte, nous avons choisi unanimement d’utiliser Atom qui fait aussi partie des projets développés  par Github.\\*
-   		Outre le fait qu’il soit un logiciel multiplateforme, Atom se distingue par son côté personnalisable.
+   		Outre le fait qu’il soit un logiciel multiplateformes, Atom se distingue par son côté personnalisable.
    		Cet éditeur a été donc l’idéal pour notre projet, surtout en considérant le fait qu’il repose sur le moteur de Node.js, technologie que nous avons utilisée dans le développement de ce projet.
 
 
 \chapter{Conception}
 
-	Avant de commencer la phase de programmation, nous avons modélisé nos objets et préparé une maquette visuelle de notre programme. Nous avons également choisi les technologies nécessaires et pertinentes pour notre projet.
+	Avant de commencer la phase d'implémentation, nous avons modélisé nos objets et préparé une maquette visuelle de notre programme. Nous avons également choisi les technologies nécessaires et pertinentes pour notre projet.
 
   \section{Modélisation des objets}
-	Le jeu se déroulant dans le cadre d'une interaction continue entre les joueurs d'une part, et entre chaque joueur et l'ensemble des cartes tirées depuis la pile et éventuellement stockées dans sa main d'une autre part, nous avons choisi de définir un objet (au sens du JavaScript) bien spécifique pour chacune de ces deux entités (joueur et carte).
+	Le jeu se déroulant dans le cadre d'une interaction continue entre les joueurs d'une part, et entre chaque joueur et l'ensemble des cartes tirées depuis la pile et éventuellement stockées dans sa main d'une autre part, nous avons choisi de définir un objet (au sens du JavaScript, c'est à dire un prototype) bien spécifique pour chacune de ces deux entités (joueur et carte).
 
 	En effet, un joueur est identifié par un unique pseudo/alias (une chaîne de caractères), et par un numéro initialisé à -1 quand le joueur n'est pas connecté au jeu, prenant plus tard une valeur entre 0 et 4 une fois connecté au jeu selon son emplacement dans la liste des participants. Par ailleurs, un joueur possède aussi les propriétés descriptives suivantes : les statistiques de défense et d'attaque (des nombres), le statut indiquant l'état de son tour (0 pour non-active et 1 pour active), l'ensemble des cartes dans sa main (un tableau de cartes), et le nombre de cartes équipées.
 
-	D'autre part, une carte est identifiée par un code fantastique, et possède les propriétés descriptives suivantes : un type (une chaîne de caractères indiquant si la carte est utilisable, équipable, déclenche un événement, ou une rencontre avec un monstre), une catégorie (une chaîne de caractères, éventuellement vide si les cartes ne sont ni utilisables ni équipables, indiquant la nature de la carte dans le cas contraire, une potion ou une armure par exemple), un chemin (une chaîne de caractères correspondant au chemin de l'image depuis l'emplacement du projet), une action (une chaîne de caractères indiquant l'effet de la carte sous forme d'une fonction ayant un nom et éventuellement des paramètres), et un booléen indiquant si la carte est équipée ou pas.
+	D'autre part, une carte est identifiée par un code fantastique, et possède les propriétés descriptives suivantes sous forme de chaînes de caractères : un type (indique si la carte est utilisable, équipable, déclenche un événement, ou une rencontre avec un monstre) une catégorie (éventuellement vide si les cartes ne sont ni utilisables ni équipables, indique la nature de la carte dans le cas contraire, une potion ou une armure par exemple), un chemin (le chemin de l'image depuis l'emplacement du projet), une action (indique l'effet de la carte sous forme d'une fonction ayant un nom et éventuellement des paramètres), et un booléen indiquant si la carte est équipée ou pas.
 
 	Outre ces deux objets, nous avons aussi défini un objet pour chaque hexagone de la carte du jeu. En effet, chaque hexagone cartographique est identifié par un code "x:y" dénotant ses coordonnées sur la carte (une chaîne de caractères), et possède les propriétés descriptives suivantes : un environnement indiquant le type du plan dans lequel se déroule le jeu tel qu'une rivière par exemple (une chaîne de caractères), et un chemin indiquant l'emplacement de l'image du fond correspondant à l'environnement (une chaîne de caractères).
 
@@ -219,13 +224,13 @@
 	Pour clarifier et résumer tout ce qui vient d'être mentionné, voici deux exemples de cas d'usage permettant de visualiser la progression du jeu selon les actions du joueur :
 
 	  	\subsection{Connexion au jeu et chargement de la carte}
-			Avant que le joueur puisse tirer une carte, il doit se connecter au serveur. Une fois connecté, sa fenêtre enverra un événement "état" sans aucune donnée et le serveur répondera en lui renvoyant un événement ayant le même nom avec le nombre des joueurs ainsi que les noms des joueurs connectés (ceci même avant qu'il essaie de rejoindre le jeu, donc en mode spectateur). À la réception de l'événement "état" du côté serveur, la fenêtre du client affichera les noms des joueurs participant au jeu ainsi que leurs statistiques d'attaque et de défense. (flèches 1 et 2 en bleu dans figure \ref{fig:useCase1})
+			Avant que le joueur puisse tirer une carte, il doit se connecter au serveur. Une fois connecté, sa fenêtre enverra un événement "état" sans aucune donnée et le serveur répondra en lui renvoyant un événement ayant le même nom avec le nombre des joueurs ainsi que les noms des joueurs connectés (ceci même avant qu'il essaie de rejoindre le jeu, donc en mode spectateur). À la réception de l'événement "état" du côté serveur, la fenêtre du client affichera les noms des joueurs participant au jeu ainsi que leurs statistiques d'attaque et de défense. (flèches 1 et 2 en bleu dans figure \ref{fig:useCase1})
 
-			Simultanément, une fois la fenêtre complétement chargée, elle envoie un événement "loadMap" au serveur tout en initialisant les composants de la fenêtre permettant d'afficher et de manipuler la carte du jeu. À la réception de "loadMap", le serveur connecte à la base de données et récupére la carte qu'il envoie à la fenêtre du joueur avec l'événement "mapLoaded". Suite à la réception de "mapLoaded" la fenêtre du joueur stocke la carte du jeu et l'affiche dans la fenêtre du jeu. (flèches 1, 2, 3 et 4 en orange dans figure \ref{fig:useCase1})
+			Simultanément, une fois la fenêtre complètement chargée, elle envoie un événement "loadMap" au serveur tout en initialisant les composants de la fenêtre permettant d'afficher et de manipuler la carte du jeu. À la réception de "loadMap", le serveur se connecte à la base de données et récupère la carte qu'il envoie à la fenêtre du joueur avec l'événement "mapLoaded". Suite à la réception de "mapLoaded" la fenêtre du joueur stocke la carte du jeu et l'affiche dans la fenêtre du jeu. (flèches 1, 2, 3 et 4 en orange dans figure \ref{fig:useCase1})
 
-			Le joueur essaie après de rejoindre le jeu en tappant un pseudo (qui doit être unique) dans la région de saisie dans sa fenêtre et puis en cliquant sur le bouton "Rejoindre l'aventure". Une fois le bouton cliqué, celui-ci envoi l'événement "rejoindre" avec un objet encapsulant le pseudo du joueur, si ce dernier est unique parmi les pseudos des joueurs participant. Une fois le serveur reçoit l'événement "rejoindre" il crée une nouvelle instance de l'objet "Player", tout en initialisant les propriétés du nouveau joueur comme il faut (l'attribution des statistiques de base pour la défense et l'attaque, un tableau vide correspondant à une main vide, l'initialisation du tour du nouveau joueur en fonction des joueurs connectés, la mise à jour du nombre des joueurs connectés, etc...). Après, le serveur renvoie deux événements : "newPlayer" avec les propriétés initialisés du joueur et "status" avec le statut du tour du joueur.
+			Le joueur essaie après de rejoindre le jeu en tapant un pseudo (qui doit être unique) dans la région de saisie dans sa fenêtre et puis en cliquant sur le bouton "Rejoindre l'aventure". Une fois le bouton cliqué, celui-ci envoie l'événement "rejoindre" avec un objet encapsulant le pseudo du joueur, si ce dernier est unique parmi les pseudos des joueurs participants. Une fois le serveur reçoit l'événement "rejoindre" il crée une nouvelle instance de l'objet "Player", tout en initialisant les propriétés du nouveau joueur comme il faut (l'attribution des statistiques de base pour la défense et l'attaque, un tableau vide correspondant à une main vide, l'initialisation du tour du nouveau joueur en fonction des joueurs connectés, la mise à jour du nombre des joueurs connectés, etc...). Après, le serveur renvoie deux événements : "newPlayer" avec les propriétés initialisés du joueur et "status" avec le statut du tour du joueur.
 
-			À la réception de "newPlayer", la fenêtre du nouveau joueur affichera les informations du nouveau joueur participant au jeu. À la réception de "status", le tour du nouveau joueur sera initialisé selon le nombre de joueurs participant. Si c'est le premier joueur connecté, ça sera directement son tour pour tirer une carte, sinon son tour sera activé une fois le joueur le précédant dans la liste des joueurs participants aura joué. (flèches 3 et 4 en bleu dans figure \ref{fig:useCase1})
+			À la réception de "newPlayer", la fenêtre du nouveau joueur affichera les informations du nouveau joueur participant au jeu. À la réception de "status", le tour du nouveau joueur sera initialisé selon le nombre de joueurs participants. Si c'est le premier joueur connecté, ça sera directement son tour pour tirer une carte, sinon son tour sera activé une fois le joueur le précédant dans la liste des joueurs participants aura joué. (flèches 3 et 4 en bleu dans figure \ref{fig:useCase1})
 
 			\begin{figure}[h!]
 		  	\centering
@@ -237,7 +242,7 @@
 			\subsection{Tirage et utilisation d'une carte utilisable de catégorie potion}
 			Après la connexion au jeu et l'affichage de la carte du jeu, le joueur attend son tour pour qu'il puisse tirer une carte depuis la pile des cartes. Une fois son tour activé, le joueur aura la possibilité de cliquer sur la pile des cartes et/ou manipuler les cartes dans sa main avant de faire passer son tour au joueur suivant en cliquant sur le bouton "Terminer le tour". Si le joueur ne clique pas sur le bouton pendant une minute après avoir interagit avec le jeu, son tour sera passé automatiquement au joueur suivant.
 
-			Dans le délai d'une minute, le joueur clique sur la pile des cartes et l'événement "drawCard" sera envoyé au serveur sans aucune donnée. À la réception de "drawCard", le serveur se connecte à la base de données et récupère aléatoirement une carte depuis l'ensemble des cartes stockées. Une fois la carte récupérée, le serveur envoie l'événement "showCard" avec la carte tirée à tous les joueurs pour que leurs fenêtres correspondantes puissent l'afficher. Simultanément, le serveur envoie l'événement "drawCard" avec la carte tirée au joueur qui a tiré la carte pour activer les bouttons permettant de la prendre ou de la défausser. (voir figure \ref{fig:useCase21})
+			Dans le délai d'une minute, le joueur clique sur la pile des cartes et l'événement "drawCard" sera envoyé au serveur sans aucune donnée. À la réception de "drawCard", le serveur se connecte à la base de données et récupère aléatoirement une carte depuis l'ensemble des cartes stockées. Une fois la carte récupérée, le serveur envoie l'événement "showCard" avec la carte tirée à tous les joueurs pour que leurs fenêtres correspondantes puissent l'afficher. Simultanément, le serveur envoie l'événement "drawCard" avec la carte tirée au joueur qui a tiré la carte pour activer les boutons permettant de la prendre ou de la défausser. (voir figure \ref{fig:useCase21})
 
 			\begin{figure}[h!]
 		  	\centering
@@ -246,7 +251,7 @@
 				\label{fig:useCase21}
 		  \end{figure}
 
-			À la réception de l'événement "showCard", les fenêtres de tous les joueurs participant affichent la carte tirée. D'autre part, à la réception de l'événement "drawCard", le joueur aura la possibilité de choisir entre prendre la carte ou de la défausser si c'est une carte utilisable/équipable, sinon la carte sera un événement ou un monstre.
+			À la réception de l'événement "showCard", les fenêtres de tous les joueurs participants affichent la carte tirée. D'autre part, à la réception de l'événement "drawCard", le joueur aura la possibilité de choisir entre prendre la carte ou de la défausser si c'est une carte utilisable/équipable, sinon la carte sera un événement ou un monstre.
 
 			Dans cet exemple la carte tirée est de type utilisable. En particulier il s'agit d'une carte correspondant à une potion que le joueur choisit de prendre en cliquant sur le bouton "Prendre" qui sera affiché sur sa fenêtre une fois la carte tirée. En cliquant sur le bouton "Prendre", le statut d'équipage de la carte sera mis à faux, la carte sera stockée dans la main du joueur local, la main du joueur local sera affichée, et puis l'événement "cardTaken" sera envoyé au serveur.
 
@@ -259,9 +264,9 @@
 				\label{fig:useCase22}
 		  \end{figure}
 
-			Lorsque la main du joueur local est affichée, il aura la chance de survoler chaque carte avec le curseur de la souris pour zoomer là-dessus et voir son effet. De plus, le joueur pourra cibler une carte pour la manipuler (soit l'utiliser en tappant sur la touche "u" ou "U", soit la défausser en tappant sur la touche "t" ou "T", soit l'équiper, si elle est équipable, en tappant sur la touche "e" ou "E").
+			Lorsque la main du joueur local est affichée, il aura la chance de survoler chaque carte avec le curseur de la souris pour zoomer là-dessus et voir son effet. De plus, le joueur pourra cibler une carte pour la manipuler (soit l'utiliser en tapant sur la touche "u" ou "U", soit la défausser en appuyant sur la touche "t" ou "T", soit l'équiper, si elle est équipable, en tapant sur la touche "e" ou "E").
 
-			Dans cet exemple, comme indiqué précédemment, la carte tirée est une potion que le joueur souhaite prendre. Le joueur ainsi cible la carte et tappe sur la touche "u" engendrant l'exécution de l'action associée à la carte, l'envoi de l'événement "modifyCard" au serveur, l'enlèvement de la carte depuis la main du joueur, et le réaffichage de la main par la suite.
+			Dans cet exemple, comme indiqué précédemment, la carte tirée est une potion que le joueur souhaite prendre. Le joueur ainsi cible la carte et tape sur la touche "u" engendrant l'exécution de l'action associée à la carte, l'envoi de l'événement "modifyCard" au serveur, le retrait de la carte depuis la main du joueur, et le nouvel affichage de la main par la suite.
 
 			L'exécution de l'action associée à la carte modifie les statistiques du joueur local et envoie l'événement "modify" au serveur pour refléter les changements locaux au sein du serveur. Une fois les changements effectués, le serveur envoie les nouvelles valeurs des statistiques à tous les joueurs pour les afficher localement sur leurs fenêtres de jeu correspondantes avec l'événement "état". D'autre part, l'événement "modifyCard" est envoyé pour enlever la carte depuis la main du joueur au sein du serveur. (voir figure \ref{fig:useCase23})
 
@@ -511,7 +516,7 @@ for(let l=0; l < lines; l++){
 	\section{Fonctionnement du jeu}
 		Une fois la partie commencée, chaque joueur joue tour à tour. Un tour consiste à tirer une carte de la pile, en cliquant sur l'image du dos de carte sur la gauche de la fenêtre de jeu (voir figure \ref{fig:manual}). Le joueur peut alors décider de prendre la carte ou la jeter, en cliquant sur le bouton correspondant qui s'affichera en même temps que la carte tirée, qui sera affichée au centre de l'écran (voir figure \ref{fig:manual}).
 
-		Les cartes que le joueur décide de prendre s'affichent en bas de la fenêtre du jeu (voir figure \ref{fig:manual}). La main du joueur est limitée à cinq cartes, par conséquent, si l'on a déjà une main pleine on ne peut pas prendre de nouvelle carte sans se débarrasser d'une autre. Différentes interactions sont possibles avec les cartes que l'on a en main : en cliquant sur une carte, des choix s'offrent à nous, modélisés par des boutons. S'il s'agit d'une carte équipable, on peut l'équiper. S'il s'agit d'une carte utilisable (potion ou objet permettant de changer de lieu), on peut l'utiliser. Dans tous les cas, il est possible de jeter la carte si on décide qu'elle ne nous est plus d'aucune utilité ou que l'on souhaite faire de la place dans notre main.
+		Les cartes que le joueur décide de prendre s'affichent en bas de la fenêtre du jeu (voir figure \ref{fig:manual}). La main du joueur est limitée à cinq cartes, par conséquent, si l'on a déjà une main pleine on ne peut pas prendre de nouvelle carte sans se débarrasser d'une autre. Différentes interactions sont possibles avec les cartes que l'on a en main : en cliquant sur une carte, des choix s'offrent à nous. S'il s'agit d'une carte équipable, on peut l'équiper en appuyant sur "e". S'il s'agit d'une carte utilisable (potion ou objet permettant de changer de lieu), on peut l'utiliser en appuyant sur "u". Dans tous les cas, il est possible de jeter la carte en appuyant sur "t" si on décide qu'elle ne nous est plus d'aucune utilité ou que l'on souhaite faire de la place dans notre main.
 
 		\begin{figure}[h!]
 			\centering
