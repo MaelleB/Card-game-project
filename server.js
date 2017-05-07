@@ -222,13 +222,17 @@ io.sockets.on("connection", function (socket) {
   //modifies card upon use/toss functions (client-side) firing
 	socket.on("modifyCard", function(card_data){
 		var indexPlayer = card_data.playerNum,
-      hand = players[indexPlayer].hand;
-			indexC = indexCard(hand, card_data.card);
+      hand = players[indexPlayer].hand,
+			indexC = card_data.indexC;
 
     if (card_data.functionName == "use" || card_data.functionName == "toss")
-      players[indexPlayer].hand.splice(indexC, 1);
-    else
-      players[indexPlayer].hand[indexC].isEquipped = true;
+      hand.splice(indexC, 1);
+    else if (card_data.functionName == "equip")
+      hand[indexC].isEquipped = true;
+    else {
+      hand[card_data.indexEquC].isEquipped = false;
+      hand[indexC].isEquipped = true;
+    }
 	});
 
   //modifies statistics of concerned player
@@ -260,16 +264,18 @@ io.sockets.on("connection", function (socket) {
 
     if(target==0){
       for (var i=0; i<players.length; i++){
-        players[i].defense  = new_data['new_Values'][i];
+        players[i].defense  = new_data["newValues"][i];
         console.log("player " + (i+1) + " defense " + players[i].defense);
       }
     }
     else{
       for (var i=0; i<players.length; i++){
-        players[i].attack = new_data["new_Values"][i];
+        players[i].attack = new_data["newValues"][i];
         console.log("player " + (i+1) +"attack"+ players[i].attack);
       }
     }
+
+    io.emit("modifyLocalStat", new_data);
 
     io.emit("etat",
     {

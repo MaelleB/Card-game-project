@@ -105,7 +105,7 @@ function beginCount(){
      console.log("passage automatique");
      socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
      endCount();
-   }, 15000);
+   }, 60000);
 }
 
 //clears timer for local player
@@ -125,7 +125,7 @@ socket.on("status", function(status_data) {
   if(status_data.playerStatus == 1) {
       console.log("Tour du joueur " + status_data.playerName);
       // For testing purposes it's actually 15 secondes
-      console.log(status_data.playerName+" a 2 minutes pour jouer");
+      console.log(status_data.playerName+" a 1 minute pour jouer");
 
       if(status_data.playerNum == localPlayer.playerNum){
         d3.select('#cardsPile').on('click', drawCardClient);
@@ -503,21 +503,16 @@ function showHand(){
         .attr('x', i*(900/(2*localPlayer.hand.length)+30)+160);
   		initCardActions(currentCard, i);
     }
-		//handling focus event of current card
-		/*$("#hand"+i).off("blur").on("blur", function(){
-			use_button.style.visibility = "hidden";
-			$("#use").attr("disabled", "disabled");
-		});*/
 	}
 }
 
 //shows drawn card for all players
-socket.on("showCard",function(card){
+socket.on("showCard", function(card){
   d3.select("#drawnCard").attr('xlink:href', card.path);
 });
 
 //discards drawn card for all players
-socket.on("discardCardAllClients",function(card){
+socket.on("discardCardAllClients", function(){
   d3.select("#drawnCard").attr('xlink:href', "");
 });
 
@@ -568,12 +563,13 @@ function modify(stat, value){
 
   //checking if newValue is negative
   if(newValue<0) newValue = 0;
+  stat==0? localPlayer.defense = newValue : localPlayer.attack = newValue;
   target.innerHTML = newValue;
   socket.emit("modify",
     {
-      "targetStat":stat,
+      "targetStat": stat,
       "newValue": newValue,
-      "playerNum":localPlayer.playerNum
+      "playerNum": localPlayer.playerNum
     });
 }
 
@@ -591,23 +587,31 @@ function modifyAll(stat, value){
 
   socket.emit("modifyAll",
   {
-    "targetStat":stat,
-    "new_Values": newValues
+    "targetStat": stat,
+    "newValues": newValues
   });
 }
+
+socket.on("modifyLocalStat", function(new_data){
+  new_data["targetStat"] == 0?
+    localPlayer.defense = new_data["newValues"][localPlayer.playerNum] :
+    localPlayer.attack = new_data["newValues"][localPlayer.playerNum];
+});
 
 //uses card (of type usable)
 function useCard(card){
 	executeStringFunction(card.action);
+
+  var indexC = localPlayer.hand.indexOf(card);
   socket.emit("modifyCard",
   {
-    playerNum: localPlayer.playerNum,
-    card: card,
-    functionName: "use"
+    "playerNum": localPlayer.playerNum,
+    "card": card,
+    "indexC": indexC,
+    "functionName": "use"
   });
 
-	var indexCard = localPlayer.hand.indexOf(card);
-	localPlayer.hand.splice(indexCard, 1);
+	localPlayer.hand.splice(indexC, 1);
 	showHand();
 }
 
@@ -615,13 +619,14 @@ function useCard(card){
 function tossCard(card){
   socket.emit("modifyCard",
   {
-    playerNum: localPlayer.playerNum,
-    card: card,
-    functionName: "toss"
+    "playerNum": localPlayer.playerNum,
+    "card": card,
+    "indexC": localPlayer.hand.indexOf(card),
+    "functionName": "toss"
   });
 
-	var indexCard = localPlayer.hand.indexOf(card);
-	localPlayer.hand.splice(indexCard, 1);
+	var indexC = localPlayer.hand.indexOf(card);
+	localPlayer.hand.splice(indexC, 1);
 	showHand();
 }
 
@@ -630,12 +635,83 @@ function equipCard(card){
   executeStringFunction(card.action);
   socket.emit("modifyCard",
   {
-    playerNum: localPlayer.playerNum,
-    card: card,
-    functionName: "equip"
+    "playerNum": localPlayer.playerNum,
+    "card": card,
+    "indexC": localPlayer.hand.indexOf(card),
+    "functionName": "equip"
   });
   card.isEquipped = true;
   showHand();
+}
+
+//returns the index of a card in a hand
+function indexCard(hand, card){
+  for (let i=0; i<hand.length; i++)
+    if (JSON.stringify(hand[i]) == JSON.stringify(card))
+      return i;
+  return -1;
+}
+
+//returns the array of equipped cards in the hand
+function equippedCards(){
+  var equipped_cards = [], currentCard;
+  for (let i=0; i<localPlayer.hand.length; i++){
+    currentCard = localPlayer.hand[i];
+    if (currentCard.isEquipped)
+      equipped_cards.push(currentCard);
+  }
+  return equipped_cards;
+}
+
+function exchangeCard(card){
+  var equipped_cards = equippedCards();
+
+  if (equipped_cards.length){
+    var i=0;
+    while (i < equipped_cards.length && equipped_cards[i].category != card.category)
+      i++;
+    if (i == equipped_cards.length)
+      equipCard(card);
+    else {
+      var equCard = equipped_cards[i],
+        indexEquC = indexCard(localPlayer.hand, equCard),
+        indexC = localPlayer.hand.indexOf(card),
+        equCardInHand = localPlayer.hand[indexEquC],
+        equCardAddedStat = "", equCardAddedStatValue;
+
+      i = 1;
+      while (equCardInHand.action[equCardInHand.action.length - 1 - i] != " "){
+        /*getting the value of the equipped card's argument of the action function*/
+        equCardAddedStatValue = equCardInHand.action[equCardInHand.action.length - 1 - i] + equCardAddedStatValue;
+        i++;
+      }
+
+      equCardAddedStat = equCardInHand.action[equCardInHand.action.indexOf("(") + 1] == 1? 'attack' : 'defense';
+
+      var localStatValue = document.getElementById(equCardAddedStat+localPlayer.playerNum).innerHTML;
+      localStatValue = parseInt(localStatValue) - parseInt(equCardAddedStatValue);
+      document.getElementById(equCardAddedStat+localPlayer.playerNum).innerHTML = localStatValue;
+
+      equCardInHand.isEquipped = false;
+      card.isEquipped = true;
+      if (equCardAddedStat == "defense")
+        localPlayer.defense -= parseInt(equCardAddedStatValue);
+      else
+        localPlayer.attack -= parseInt(equCardAddedStatValue);
+
+      executeStringFunction(card.action);
+      socket.emit("modifyCard",
+      {
+        "playerNum": localPlayer.playerNum,
+        "card": card,
+        "indexC": indexC,
+        "indexEquC": indexEquC,
+        "functionName": "exchange"
+      });
+      showHand();
+    }
+  }
+  //else equipCard(card);
 }
 
 //initialises card at index in hand with functions (use, toss, etc..)
@@ -643,6 +719,7 @@ function initCardActions(card, index){
 
 	$("#hand"+index).off("focus").on("focus", function(e){
     $(e.currentTarget).off("keypress").on("keypress", function(ev){
+      console.log("key: " + ev.keyCode);
       switch(ev.keyCode){
         case 117: // "u" key
         case 85: // "U" key
@@ -656,8 +733,15 @@ function initCardActions(card, index){
           break;
 
         case 101: // "e" key
+        case 69: // "E" key
           if (card.type == "wearable")
             equipCard(card);
+          break;
+
+        case 120: // "x" key
+        case 88: // "X" key
+          if (card.type == "wearable")
+            exchangeCard(card);
           break;
         default: return;
       }
