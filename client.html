@@ -19,7 +19,7 @@
       </ul>
     </div>
     <div id="general">
-      <input type="text" name="player" autofocus> </input> <button id ="join" onClick="rejoindrePartie()"> Rejoindre l'aventure</button>
+      <input type="text" id="playerName" name="player" autofocus> </input> <button id ="join" onClick="rejoindrePartie()"> Rejoindre l'aventure</button>
       <br/>
       <button id="quit" onClick="quitterPartie()" disabled> Déserter </button><br/><br/>
             <h1>Les Voyageurs de Kaeraly</h1>
@@ -46,6 +46,12 @@
           <p><font size="3">Attaque : <label id="attack4"> </font> </label> </p>
           <p><font size="3">Défense : <label id="defense4"> </label> </font> </p>
         </aside>
+        <form action="/" method="post" id="chatForm" style="visibility:hidden;" disabled>
+          <input type="text" name="chatMessage" id="chatMessage" placeholder="Votre message..." size="50" />
+          <input type="submit" id⁼"chatSubmitButton" value="Envoyer" />
+        </form>
+        <section id="messageZone">
+        </section>
         </div>
         <button id="right" style="visibility:hidden;" disabled> Droite </button>
         <button id="up" style="visibility:hidden;" disabled> Haut </button>

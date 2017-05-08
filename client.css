@@ -106,11 +106,16 @@ ul{
   padding: 0;
 }
 
-
 #rules, #credits1, #credits2{
   list-style-type: none;
   margin:auto;
   text-align: center;
   font-family: "black chancery";
   font-size: 22px;
+}
+
+#messageZone strong{
+  color: white;
+  background-color: black;
+  padding: 2px;
 }

@@ -13,13 +13,14 @@ var MAX_PLAYERS_NB = 5,
 socket = io("http://localhost:8888");
 socket.emit("etat");
 
-/*CONNECTION/JOINING/QUITTING FUNCTIONS
-=======================================*/
+/*CONNECTION/JOINING/QUITTING/CHATTING FUNCTIONS
+===============================================*/
 
 //receives state data from server and updates client-side data
 socket.on("etat", function(state_data) {
   for (let d in state_data) {
     if (d == "players"){
+      console.log("players: " + players);
       var pl = state_data[d];
       if (pl.length){
         for (let i=0; i<pl.length; i++){
@@ -53,21 +54,32 @@ function checkPseudo(name, array){
 //local player joins the game
 function rejoindrePartie() {
   if (localPlayer.playerNum == -1) {
-    var playerName = document.getElementsByName("player")[0].value;
-    console.log("players: " + players);
+    var playerName = document.getElementById("playerName").value;
 
     if (nbOfPlayers < MAX_PLAYERS_NB) {
       if (!checkPseudo(playerName, players)) {
 
         localPlayer.playerNum = nbOfPlayers;
+        localPlayer.aliasName = playerName;
+        localPlayer.hand = [];
+        localPlayer.nbEquippedCards = 0;
+        players.push(playerName);
+        nbOfPlayers++;
+
         $("#join").attr("disabled", "disabled");
         $("#quit").removeAttr("disabled");
-        $("input[name=player]").attr("disabled", "disabled");
-        $("input[name=player]").val("");
+        $("#playerName").attr("disabled", "disabled");
+        $("#playerName").val("");
         $("#hand").removeAttr("disabled");
+        $("#chatForm").removeAttr("disabled");
+        $("#chatForm").css("visibility", "visible");
 
         document.title = playerName + " - " + document.title;
-        socket.emit("rejoindre", {"playerName": playerName});
+        socket.emit("rejoindre",
+        {
+          "playerNum": localPlayer.playerNum,
+          "playerName": playerName
+        });
       }
       else
         console.log("Vous n'avez fournis aucun pseudo ou votre pseudo est déjà pris par un autre joueur");
@@ -83,26 +95,43 @@ function rejoindrePartie() {
   - shows the player's name, attack and defense in client's window
 */
 socket.on("newPlayer", function(player_data) {
-  console.log(player_data.playerName + " a rejoint le jeu");
+  //console.log(player_data.playerName + " a rejoint le jeu");
+  if (player_data.signalType == "socket"){
+    localPlayer.attack = player_data.playerAttack;
+    localPlayer.defense = player_data.playerDefense;
+    insertMessage("em", "Vous", "avez rejoint le jeu");
 
-  players.push(player_data.playerName);
-  localPlayer.aliasName = player_data.playerName;
-  localPlayer.attack = player_data.playerAttack;
-  localPlayer.defense = player_data.playerDefense;
-  localPlayer.hand = [];
-  localPlayer.nbEquippedCards = 0
-
-  document.getElementById("player"+nbOfPlayers).innerHTML = player_data.playerName;
-  document.getElementById("attack"+nbOfPlayers).innerHTML = player_data.playerAttack;
-  document.getElementById("defense"+nbOfPlayers).innerHTML = player_data.playerDefense;
-
-  nbOfPlayers++;
+    /*
+    inserts the chat message in the chat zone upon clicking the submit button of the form
+    sends it to the server to be broadcasted for the other players
+    */
+    $("#chatForm").submit(function(){
+      var chatMessage = $("#chatMessage").val();
+      socket.emit("chatMessage",
+      {
+        "chatMessage": chatMessage,
+        "playerName": localPlayer.aliasName
+      });
+      insertMessage("strong", localPlayer.aliasName, chatMessage);
+      $("#chatMessage").val("");
+      return false;
+    });
+  }
+  else
+    insertMessage("em", player_data.playerName, "a rejoint le jeu");
 });
 
-//sets timer for local player turn (15 seconds)
+function insertMessage(emphasis, alias, message){
+  $("#messageZone").prepend("<p><"+emphasis+">" + alias + "</"+emphasis+"> " + message + "</p>");
+}
+
+socket.on("chatMessage", function(data){
+  insertMessage("strong", data.playerName, data.chatMessage);
+});
+
+//sets timer for local player turn (1 minute)
 function beginCount(){
    timeCount = setTimeout(function(){
-     console.log("passage automatique");
      socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
      endCount();
    }, 60000);
@@ -119,12 +148,12 @@ function endCount(){
   - else, disables it
 */
 socket.on("status", function(status_data) {
-  localPlayer.status = status_data.playerStatus;
+  if (localPlayer.playerNum == status_data.playerNum)
+    localPlayer.status = status_data.playerStatus;
   showHand();
 
   if(status_data.playerStatus == 1) {
       console.log("Tour du joueur " + status_data.playerName);
-      // For testing purposes it's actually 15 secondes
       console.log(status_data.playerName+" a 1 minute pour jouer");
 
       if(status_data.playerNum == localPlayer.playerNum){
@@ -146,16 +175,18 @@ socket.on("status", function(status_data) {
 
 //local player quits the game
 function quitterPartie() {
-  console.log("Dans quitterPartie");
   endCount();
 
   if (localPlayer.playerNum > -1) {
-    console.log("Suppression du joueur n." + localPlayer.playerNum);
+    console.log("Suppression du joueur n." + localPlayer.playerNum + " ayant le pseudo " + localPlayer.aliasName);
 
     $("#join").removeAttr("disabled");
     $("input[name=player]").removeAttr("disabled");
     $("#quit").attr("disabled", "disabled");
     $("#draw").attr("disabled", "disabled");
+    $("#chatForm").attr("disabled", "disabled");
+    $("#chatForm").css("visibility", "hidden");
+    document.getElementById("messageZone").innerHTML = "";
 
     socket.emit("quitter", {"playerNum": localPlayer.playerNum});
   }
@@ -169,8 +200,6 @@ removing a player from the game:
 socket.on("offlinePlayer", function(offlinePlayer_data) {
   var playerNum = offlinePlayer_data.playerNum,
     offlinePlayer = players[playerNum];
-
-  console.log("Du serveur offlinePlayer = " + offlinePlayer + " (joueur n." + playerNum + ")");
 
   if (localPlayer.playerNum == playerNum)
     localPlayer = {"playerNum": -1};
@@ -265,7 +294,6 @@ window.onload = function(){
 socket.on("mapLoaded", function(map_data){
   console.log("Map loaded");
   map = map_data;
-  console.log(map);
   currentTile = map[0][0];
   currentPosX = 0;
   currentPosY = 0;
@@ -494,16 +522,18 @@ function showHand(){
 	for(let i=0; i<MAX_HAND_CARDS; i++)
 		d3.select('#hand'+i).attr('xlink:href', '');
 
-	var currentCard;
-	for(let i=0; i<localPlayer.hand.length; i++){
-    currentCard = localPlayer.hand[i];
-    if (!currentCard.isEquipped){
-      d3.select('#hand'+i)
-  		  .attr('xlink:href', currentCard.path)
-        .attr('x', i*(900/(2*localPlayer.hand.length)+30)+160);
-  		initCardActions(currentCard, i);
-    }
-	}
+  if (localPlayer.hand){
+    var currentCard;
+  	for(let i=0; i<localPlayer.hand.length; i++){
+      currentCard = localPlayer.hand[i];
+      if (!currentCard.isEquipped){
+        d3.select('#hand'+i)
+    		  .attr('xlink:href', currentCard.path)
+          .attr('x', i*(900/(2*localPlayer.hand.length)+30)+160);
+    		initCardActions(currentCard, i);
+      }
+  	}
+  }
 }
 
 //shows drawn card for all players
@@ -641,6 +671,7 @@ function equipCard(card){
     "functionName": "equip"
   });
   card.isEquipped = true;
+  localPlayer.nbEquippedCards++;
   showHand();
 }
 
@@ -663,6 +694,7 @@ function equippedCards(){
   return equipped_cards;
 }
 
+//exchanges a card in hand with an equipped card (cards of type "wearable")
 function exchangeCard(card){
   var equipped_cards = equippedCards();
 
@@ -719,7 +751,7 @@ function initCardActions(card, index){
 
 	$("#hand"+index).off("focus").on("focus", function(e){
     $(e.currentTarget).off("keypress").on("keypress", function(ev){
-      console.log("key: " + ev.keyCode);
+      //console.log("key: " + ev.keyCode);
       switch(ev.keyCode){
         case 117: // "u" key
         case 85: // "U" key
@@ -734,8 +766,13 @@ function initCardActions(card, index){
 
         case 101: // "e" key
         case 69: // "E" key
-          if (card.type == "wearable")
-            equipCard(card);
+          if (card.type == "wearable" && localPlayer.nbEquippedCards <= MAX_EQUIPPED_CARDS){
+            var equipped_cards = equippedCards(), i=0;
+            while (i < equipped_cards.length && card.category != equipped_cards[i].category)
+              i++;
+            if (i==equipped_cards.length)
+              equipCard(card);
+          }
           break;
 
         case 120: // "x" key

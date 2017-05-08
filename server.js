@@ -15,8 +15,8 @@ var io = require("socket.io").listen(app);
 
 io.sockets.on("connection", function (socket) {
 
-  /*CONNECTION/JOINING/QUITTING FUNCTIONS
-	=======================================*/
+  /*CONNECTION/JOINING/QUITTING/CHATTING FUNCTIONS
+	===============================================*/
   //sends server-side state data to client upon connection
   socket.on("etat", function() {
     io.emit("etat",
@@ -51,25 +51,37 @@ io.sockets.on("connection", function (socket) {
 
     var nPlayer = new Player(playerName, BASIC_ATTACK, BASIC_DEFENSE, turnStatus, [], 0);
     players.push(nPlayer);
+    nbOfPlayers++;
 
-    io.emit("newPlayer",
+    socket.emit("newPlayer",
     {
-      "playerNum": nbOfPlayers,
-      "playerName": playerName,
       "playerAttack": nPlayer.attack,
-      "playerDefense": nPlayer.defense
+      "playerDefense": nPlayer.defense,
+      "signalType": "socket"
     });
 
-    console.log("appel de status chez rejoindre");
+    socket.broadcast.emit("newPlayer",
+    {
+      "playerName": playerName,
+      "signalType": "broadcast"
+    });
+
+    io.emit("etat",
+    {
+      "nbOfPlayers": nbOfPlayers,
+      "players": players
+    });
 
     io.emit("status",
     {
-      "playerStatus": turnStatus,
-      "playerNum": nbOfPlayers,
-      "playerName": playerName
+      "playerNum": player_data.playerNum,
+      "playerName": playerName,
+      "playerStatus": turnStatus
     });
+  });
 
-   nbOfPlayers++;
+  socket.on("chatMessage", function(data){
+    socket.broadcast.emit("chatMessage", data);
   });
 
   //removes the player from the players array
