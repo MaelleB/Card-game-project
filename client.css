@@ -101,6 +101,23 @@ body{
   line-height: 1;
 }
 
+a span{
+  position:absolute;
+  right: 100px;
+  background:rgba(44,9,0,.9);
+  padding:15px;
+  border-radius: 5px;
+  height: 150px;
+  width:400px;
+  box-shadow: 0 0 2px rgba(0,0,0,.5);
+  transition:all .25s;
+  opacity:0;
+}
+
+a:hover span, a:focus span{
+  opacity:1;
+}
+
 ul{
   padding: 0;
 }

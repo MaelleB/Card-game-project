@@ -247,6 +247,10 @@ io.sockets.on("connection", function (socket) {
     }
 	});
 
+  socket.on("addEquippedCard", function(data){
+    io.emit("addEquippedCard", data);
+  })
+
   //modifies statistics of concerned player
   socket.on("modify", function(new_data){
     var target, num;

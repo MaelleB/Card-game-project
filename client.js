@@ -55,6 +55,8 @@ function checkPseudo(name, array){
 function rejoindrePartie() {
   if (localPlayer.playerNum == -1) {
     var playerName = document.getElementById("playerName").value;
+    d3.select("#equipped"+nbOfPlayers).append('svg')
+                                       .attr('id', 'svgEquipped'+nbOfPlayers);
 
     if (nbOfPlayers < MAX_PLAYERS_NB) {
       if (!checkPseudo(playerName, players)) {
@@ -99,6 +101,7 @@ socket.on("newPlayer", function(player_data) {
   if (player_data.signalType == "socket"){
     localPlayer.attack = player_data.playerAttack;
     localPlayer.defense = player_data.playerDefense;
+
     insertMessage("em", "Vous", "avez rejoint le jeu");
 
     /*
@@ -119,6 +122,15 @@ socket.on("newPlayer", function(player_data) {
   }
   else
     insertMessage("em", player_data.playerName, "a rejoint le jeu");
+
+    /*var playerNumber = 0;
+    while(player_data.playerName != players[playerNumber].aliasName){
+      playerNumber++;
+    }
+
+    d3.select("#equipped"+playerNumber).append('svg')
+                                       .attr('id', 'svgEquipped'+playerNumber);*/
+
 });
 
 function insertMessage(emphasis, alias, message){
@@ -225,15 +237,19 @@ socket.on("offlinePlayer", function(offlinePlayer_data) {
 /*MAP FUNCTIONS
 ===============*/
 
-/*@Maëlle: Missing description*/
+//function called when the page loads
 window.onload = function(){
+
+  //emit signal to load the map data
   socket.emit("loadMap");
 
+  //creates svg zone to display svg elements with D3
   var svg = d3.select('#svgWin')
               .append('svg')
               .attr('width', 900)
               .attr('height', 650);
 
+  //creates the svg:image to display the drawn card
   var drawn_card = svg.append('svg:image')
                       .attr('id', 'drawnCard')
                       .attr('x', 390)
@@ -241,6 +257,7 @@ window.onload = function(){
                       .attr('width', '200')
                       .attr('height', '310');
 
+  //creates and displays the svg:image for the cards pile
   svg.append('svg:image')
      .attr('id', 'cardsPile')
      .attr('x', 10)
@@ -250,12 +267,14 @@ window.onload = function(){
      .attr('xlink:href', 'images/cardback.png')
      .on('click', null);
 
+  //moves an element to the front
   d3.selection.prototype.moveToFront = function() {
     return this.each(function(){
       this.parentNode.appendChild(this);
     });
   }
 
+  //moves an element to the back
   d3.selection.prototype.moveToBack = function() {
     return this.each(function() {
       var firstChild = this.parentNode.firstChild;
@@ -265,6 +284,7 @@ window.onload = function(){
     });
   }
 
+  //creates the svg:image elements for the cards the local player has in his hand
   for(let i=0; i<MAX_HAND_CARDS; i++){
     svg.append('svg:image')
        .attr('id','hand'+i)
@@ -273,6 +293,7 @@ window.onload = function(){
        .attr('x', 300)
        .attr('y', 490)
        .attr('xlink:href', '')
+       //zoom on mouseover
        .on('mouseover', function(){
          d3.select(this)
            .attr('height', 250)
@@ -287,6 +308,12 @@ window.onload = function(){
            .attr('y', 490)
            .moveToBack();
        });
+  }
+
+  //creates svg zones for equipped cards
+  for(let i=0; i<MAX_PLAYERS_NB; i++){
+    d3.select("#equipped"+i).append('svg')
+                                       .attr('id', 'svgEquipped'+i);
   }
 }
 
@@ -671,6 +698,7 @@ function equipCard(card){
     "functionName": "equip"
   });
   card.isEquipped = true;
+  socket.emit("addEquippedCard", { "card" : card, "player" : localPlayer});
   localPlayer.nbEquippedCards++;
   showHand();
 }
@@ -693,6 +721,19 @@ function equippedCards(){
   }
   return equipped_cards;
 }
+
+socket.on("addEquippedCard", function(data){
+  var playerNumber = 0;
+
+  while((data.player).aliasName != players[playerNumber]){
+    playerNumber++;
+  }
+
+  d3.select("#svgEquipped"+playerNumber).append('svg:image')
+                                     .attr('height', 120)
+                                     .attr('width', 70)
+                                     .attr('xlink:href', (data.card).path);
+});
 
 //exchanges a card in hand with an equipped card (cards of type "wearable")
 function exchangeCard(card){
