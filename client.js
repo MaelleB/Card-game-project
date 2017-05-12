@@ -583,6 +583,10 @@ socket.on("discardCardAllClients", function(){
 function takeCard(card){
   card.isEquipped = false;
   localPlayer.hand.push(card);
+  $("#discard").attr("disabled", "disabled");
+  $("#discard").css("visibility", "hidden");
+  $("#take").attr("disabled", "disabled");
+  $("#take").css("visibility", "hidden");
   socket.emit("cardTaken", {card: card, playerNum: localPlayer.playerNum});
   endCount();
 
@@ -596,7 +600,10 @@ function takeCard(card){
 */
 function discardCard(){
   socket.emit("cardDiscarded");
-
+  $("#discard").attr("disabled", "disabled");
+  $("#discard").css("visibility", "hidden");
+  $("#take").attr("disabled", "disabled");
+  $("#take").css("visibility", "hidden");
   //emits the signal to activate the next player's turn
   socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
   endCount();

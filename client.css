@@ -127,6 +127,36 @@ ul{
   font-size: 22px;
 }
 
+#take, #discard{
+  position:absolute;
+  top:350px;
+}
+
+#take{
+  right: 52%
+}
+
+#discard{
+  right:47%;
+}
+
+#right, #up, #down{
+  position:absolute;
+  top:660px;
+}
+
+#up{
+  right: 55%;
+}
+
+#right{
+  right: 50%;
+}
+
+#down{
+  right: 45%;
+}
+
 #messageZone strong{
   color: white;
   background-color: black;
