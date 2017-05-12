@@ -101,7 +101,7 @@ body{
   line-height: 1;
 }
 
-a span{
+span{
   position:absolute;
   right: 100px;
   background:rgba(44,9,0,.9);
@@ -110,13 +110,10 @@ a span{
   height: 150px;
   width:400px;
   box-shadow: 0 0 2px rgba(0,0,0,.5);
-  transition:all .25s;
-  opacity:0;
+  opacity: 0;
+  z-index: -1;
 }
 
-a:hover span, a:focus span{
-  opacity:1;
-}
 
 ul{
   padding: 0;

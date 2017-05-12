@@ -314,6 +314,12 @@ window.onload = function(){
   for(let i=0; i<MAX_PLAYERS_NB; i++){
     d3.select("#equipped"+i).append('svg')
                                        .attr('id', 'svgEquipped'+i);
+
+    $("#player"+i).hover(function(){
+      $("#equipped"+i).css({"opacity":1, "z-index":1});
+    }, function(){
+      $("#equipped"+i).css({"opacity":0, "z-index":-1});
+    });
   }
 }
 
@@ -730,8 +736,8 @@ socket.on("addEquippedCard", function(data){
   }
 
   d3.select("#svgEquipped"+playerNumber).append('svg:image')
-                                     .attr('height', 120)
-                                     .attr('width', 70)
+                                     .attr('height', 150)
+                                     .attr('width', 80)
                                      .attr('xlink:href', (data.card).path);
 });
 
