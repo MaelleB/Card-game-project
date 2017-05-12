@@ -122,15 +122,6 @@ socket.on("newPlayer", function(player_data) {
   }
   else
     insertMessage("em", player_data.playerName, "a rejoint le jeu");
-
-    /*var playerNumber = 0;
-    while(player_data.playerName != players[playerNumber].aliasName){
-      playerNumber++;
-    }
-
-    d3.select("#equipped"+playerNumber).append('svg')
-                                       .attr('id', 'svgEquipped'+playerNumber);*/
-
 });
 
 function insertMessage(emphasis, alias, message){
@@ -367,6 +358,7 @@ socket.on("drawMap", function(radius, lines, columns){
 
   var hexagon = createHexagon(radius), d, x, y;
 
+  //creates a repeated hexagon pattern
   for(let l=0; l<lines; l++){
     for(let c=0; c<columns; c++){
       d = "";
@@ -387,6 +379,7 @@ socket.on("drawMap", function(radius, lines, columns){
       }
       d += "Z";
 
+      //different colors on the map tiles depending on the environment
       if(map[l][c].environment == "river"){
         d3.select('#svgMap').append('path')
                             .attr('d', d)
@@ -421,6 +414,7 @@ socket.on("drawMap", function(radius, lines, columns){
     }
   }
 
+  //creates the circle to indicate current position on the map
   d3.select('#svgMap').append('circle')
                       .attr('id', 'positionMarker')
                       .attr('cx', positionX)
@@ -450,7 +444,10 @@ function changeTile(env){
   }
 }
 
-/*@Maëlle: Missing description*/
+/*
+  enables buttons to go to the direction passed as argument
+  if player clicks on button, sends signal to the server to change current tile
+ */
 function toDirection(direction){
   var button = document.getElementById(direction);
 
@@ -466,7 +463,7 @@ function toDirection(direction){
   });
 }
 
-/*@Maëlle: Missing description*/
+//disables a direction button
 function disablesDirection(direction){
   var button = document.getElementById(direction);
 
@@ -474,7 +471,7 @@ function disablesDirection(direction){
   $(button).attr("disabled");
 }
 
-/*@Maëlle: Missing description*/
+//changes the current map tile according to direction chosen by player
 socket.on("changeMapTile", function(direction) {
   console.log("Dans ChangeMapTile");
   var newX = currentPosX, newY = currentPosY;

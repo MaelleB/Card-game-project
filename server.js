@@ -138,7 +138,7 @@ io.sockets.on("connection", function (socket) {
     socket.emit("drawMap", 20, 5, 6);
   });
 
-  /*@Maëlle: Missing description*/
+  //emits signal to change the current map tile on all clients
   socket.on("changeTile", function(direction){
     socket.emit("changeMapTile", direction);
     socket.broadcast.emit("changeMapTile", direction);
