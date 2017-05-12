@@ -140,7 +140,8 @@ io.sockets.on("connection", function (socket) {
 
   /*@Maëlle: Missing description*/
   socket.on("changeTile", function(direction){
-    io.emit("changeMapTile", direction);
+    socket.emit("changeMapTile", direction);
+    socket.broadcast.emit("changeMapTile", direction);
   });
   /*=====================================================================*/
 	/*CARD FUNCTIONS

@@ -476,6 +476,7 @@ function disablesDirection(direction){
 
 /*@Maëlle: Missing description*/
 socket.on("changeMapTile", function(direction) {
+  console.log("Dans ChangeMapTile");
   var newX = currentPosX, newY = currentPosY;
 
   if(direction == "up"){
