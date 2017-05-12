@@ -1,0 +1,24 @@
+Afin de pouvoir lancer le jeu correctement, il est nécessaire d'avoir Node.js et MongoDB installés sur l'ordinateur. Il est également nécessaire d'utiliser le navigateur Chromium ou Google Chrome car certaines fonctionnalités ne sont pas encore compatibles avec les autres navigateurs.
+
+===================================
+
+CONFIGURATION DE LA BASE DE DONNEES
+
+Depuis le répertoire racine du projet, entrez les lignes de commandes suivantes :
+
+mongoimport --db CardGame --collection Cards --file cards.json --jsonArray
+mongoimport --db CardGame --collection MapTiles --file map.json --jsonArray
+
+===================================
+
+LANCEMENT DU SERVEUR
+
+Depuis le répertoire racine du projet, entrez la ligne de commande suivante :
+
+nodejs server.js        (OU : node server.js)
+
+===================================
+
+LANCEMENT DU jeu
+
+Ouvrez le fichier "client.html" avec le navigateur Chromium ou Chrome. Vous pourrez alors accéder aux différentes pages du site avec, en page d'accueil, la page de jeu.
