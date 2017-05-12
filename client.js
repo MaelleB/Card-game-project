@@ -97,7 +97,6 @@ function rejoindrePartie() {
   - shows the player's name, attack and defense in client's window
 */
 socket.on("newPlayer", function(player_data) {
-  //console.log(player_data.playerName + " a rejoint le jeu");
   if (player_data.signalType == "socket"){
     localPlayer.attack = player_data.playerAttack;
     localPlayer.defense = player_data.playerDefense;
@@ -341,10 +340,8 @@ function createHexagon(radius){
   return pts;
 }
 
-/*
-- creates the hexagons composing the map
-- function createMapHexagons(radius, lines, columns)
-*/
+// creates the hexagons composing the map
+
 socket.on("drawMap", function(radius, lines, columns){
   var dist = radius - (Math.sin(Math.PI/3)*radius),
       positionX = 18, positionY = 20;
