@@ -538,7 +538,7 @@ socket.on("drawnCard", function(card){
         discardCard();
       });
 
-      if (localPlayer.hand.length<MAX_HAND_CARDS){
+      if (localPlayer.hand.length < (MAX_HAND_CARDS + localPlayer.nbEquippedCards)){
         var take_button = document.getElementById("take");
         $(take_button).off("click").on("click",function(){
           takeCard(card);
@@ -556,13 +556,14 @@ function showHand(){
 		d3.select('#hand'+i).attr('xlink:href', '');
 
   if (localPlayer.hand){
-    var currentCard;
-  	for(let i=0; i<localPlayer.hand.length; i++){
+    var currentCard, cardNum = 0;
+  	for(let i=0; i<(localPlayer.hand.length + localPlayer.nbEquippedCards); i++){
       currentCard = localPlayer.hand[i];
       if (!currentCard.isEquipped){
+        cardNum++;
         d3.select('#hand'+i)
     		  .attr('xlink:href', currentCard.path)
-          .attr('x', i*(900/(2*localPlayer.hand.length)+30)+160);
+          .attr('x', cardNum*(900/(2*(localPlayer.hand.length + 1 - localPlayer.nbEquippedCards))+30)+160);
     		initCardActions(currentCard, i);
       }
   	}
