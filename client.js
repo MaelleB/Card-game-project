@@ -556,15 +556,15 @@ function showHand(){
 		d3.select('#hand'+i).attr('xlink:href', '');
 
   if (localPlayer.hand){
-    var currentCard, cardNum = 0;
-  	for(let i=0; i<(localPlayer.hand.length + localPlayer.nbEquippedCards); i++){
+    var currentCard, cardNum = -1;
+  	for(let i=0; i<localPlayer.hand.length; i++){
       currentCard = localPlayer.hand[i];
       if (!currentCard.isEquipped){
         cardNum++;
-        d3.select('#hand'+i)
+        d3.select('#hand'+cardNum)
     		  .attr('xlink:href', currentCard.path)
-          .attr('x', cardNum*(900/(2*(localPlayer.hand.length + 1 - localPlayer.nbEquippedCards))+30)+160);
-    		initCardActions(currentCard, i);
+          .attr('x', (cardNum+1)*(900/(2*(localPlayer.hand.length + 1 - localPlayer.nbEquippedCards))+30)+160);
+    		initCardActions(currentCard, cardNum);
       }
   	}
   }
