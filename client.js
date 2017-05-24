@@ -137,10 +137,20 @@ function beginCount(){
      socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
      endCount();
    }, 60000);
+
+   $("#passerTour").removeAttr("disabled");
+   $("#passerTour").css("visibility", "visible");
+   $("#passerTour").off("click").on("click", function(){
+     endCount();
+     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+   });
 }
 
 //clears timer for local player
 function endCount(){
+  $("#passerTour").attr("disabled", "disabled");
+  $("#passerTour").css("visibility", "hidden");
+  socket.emit("cardDiscarded");
   clearTimeout(timeCount);
 }
 
