@@ -124,7 +124,11 @@ socket.on("newPlayer", function(player_data) {
 });
 
 function insertMessage(emphasis, alias, message){
-  $("#messageZone").prepend("<p><"+emphasis+">" + alias + "</"+emphasis+"> " + message + "</p>");
+  if (message == 'Tour du joueur'){
+    $("#messageZone").prepend('<p class="tour">'+message+" <"+emphasis+">"+alias+"</"+emphasis+"></p><br />");
+  }
+  else
+    $("#messageZone").prepend("<p><"+emphasis+">"+alias+"</"+emphasis+"> "+message+"</p>");
 }
 
 socket.on("chatMessage", function(data){
@@ -165,8 +169,8 @@ socket.on("status", function(status_data) {
   showHand();
 
   if(status_data.playerStatus == 1) {
-      console.log("Tour du joueur " + status_data.playerName);
-      console.log(status_data.playerName+" a 1 minute pour jouer");
+    insertMessage("strong", status_data.playerName, "Tour du joueur");
+    console.log(status_data.playerName+" a 1 minute pour jouer");
 
       if(status_data.playerNum == localPlayer.playerNum){
         d3.select('#cardsPile').on('click', drawCardClient);

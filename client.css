@@ -157,8 +157,15 @@ ul{
   right: 45%;
 }
 
-#messageZone strong{
+#messageZone strong {
   color: white;
   background-color: black;
   padding: 2px;
+}
+
+.tour {
+  display: inline-block;
+  border: 2px groove #EC9A29;
+  background-color: #A8201A;
+  padding: 4px;
 }
