@@ -338,6 +338,37 @@ window.onload = function(){
       $("#equipped"+i).css({"opacity":0, "z-index":-1});
     });
   }
+  var down = document.getElementById("down");
+  var right = document.getElementById("right");
+  var up = document.getElementById("up");
+
+  $(down).on("click", function(){
+    socket.emit("changeTile", "down");
+    down.style.visibility = "hidden";
+    $(down).attr("disabled");
+    disablesDirection("up");
+    disablesDirection("down");
+    disablesDirection("right");
+  });
+
+  $(right).on("click", function(){
+    socket.emit("changeTile", "right");
+    right.style.visibility = "hidden";
+    $(right).attr("disabled");
+    disablesDirection("up");
+    disablesDirection("down");
+    disablesDirection("right");
+  });
+
+
+  $(up).on("click", function(){
+    socket.emit("changeTile", "up");
+    up.style.visibility = "hidden";
+    $(up).attr("disabled");
+    disablesDirection("up");
+    disablesDirection("down");
+    disablesDirection("right");
+  });
 }
 
 //client receives map data from server and stores it in the map variable
@@ -477,14 +508,6 @@ function toDirection(direction){
 
   button.style.visibility = "visible";
   $(button).removeAttr("disabled");
-  $(button).on("click", function(){
-    socket.emit("changeTile", direction);
-    button.style.visibility = "hidden";
-    $(button).attr("disabled");
-    disablesDirection("up");
-    disablesDirection("down");
-    disablesDirection("right");
-  });
 }
 
 //disables a direction button
