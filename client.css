@@ -164,8 +164,11 @@ ul{
 }
 
 .tour {
-  display: inline-block;
-  border: 2px groove #EC9A29;
-  background-color: #A8201A;
-  padding: 4px;
+  color: white;
+  font-size: x-large;
+}
+
+.critical {
+  color: red;
+  font-weight: bold;
 }

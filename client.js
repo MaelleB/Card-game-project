@@ -1,5 +1,5 @@
 /*GLOBAL VARIABLES*/
-var socket, timeCount,
+var socket, timerID, timerCounter,
   nbOfPlayers = 0, players = [],
   localPlayer = {"playerNum": -1},
   map, currentTile, currentPosX, currentPosY;
@@ -124,11 +124,7 @@ socket.on("newPlayer", function(player_data) {
 });
 
 function insertMessage(emphasis, alias, message){
-  if (message == 'Tour du joueur'){
-    $("#messageZone").prepend('<p class="tour">'+message+" <"+emphasis+">"+alias+"</"+emphasis+"></p><br />");
-  }
-  else
-    $("#messageZone").prepend("<p><"+emphasis+">"+alias+"</"+emphasis+"> "+message+"</p>");
+  $("#messageZone").prepend("<p><"+emphasis+">"+alias+"</"+emphasis+"> "+message+"</p>");
 }
 
 socket.on("chatMessage", function(data){
@@ -137,25 +133,40 @@ socket.on("chatMessage", function(data){
 
 //sets timer for local player turn (1 minute)
 function beginCount(){
-   timeCount = setTimeout(function(){
-     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
-     endCount();
-   }, 60000);
+  var timeP = document.getElementById("time"+localPlayer.playerNum);
+  timerCounter = 60;
 
-   $("#passerTour").removeAttr("disabled");
-   $("#passerTour").css("visibility", "visible");
-   $("#passerTour").off("click").on("click", function(){
-     endCount();
-     socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
-   });
+  timerID = setInterval(function(){
+    if (timerCounter==9)
+      timeP.className += "critical";
+    if (timerCounter != 60)
+      timeP.innerHTML = "00:" + ((timerCounter<10)? "0"+timerCounter : timerCounter);
+    timerCounter--;
+
+    if (timerCounter<0) {
+      socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+      endCount();
+    }
+  }, 1000);
+
+  $("#passerTour").removeAttr("disabled");
+  $("#passerTour").css("visibility", "visible");
+  $("#passerTour").off("click").on("click", function(){
+    endCount();
+    socket.emit("playerTurn", {"playerNum": localPlayer.playerNum});
+  });
 }
 
 //clears timer for local player
 function endCount(){
+  if (document.getElementById("time"+localPlayer.playerNum).classList.contains("critical"))
+    document.getElementById("time"+localPlayer.playerNum).classList.remove("critical");
+  $("#time"+localPlayer.playerNum).text("");
+  clearInterval(timerID);
   $("#passerTour").attr("disabled", "disabled");
   $("#passerTour").css("visibility", "hidden");
+
   socket.emit("cardDiscarded");
-  clearTimeout(timeCount);
 }
 
 /*
@@ -169,8 +180,7 @@ socket.on("status", function(status_data) {
   showHand();
 
   if(status_data.playerStatus == 1) {
-    insertMessage("strong", status_data.playerName, "Tour du joueur");
-    console.log(status_data.playerName+" a 1 minute pour jouer");
+    document.getElementById("player"+status_data.playerNum).className = "tour";
 
       if(status_data.playerNum == localPlayer.playerNum){
         d3.select('#cardsPile').on('click', drawCardClient);
@@ -178,6 +188,9 @@ socket.on("status", function(status_data) {
       }
   }
   else{
+    if (document.getElementById("player"+status_data.playerNum).classList.contains("tour"))
+      document.getElementById("player"+status_data.playerNum).classList.remove("tour");
+
     if(status_data.playerNum == localPlayer.playerNum){
       document.getElementById("take").style.visibility = "hidden";
       $("#take").attr("disabled", "disabled");
