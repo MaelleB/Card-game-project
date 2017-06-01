@@ -1,0 +1,208 @@
+
+\documentclass{bredelebeamer}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\title[Jeu de cartes en lignes]{Soutenance de projet : jeu de cartes en ligne}
+% Titre du diaporama
+
+\subtitle{TER de licence informatique, deuxième année}
+% Sous-titre optionnel
+
+\author{Maëlle Beuret, Othmane Farajallah, Bachar Rima}
+% La commande \inst{...} Permet d'afficher l' affiliation de l'intervenant.
+% Si il y a plusieurs intervenants: Marcel Dupont\inst{1}, Roger Durand\inst{2}
+% Il suffit alors d'ajouter un autre institut sur le modèle ci-dessous.
+
+\institute[UM]
+
+
+\date{6 juin 2017}
+% Optionnel. La date, généralement celle du jour de la conférence
+
+\subject{Soutenance de projet TER L2}
+% C'est utilisé dans les métadonnes du PDF
+
+
+
+\logo{
+\includegraphics[scale=0.04]{logo.jpg}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+
+
+
+
+\begin{frame}{Sommaire}
+  \tableofcontents
+  % possibilité d'ajouter l'option [pausesections]
+\end{frame}
+
+
+
+
+\section{Introduction}
+
+\begin{frame}{Introduction}
+Texte normal \alert{Texte Alert}  \exemple{Texte exemple} \emph{Texte emphase}
+
+\begin{columns}
+
+\begin{column}{0.5\textwidth}
+\begin{block}{Bloc simple}
+\begin{itemize}
+\item Premier point
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Bloc exemple}
+\begin{itemize}
+\item Premier point
+\end{itemize}
+\end{exampleblock}
+
+\begin{alertblock}{Bloc alert}
+\begin{itemize}
+\item Premier point
+\end{itemize}
+\end{alertblock}
+
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\boiteviolette{
+Une boite violette
+}
+
+\boiteorange{
+Une boite orange
+}
+
+\boitegrise{
+Une boite grise
+}
+
+
+
+\begin{tcolorbox}[tabvert,tabularx={X||Y|Y|Y|Y||Y}, boxrule=0.5pt, title=Mon tableau des prix]
+Couleur & Prix 1  & Prix 2  & Prix 3 \\\hline\hline
+Rouge   & 10.00   & 20.00   &  30.00 \\\hline
+Vert    & 20.00   & 30.00   &  40.00  \\\hline
+Bleu    & 30.00   & 40.00   &  50.00 \\\hline\hline
+Orange  & 60.00   & 90.00   & 120.00 
+\end{tcolorbox}
+
+\end{column}
+
+\end{columns}
+\end{frame}
+
+
+
+
+\section{Outils utilisés}
+
+\begin{frame}{Outils utilisés}
+
+\begin{block}{Bloc simple}
+\begin{itemize}
+\item Premier point
+\item Second point
+\item Troisième point
+\end{itemize}
+\end{block}
+
+\begin{exampleblock}{Bloc exemple}
+\begin{itemize}
+\item Premier point
+\item Second point
+\item Troisième point
+\end{itemize}
+\end{exampleblock}
+
+\begin{alertblock}{Bloc alert}
+\begin{itemize}
+\item Premier point
+\item Second point
+\item Troisième point
+\end{itemize}
+\end{alertblock}
+\end{frame}
+
+
+\section{Fonctionnalités du jeu}
+
+\begin{frame}{Fonctionnalités du jeu}
+
+\begin{columns}
+
+\begin{column}{0.5\textwidth}
+\boitejaune{
+Ceci est \\
+une boite jaune
+}
+
+\boiteorange{
+Ceci est \\
+une boite orange
+}
+
+\boitemarron{
+Ceci est \\
+une boite marron
+}
+\end{column}
+
+\begin{column}{0.5\textwidth}
+\boiteviolette{
+Ceci est \\
+une boite violette
+}
+
+\boitebleue{
+Ceci est \\
+une boite bleue
+}
+
+\boitegrise{
+Ceci est \\
+une boite grise
+}
+
+\end{column}
+
+\end{columns}
+
+
+\end{frame}
+
+
+
+\section{Conclusion}
+
+\begin{frame}{Conclusion}
+
+	\begin{itemize}
+		\item premier élément de liste,
+		\item deuxième élément de liste,
+		\item troisième élément de liste.
+	\end{itemize}
+\end{frame} 
+
+
+\end{document}
+
