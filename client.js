@@ -525,6 +525,9 @@ socket.on("changeMapTile", function(direction) {
 
   if(direction == "up"){
     newY--;
+    if(currentPosY%2 != 0){
+      newX++;
+    }
     d3.select("#positionMarker").node().cx.baseVal.value += 17;
     d3.select("#positionMarker").node().cy.baseVal.value -= 30;
   }
@@ -536,10 +539,14 @@ socket.on("changeMapTile", function(direction) {
 
   else{
     newY++;
+    if(currentPosY%2 != 0){
+      newX++;
+    }
     d3.select("#positionMarker").node().cx.baseVal.value += 17;
     d3.select("#positionMarker").node().cy.baseVal.value += 30;
   }
-
+  console.log("currentPosX = "+currentPosX+", currentPosY = "+currentPosY);
+  console.log("newX = "+newX+", newY = "+newY);
   currentTile = map[newY][newX];
   currentPosX = newX;
   currentPosY = newY;
