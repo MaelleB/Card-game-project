@@ -1,12 +1,5 @@
-
 \documentclass{bredelebeamer}
-
-
-
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
 
 \title[Jeu de cartes en lignes]{Soutenance de projet : jeu de cartes en ligne}
 % Titre du diaporama
@@ -15,12 +8,11 @@
 % Sous-titre optionnel
 
 \author{Maëlle Beuret, Othmane Farajallah, Bachar Rima}
-% La commande \inst{...} Permet d'afficher l' affiliation de l'intervenant.
+% La commande \inst{...} Permet d'afficher l'affiliation de l'intervenant.
 % Si il y a plusieurs intervenants: Marcel Dupont\inst{1}, Roger Durand\inst{2}
 % Il suffit alors d'ajouter un autre institut sur le modèle ci-dessous.
 
 \institute[UM]
-
 
 \date{6 juin 2017}
 % Optionnel. La date, généralement celle du jour de la conférence
@@ -28,120 +20,189 @@
 \subject{Soutenance de projet TER L2}
 % C'est utilisé dans les métadonnes du PDF
 
-
-
-\logo{
-\includegraphics[scale=0.04]{logo.jpg}
-}
-
-
-
+\logo{\includegraphics[scale=0.15]{umLogo.png}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \begin{document}
 
-\begin{frame}
-  \titlepage
-\end{frame}
+  \begin{frame}
+    \titlepage
+  \end{frame}
 
+  %=======================SOMMAIRE========================%
+  \begin{frame}{Sommaire}
+    \tableofcontents
+    % possibilité d'ajouter l'option [pausesections]
+  \end{frame}
 
+  %=======================INTRODUCTION========================%
+  \section{Introduction}
+  \begin{frame}{Introduction}
+    \begin{block}{Contexte du jeu}
+      \begin{description}
+        \item [Les Voyageurs de Kaeraly :]{Jeu de cartes coopératif en ligne}
+        \pause
+        \item [Le but du jeu :]{Tuer le Loup Alpha}
+        \pause
+        \item [Les moyens : ]{
+          \begin{itemize}
+            \item {Traverser différentes zones (forêt, rivière, plaine)}
+            \pause
+            \item {S'équiper d'armure ou d'armes}
+            \pause
+            \item {Utiliser des potions}
+            \pause
+          \end{itemize}
+        }
+      \end{description}
+    \end{block}
 
+    \begin{block}{Inspirations et origines}
+      \begin{itemize}
+        \item {Jeux de rôle sur table, et jeux de société (\textit{Munchkin})}
+        \pause
+        \item {Collaboration avec des illustrateurs (Suisse, Roumanie, Pays Bas)}
+        \pause
+        \item {Projet TER : un défi de développement}
+      \end{itemize}
+    \end{block}
+  \end{frame}
 
+  %=======================OUTILS UTILISÉS========================%
+  \section{Outils utilisés}
+  \begin{frame}{Outils utilisés I}
+    \begin{block}{Technologies}
+      \begin{description}
+        \item [JavaScript :]{
+        Langage de programmation événementiel pour la dynamisation des pages web côté client
+        }
+        \pause
+        \begin{center}
+          \line(1,0){250}
+        \end{center}
+        \item [NodeJS :]{
+          \begin{itemize}
+            \item {Une plateforme JavaScript côté serveur basée sur le moteur de JavaScript de Google Chrome V8, façonnée selon le modèle non-bloquant et intégrant des fonctions de \textit{callback}}
+            \pause
+            \item {Développement d'applications en temps réel, surtout les applications web et réseaux, en utilisant, parmi d'autres, la technologie de WebSocket qui permet un échange bilatéral synchrone entre les clients et le serveur}
+            \pause
+            \item {multi-plateforme, asynchrone, évenementielle, très rapide, monothread, libre et open-source (Licence MIT)}
+          \end{itemize}
+        }
+      \end{description}
+    \end{block}
+  \end{frame}
 
-\begin{frame}{Sommaire}
-  \tableofcontents
-  % possibilité d'ajouter l'option [pausesections]
-\end{frame}
+  \begin{frame}{Outils utilisés II}
+    \begin{block}{Technologies}
+      \begin{description}
+        \item[jQuery :] {
+          \begin{itemize}
+            \item {Une bibliothèque JavaScript libre et multi-plateforme permettant la dynamisation des pages web}
+            \pause
+            \item {Manipulation du DOM (\textit{Document Object Model})}
+            \pause
+            \item {Gestion des événements}
+            \pause
+            \item {Intégration d'animations et des effets visuels, etc}
+          \end{itemize}
+        }
+        \pause
+        \begin{center}
+          \line(1,0){250}
+        \end{center}
+        \item [D3 :]{
+        Une bibliothèque JavaScript offrant une myriade de fonctionnalités et permettant un rendu graphique élégant en intégrant une multitude d'animations et la possibilité de création/manipulation d'objets SVG
+        }
+        \pause
+        \item [MongoDB :]{
+          Un SGBD (Système de Gestion de Base de Données) multiplateforme, noSQL, libre et open-source, permettant le stockage et la manipulation des objets de type BSON (JSON Binaire) où JSON est une notation utilisé comme moyen très efficace pour le stockage, le transfert, et la manipulation des données
+        }
+      \end{description}
+    \end{block}
+  \end{frame}
 
+  \begin{frame}{Outils utilisés III}
+    \begin{block}{Outils de développement}
+      \begin{description}
+        \item [Atom :]{
+          Un éditeur de texte multi-plateforme, libre et open-source développé par GitHub
+        }
+        \pause
+        \item [Git :]{
+          Un gestionnaire de versions permettant de stocker les différentes versions de l'ensemble des fichiers d'un projet localement et sur un serveur appelé un "dépôt" (\textit{repository}) tel que \textit{GitHub}, pour faciliter la collaboration entre développeurs
+        }
+      \end{description}
+    \end{block}
+  \end{frame}
 
+  % \begin{exampleblock}{Bloc exemple}
+  % \begin{itemize}
+  % \item Premier point
+  % \item Second point
+  % \item Troisième point
+  % \end{itemize}
+  % \end{exampleblock}
+  %
+  % \begin{alertblock}{Bloc alert}
+  % \begin{itemize}
+  % \item Premier point
+  % \item Second point
+  % \item Troisième point
+  % \end{itemize}
+  % \end{alertblock}
 
+%Texte normal \alert{Texte Alert}  \exemple{Texte exemple} \emph{Texte emphase}
 
-\section{Introduction}
-
-\begin{frame}{Introduction}
-Texte normal \alert{Texte Alert}  \exemple{Texte exemple} \emph{Texte emphase}
-
-\begin{columns}
-
-\begin{column}{0.5\textwidth}
-\begin{block}{Bloc simple}
-\begin{itemize}
-\item Premier point
-\end{itemize}
-\end{block}
-
-\begin{exampleblock}{Bloc exemple}
-\begin{itemize}
-\item Premier point
-\end{itemize}
-\end{exampleblock}
-
-\begin{alertblock}{Bloc alert}
-\begin{itemize}
-\item Premier point
-\end{itemize}
-\end{alertblock}
-
-\end{column}
-
-\begin{column}{0.5\textwidth}
-\boiteviolette{
-Une boite violette
-}
-
-\boiteorange{
-Une boite orange
-}
-
-\boitegrise{
-Une boite grise
-}
-
-
-
-\begin{tcolorbox}[tabvert,tabularx={X||Y|Y|Y|Y||Y}, boxrule=0.5pt, title=Mon tableau des prix]
-Couleur & Prix 1  & Prix 2  & Prix 3 \\\hline\hline
-Rouge   & 10.00   & 20.00   &  30.00 \\\hline
-Vert    & 20.00   & 30.00   &  40.00  \\\hline
-Bleu    & 30.00   & 40.00   &  50.00 \\\hline\hline
-Orange  & 60.00   & 90.00   & 120.00 
-\end{tcolorbox}
-
-\end{column}
-
-\end{columns}
-\end{frame}
-
-
-
-
-\section{Outils utilisés}
-
-\begin{frame}{Outils utilisés}
-
-\begin{block}{Bloc simple}
-\begin{itemize}
-\item Premier point
-\item Second point
-\item Troisième point
-\end{itemize}
-\end{block}
-
-\begin{exampleblock}{Bloc exemple}
-\begin{itemize}
-\item Premier point
-\item Second point
-\item Troisième point
-\end{itemize}
-\end{exampleblock}
-
-\begin{alertblock}{Bloc alert}
-\begin{itemize}
-\item Premier point
-\item Second point
-\item Troisième point
-\end{itemize}
-\end{alertblock}
-\end{frame}
+% \begin{columns}
+%
+% \begin{column}{0.5\textwidth}
+% \begin{block}{Bloc simple}
+% \begin{itemize}
+% \item Premier point
+% \end{itemize}
+% \end{block}
+%
+% \begin{exampleblock}{Bloc exemple}
+% \begin{itemize}
+% \item Premier point
+% \end{itemize}
+% \end{exampleblock}
+%
+% \begin{alertblock}{Bloc alert}
+% \begin{itemize}
+% \item Premier point
+% \end{itemize}
+% \end{alertblock}
+%
+% \end{column}
+%
+% \begin{column}{0.5\textwidth}
+% \boiteviolette{
+% Une boite violette
+% }
+%
+% \boiteorange{
+% Une boite orange
+% }
+%
+% \boitegrise{
+% Une boite grise
+% }
+%
+%
+%
+% \begin{tcolorbox}[tabvert,tabularx={X||Y|Y|Y|Y||Y}, boxrule=0.5pt, title=Mon tableau des prix]
+% Couleur & Prix 1  & Prix 2  & Prix 3 \\\hline\hline
+% Rouge   & 10.00   & 20.00   &  30.00 \\\hline
+% Vert    & 20.00   & 30.00   &  40.00  \\\hline
+% Bleu    & 30.00   & 40.00   &  50.00 \\\hline\hline
+% Orange  & 60.00   & 90.00   & 120.00
+% \end{tcolorbox}
+%
+% \end{column}
+%
+% \end{columns}
 
 
 \section{Fonctionnalités du jeu}
@@ -201,8 +262,7 @@ une boite grise
 		\item deuxième élément de liste,
 		\item troisième élément de liste.
 	\end{itemize}
-\end{frame} 
+\end{frame}
 
 
 \end{document}
-
